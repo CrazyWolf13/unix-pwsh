@@ -191,5 +191,5 @@ function pgrep($name) {
     Get-Process $name
 }
 
-$themePath = Split-Path $PROFILE -Parent | Join-Path -ChildPath 'montys.omp.json'
+$themePath = Split-Path $PROFILE -Parent | Join-Path -ChildPath 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json?token=GHSAT0AAAAAACMVU6LQOZQ4RFEBUYZXSW6YZOD7YWQ'
 oh-my-posh init pwsh --config $themePath | Invoke-Expression
