@@ -15,7 +15,8 @@ Write-Host ""
 
 function gitpush {
     param (
-        [string]$CommitMessage
+        [Parameter(ValueFromRemainingArguments=$true)]
+        [string[]]$CommitMessage
     )
 
     if (-not $CommitMessage) {
@@ -23,11 +24,12 @@ function gitpush {
         return
     }
 
+    $CommitMessageString = $CommitMessage -join ' '
+
     git add .
-    git commit -m "$CommitMessage"
+    git commit -m "$CommitMessageString"
     git push
 }
-
 
 
 
