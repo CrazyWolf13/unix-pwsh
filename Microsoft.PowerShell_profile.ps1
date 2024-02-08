@@ -14,22 +14,16 @@ Write-Host ""
 
 
 function gitpush {
-    param (
-        [Parameter(ValueFromRemainingArguments=$true)]
-        [string[]]$CommitMessage
+    param(
+        [string]$commitMessage
     )
 
-    if (-not $CommitMessage) {
-        Write-Host "Please provide a commit message."
-        return
-    }
-
-    $CommitMessageString = $CommitMessage -join ' '
-
+    git pull
     git add .
-    git --% commit -m "$CommitMessageString"
+    git commit -m "$commitMessage"
     git push
 }
+
 
 
 
