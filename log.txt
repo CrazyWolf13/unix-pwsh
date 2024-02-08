@@ -1,0 +1,391 @@
+
+[1m[38;2;191;207;240mVersion:[0m 19.8.3
+
+[1m[38;2;191;207;240mShell:[0m pwsh
+[1m[38;2;191;207;240m
+Prompt:
+
+[0m
+[38;2;38;40;45m[0m[48;2;38;40;45m[38;2;0;201;131m DESKTOP-V5T3KV7 [0m[48;2;38;40;45m[38;2;38;40;45m[0m[48;2;38;40;45m[38;2;218;98;125m [38;2;0;0;0m [38;2;218;98;125m  [0m[48;2;38;40;45m[38;2;38;40;45m[0m[48;2;38;40;45m[38;2;131;118;156m  0ms [0m[48;2;38;40;45m[38;2;38;40;45m[0m[48;2;38;40;45m[38;2;51;101;138m  07:00 [0m[48;2;38;40;45m[38;2;38;40;45m[0m[48;2;38;40;45m[38;2;46;149;153m [0m[38;2;38;40;45m[0m
+[38;2;205;66;119m [38;2;69;241;194m[1m⚡[22m[38;2;205;66;119m[1mtobias[22m [38;2;38;198;218m❯[38;2;205;66;119m[38;2;69;241;194m❯[0m [1m[38;2;191;207;240m
+
+Segments:
+
+[0mConsoleTitle([38;2;204;137;214mfalse[0m) -   0 ms
+Os([38;2;156;231;201mtrue[0m)            -   0 ms
+Path([38;2;156;231;201mtrue[0m)          -   1 ms
+Git([38;2;204;137;214mfalse[0m)          -   7 ms
+Node([38;2;204;137;214mfalse[0m)         -   0 ms
+Executiontime([38;2;156;231;201mtrue[0m) -   0 ms
+Time([38;2;156;231;201mtrue[0m)          -   0 ms
+Status([38;2;156;231;201mtrue[0m)        -   0 ms
+Root([38;2;204;137;214mfalse[0m)         -   0 ms
+Text([38;2;156;231;201mtrue[0m)          -   0 ms
+
+[1m[38;2;191;207;240mRun duration:[0m 74.674ms
+
+[1m[38;2;191;207;240mCache path:[0m C:\Users\tobia\AppData\Local\oh-my-posh
+
+[1m[38;2;191;207;240mConfig path:[0m C:\Users\tobia\AppData\Local\oh-my-posh\config.aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0NyYXp5V29sZjEzL2hvbWUtY29uZmlncy9tYWluL21vbnR5cy5vbXAuanNvbg==.omp.json
+[1m[38;2;191;207;240m
+Logs:
+
+[0m[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.477 [0mshell.go:Getenv:399[38;2;156;231;201m →[38;2;253;122;140m NO DATA
+[0m[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.477 [0mshell.go:Getenv(TERM_PROGRAM) - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.477 [0mshell.go:Getenv:399[38;2;156;231;201m →[0m C:\Users\tobia\AppData\Local
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.477 [0mshell.go:Getenv(LOCALAPPDATA) - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.477 [0mshell_windows.go:CachePath() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.478 [0mshell.go:Getenv:399[38;2;156;231;201m →[0m C:\Users\tobia\AppData\Local
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.478 [0mshell.go:Getenv(LOCALAPPDATA) - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.478 [0mshell_windows.go:CachePath() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.478 [0mshell.go:HTTPRequest:714[38;2;156;231;201m ↓
+[0m    GET /CrazyWolf13/home-configs/main/montys.omp.json HTTP/1.1
+    Host: raw.githubusercontent.com
+    User-Agent: Go-http-client/1.1
+    Accept-Encoding: gzip
+    
+    
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.533 [0mshell.go:HTTPRequest:734[38;2;156;231;201m ↓
+[0m    {
+      "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+      "blocks": [
+        {
+          "alignment": "left",
+          "newline": true,
+          "segments": [
+            {
+              "background": "#26282d",
+              "foreground": "#00c983",
+              "leading_diamond": "\ue0b6",
+              "style": "diamond",
+              "template": "{{ .Icon }} {{ .HostName }} ",
+              "type": "os"
+            },
+            {
+              "background": "#26282d",
+              "foreground": "#DA627D",
+              "powerline_symbol": "\ue0b0",
+              "properties": {
+                "folder_icon": "\uf115",
+                "folder_separator_icon": "\\",
+                "home_icon": "\ueb06",
+                "style": "full"
+              },
+              "style": "powerline",
+              "template": " <#000>\uf07b \uea9c</> {{ .Path }} ",
+              "type": "path"
+            },
+            {
+              "background": "#26282d",
+              "foreground": "#FCA17D",
+              "powerline_symbol": "\ue0b0",
+              "properties": {
+                "branch_icon": " <#ffffff>\ue0a0 </>",
+                "fetch_stash_count": true,
+                "fetch_status": false,
+                "fetch_upstream_icon": true
+              },
+              "style": "powerline",
+              "template": " \u279c ({{ .UpstreamIcon }}{{ .HEAD }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }}) ",
+              "type": "git"
+            },
+            {
+              "background": "#26282d",
+              "foreground": "#76b367",
+              "powerline_symbol": "\ue0b0",
+              "style": "powerline",
+              "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+              "type": "node"
+            },
+            {
+              "background": "#26282d",
+              "foreground": "#83769c",
+              "powerline_symbol": "\ue0b0",
+              "properties": {
+                "always_enabled": true
+              },
+              "style": "powerline",
+              "template": " \ueba2 {{ .FormattedMs }} ",
+              "type": "executiontime"
+            },
+            {
+              "background": "#26282d",
+              "foreground": "#33658A",
+              "powerline_symbol": "\ue0b0",
+              "properties": {
+                "time_format": "15:04"
+              },
+              "style": "powerline",
+              "template": " \uf017 {{ .CurrentDate | date .Format }} ",
+              "type": "time"
+            },
+            {
+              "background": "#26282d",
+              "background_templates": [
+                "{{ if gt .Code 0 }}red{{ end }}"
+              ],
+              "foreground": "#2e9599",
+              "powerline_symbol": "\ue0b0",
+              "properties": {
+                "always_enabled": true
+              },
+              "style": "diamond",
+              "template": " {{ if gt .Code 0 }}\uf421{{ else }}\uf469{{ end }}",
+              "trailing_diamond": "\ue0b4",
+              "type": "status"
+            }
+          ],
+          "type": "prompt"
+        },
+        {
+          "alignment": "left",
+          "newline": true,
+          "segments": [
+            {
+              "foreground": "#cd5e42",
+              "style": "plain",
+              "template": "\ue3bf ",
+              "type": "root"
+            },
+            {
+              "foreground": "#CD4277",
+              "style": "plain",
+              "template": " <#45F1C2><b>\u26a1</b></><b>{{ .UserName }}s</b> <#26C6DA>\u276f</><#45F1C2>\u276f</>",
+              "type": "text"
+            }
+          ],
+          "type": "prompt"
+        }
+      ],
+      "final_space": true,
+      "version": 2
+    }
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.534 [0mshell.go:HTTPRequest(https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json) - [38;2;156;231;201m55.9974ms[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.535 [0mshell.go:downloadConfig(https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json) - [38;2;156;231;201m55.9974ms[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.535 [0mshell.go:Shell:662[38;2;156;231;201m →[0m no shell name provided in flags, trying to detect it
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.541 [0mshell.go:Shell:670[38;2;156;231;201m →[0m process name: pwsh.exe
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.541 [0mshell.go:Shell() - [38;2;156;231;201m6.528ms[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.541 [0mshell.go:resolveConfigPath() - [38;2;156;231;201m62.9919ms[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.541 [0mshell.go:Init() - [38;2;156;231;201m64.2013ms[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.541 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mconfig.go:loadConfig() - [38;2;156;231;201m498µs[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell.go:Getenv:399[38;2;156;231;201m →[38;2;253;122;140m NO DATA
+[0m[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Getenv(OMP_CACHE_DISABLED) - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:WindowsRegistryKeyValue(HKEY_CURRENT_USER\Software\Microsoft\Windows\DWM\ColorizationColor) - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:WindowsRegistryKeyValue:215[38;2;156;231;201m →[0m ColorizationColor(DWORD): 0xC4107C10
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell.go:Getenv:399[38;2;156;231;201m →[38;2;253;122;140m NO DATA
+[0m[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Getenv(POSH_SHELL_VERSION) - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mdebug.go:PrintDebug:22[38;2;156;231;201m →[0m Segment: Title
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: 
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell.go:Getenv:399[38;2;156;231;201m →[38;2;253;122;140m NO DATA
+[0m[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Getenv(POSH_CURSOR_LINE) - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell.go:Getenv:399[38;2;156;231;201m →[38;2;253;122;140m NO DATA
+[0m[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Getenv(POSH_CURSOR_COLUMN) - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetString:28[38;2;156;231;201m →[0m {{ .Code }}
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell.go:Pwd:429[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Pwd() - [38;2;156;231;201m510.2µs[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0msegment.go:SetEnabled:518[38;2;156;231;201m →[0m Segment: Status
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: {{ .Code }}
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0msegment.go:SetEnabled:518[38;2;156;231;201m →[0m Segment: Os
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetString:28[38;2;156;231;201m →[0m 
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0msegment.go:SetEnabled:518[38;2;156;231;201m →[0m Segment: Path
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:Root() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:StatusCodes() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:IsWsl() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetBool:22[38;2;156;231;201m →[0m mapped_locations_enabled: true
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetString:28[38;2;156;231;201m →[0m 
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetString:28[38;2;156;231;201m →[0m 
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0msegment.go:SetEnabled:518[38;2;156;231;201m →[0m Segment: Executiontime
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetString:28[38;2;156;231;201m →[0m 
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetBool:22[38;2;156;231;201m →[0m always_enabled: true
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:ExecutionTime() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetKeyValueMap:46[38;2;156;231;201m →[0m mapped_locations: map[]
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetFloat64:34[38;2;156;231;201m →[0m threshold: 500.000000
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:PathSeparator() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0msegment.go:SetEnabled:518[38;2;156;231;201m →[0m Segment: Time
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0msegment.go:SetEnabled:518[38;2;156;231;201m →[0m Segment: Node
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetString:28[38;2;156;231;201m →[0m 15:04
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetStringArray:52[38;2;156;231;201m →[0m extensions: [*.js *.ts package.json .nvmrc pnpm-workspace.yaml .pnpmfile.cjs .npmrc .vue]
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell.go:User:564[38;2;156;231;201m →[0m tobia
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetStringArray:52[38;2;156;231;201m →[0m folders: []
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:User() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mproperties.go:GetBool:22[38;2;156;231;201m →[0m home_enabled: false
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell.go:Host:576[38;2;156;231;201m →[0m DESKTOP-V5T3KV7
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Host() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.542 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.543 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.543 [0msegment.go:SetEnabled:518[38;2;156;231;201m →[0m Segment: Git
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.542 [0mshell.go:Getenv:399[38;2;156;231;201m →[38;2;253;122;140m NO DATA
+[0m[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:Getenv(SHLVL) - [38;2;156;231;201m464.8µs[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:TemplateCache() - [38;2;156;231;201m464.8µs[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:TemplateCache() - [38;2;156;231;201m464.8µs[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:TemplateCache() - [38;2;156;231;201m464.8µs[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:TemplateCache() - [38;2;156;231;201m464.8µs[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.543 [0mproperties.go:GetBool:22[38;2;156;231;201m →[0m always_enabled: true
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:TemplateCache() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:PathSeparator() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:PathSeparator() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:PathSeparator() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:PathSeparator() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:PathSeparator() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell_windows.go:IsWsl() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.543 [0mshell.go:StackCount() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.544 [0mwin32_windows.go:isWriteable:299[38;2;156;231;201m →[0m not current user or in group
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.544 [0mwin32_windows.go:isWriteable:303[38;2;156;231;201m →[0m current user is member of S-1-5-32-544
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.544 [0mwin32_windows.go:isWriteable:311[38;2;156;231;201m ↓
+[0m    WRITE_DAC
+    WRITE_OWNER
+    SYNCHRONIZE
+    DELETE
+    READ_CONTROL
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.544 [0mwin32_windows.go:isWriteable:313[38;2;156;231;201m →[0m user has write access
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.544 [0mshell_windows.go:DirIsWritable() - [38;2;156;231;201m592.2µs[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.544 [0mshell.go:TemplateCache() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.550 [0mshell.go:CommandPath:615[38;2;156;231;201m →[0m C:\Program Files\Git\cmd\git.exe
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.550 [0mshell.go:CommandPath(git.exe) - [38;2;156;231;201m6.999ms[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.550 [0mshell.go:HasCommand(git.exe) - [38;2;156;231;201m6.999ms[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.550 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;253;122;140m[ERROR] [38;2;156;231;201m07:00:47.550 [0mshell.go:HasParentFilePath:758[38;2;156;231;201m →[0m CreateFile .git: Das System kann die angegebene Datei nicht finden.
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.550 [0mshell.go:HasParentFilePath(.git) - [38;2;156;231;201m500.2µs[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.550 [0mproperties.go:GetBool:22[38;2;156;231;201m →[0m fetch_bare_info: false
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.550 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template:  {{ if gt .Code 0 }}{{ else }}{{ end }}
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.550 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: {{ .Icon }} {{ .HostName }} 
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template:   {{ .FormattedMs }} 
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template:   {{ .CurrentDate | date .Format }} 
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template:  <#000> </> {{ .Path }} 
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:TemplateCache() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:TemplateCache() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:TemplateCache() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:TemplateCache() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:TemplateCache() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mshell.go:Getenv:399[38;2;156;231;201m →[38;2;253;122;140m NO DATA
+[0m[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.551 [0mshell.go:Getenv(TERM_PROGRAM) - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: diamond
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: powerline
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: powerline
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: powerline
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: powerline
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: powerline
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.551 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: {{ if gt .Code 0 }}red{{ end }}
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:TemplateCache() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.552 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: diamond
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.552 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.552 [0msegment.go:SetEnabled:518[38;2;156;231;201m →[0m Segment: Text
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:TemplateCache() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Pwd() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.552 [0mshell_windows.go:56[38;2;156;231;201m →[0m C:\Users\tobia
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:GOOS() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.552 [0msegment.go:SetEnabled:518[38;2;156;231;201m →[0m Segment: Root
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell_windows.go:Root() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.552 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template:  <#45F1C2><b>⚡</b></><b>{{ .UserName }}s</b> <#26C6DA>❯</><#45F1C2>❯</>
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:TemplateCache() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.552 [0mshell.go:Getenv:399[38;2;156;231;201m →[38;2;253;122;140m NO DATA
+[0m[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Getenv(TERM_PROGRAM) - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.552 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: plain
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.552 [0mtext.go:Render:70[38;2;156;231;201m →[0m Rendering template: plain
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Shell() - [38;2;156;231;201m0s[0m
+[38;2;191;207;240m[DEBUG] [38;2;156;231;201m07:00:47.552 [0mshell.go:Getenv:399[38;2;156;231;201m →[0m C:\Users\tobia\AppData\Local
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Getenv(LOCALAPPDATA) - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell_windows.go:CachePath() - [38;2;156;231;201m0s[0m
+[38;2;204;137;214m[TRACE] [38;2;156;231;201m07:00:47.552 [0mshell.go:Flags() - [38;2;156;231;201m0s[0m
