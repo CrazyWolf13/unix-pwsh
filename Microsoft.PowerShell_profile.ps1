@@ -27,7 +27,7 @@ function gitpush {
     $CommitMessageString = $CommitMessage -join ' '
 
     git add .
-    git commit -m "$CommitMessageString"
+    git --% commit -m "$CommitMessageString"
     git push
 }
 
