@@ -192,4 +192,4 @@ function pgrep($name) {
 }
 
 # Invoke-WebRequest -URI 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json?token=GHSAT0AAAAAACMVU6LQOZQ4RFEBUYZXSW6YZOD7YWQ'
-# oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json?token=GHSAT0AAAAAACMVU6LQOZQ4RFEBUYZXSW6YZOD7YWQ' | Invoke-Expression
+oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
