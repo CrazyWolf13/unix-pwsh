@@ -102,7 +102,7 @@
         {
           "foreground": "#CD4277",
           "style": "plain",
-          "template": " <#45F1C2><b>\u26a1</b></><b>{{ .UserName }}s</b> <#26C6DA>\u276f</><#45F1C2>\u276f</>",
+          "template": " <#45F1C2><b>\u26a1</b></><b>{{ .UserName }}</b> <#26C6DA>\u276f</><#45F1C2>\u276f</>",
           "type": "text"
         }
       ],
