@@ -7,11 +7,7 @@
 
 # PowerShell Config
 ```
-$url = "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/Microsoft.PowerShell_profile.ps1?token=GHSAT0AAAAAACMVU6LRVMCJ2XAVAQSNS4JGZOD66OQ"
+iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/Microsoft.PowerShell_profile.ps1").Content
 
-$profileScript = Invoke-WebRequest -Uri $url | Select-Object -ExpandProperty Content
-
-# Execute the profile script
-Invoke-Expression $profileScript
 ```
 # OhMyPosh Config
