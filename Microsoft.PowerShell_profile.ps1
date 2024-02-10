@@ -188,3 +188,4 @@ function pgrep($name) {
 }
 
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
+Write-Host ""
