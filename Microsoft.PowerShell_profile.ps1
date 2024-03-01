@@ -187,4 +187,18 @@ function pgrep($name) {
     Get-Process $name
 }
 
+# Function to reboot the system
+function Reboot-System {
+    Restart-Computer -Force
+}
+
+# Function to power off the system
+function Poweroff-System {
+    Stop-Computer -Force
+}
+
+# Aliases for reboot and poweroff
+Set-Alias reboot Reboot-System
+Set-Alias poweroff Poweroff-System
+
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
