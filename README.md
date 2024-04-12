@@ -23,4 +23,5 @@ powershell -NoExit -Command "function cdtbz {cd 'C:\Users\MTO\OneDrive - Halter 
 
 # Windows Terminal Config Files
 
-Paste the Files inside [windows-terminal](./wt/) into the folder: `C:\Users\{user}\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState` .
+Paste the Files inside [windows-terminal](./wt/) into the folder: <br>
+`C:\Users\{user}\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState` .
