@@ -2,6 +2,7 @@
 - [Contents](#contents)
 - [Command to inject Profile](#command-to-inject-profile)
 - [Systems with Scripts Disabled](#on-systems-with-scripts-disabled)
+- [Windows Terminal Config Files](#windows-terminal-config-files)
 
 
 
@@ -19,3 +20,7 @@ powershell -NoExit -Command "function cdtbz {cd 'C:\Users\MTO\OneDrive - Halter 
  ; "oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression" 
 
 ```
+
+# Windows Terminal Config Files
+
+Paste the Files inside [windows-terminal](./wt/) into the folder: `C:\Users\{user}\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState` .
