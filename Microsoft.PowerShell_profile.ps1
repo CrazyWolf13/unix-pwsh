@@ -201,4 +201,9 @@ function Poweroff-System {
 Set-Alias reboot Reboot-System
 Set-Alias poweroff Poweroff-System
 
+function cdtbz {cd 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\TBZ'}
+function cdbmz {cd 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\BMZ'}
+function cdhalter {cd 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\Halter'}
+function cdprojekte {cd 'G:\Informatik\Projekte'}
+
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
