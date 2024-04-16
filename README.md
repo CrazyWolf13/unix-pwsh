@@ -3,7 +3,7 @@
 - [Command to inject Profile](#command-to-inject-profile)
 - [Systems with Scripts Disabled](#on-systems-with-scripts-disabled)
 - [Windows Terminal Config Files](#windows-terminal-config-files)
-- [Terminal-Icons](#terminal-icons)
+- [Terminal-Icons](#terminal---icons)
 
 
 
