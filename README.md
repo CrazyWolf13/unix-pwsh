@@ -25,11 +25,11 @@ powershell -NoExit -Command "function cdtbz {cd 'C:\Users\MTO\OneDrive - Halter 
 
 ```
 
-#Terminal Icons
+# Terminal Icons
 To get Terminal-Icons working use the following Command:
 `install-module terminal-icons`
 
-#Command not found
+# Command not found
 Install "Command not found" though PowerToys.
 
 # Windows Terminal Config Files
