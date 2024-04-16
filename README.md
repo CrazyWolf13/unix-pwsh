@@ -3,6 +3,7 @@
 - [Command to inject Profile](#command-to-inject-profile)
 - [Systems with Scripts Disabled](#on-systems-with-scripts-disabled)
 - [Windows Terminal Config Files](#windows-terminal-config-files)
+- [Terminal-Icons](#terminal-icons)
 
 
 
@@ -11,6 +12,8 @@
 iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/Microsoft.PowerShell_profile.ps1").Content
 
 ```
+Open the $PROFILE with `code $profile`.
+
 # On Systems with Scripts disabled
 
 Add the folllowing Code into Windows Terminal Command Line field of a new profile:
@@ -20,6 +23,9 @@ powershell -NoExit -Command "function cdtbz {cd 'C:\Users\MTO\OneDrive - Halter 
  ; "oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression" 
 
 ```
+#Terminal-Icons
+To get Terminal-Icons working use the following Command:
+`install-module terminal-icons`
 
 # Windows Terminal Config Files
 
