@@ -2,8 +2,9 @@
 - [Contents](#contents)
 - [Command to inject Profile](#command-to-inject-profile)
 - [Systems with Scripts Disabled](#on-systems-with-scripts-disabled)
+- [Terminal-Icons](#terminal-icons)
+- [CommandNotFound](#command-not-found)
 - [Windows Terminal Config Files](#windows-terminal-config-files)
-- [Terminal-Icons](#terminal---icons)
 
 
 
@@ -23,9 +24,13 @@ powershell -NoExit -Command "function cdtbz {cd 'C:\Users\MTO\OneDrive - Halter 
  ; "oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression" 
 
 ```
-#Terminal-Icons
+
+#Terminal Icons
 To get Terminal-Icons working use the following Command:
 `install-module terminal-icons`
+
+#Command not found
+Install "Command not found" though PowerToys.
 
 # Windows Terminal Config Files
 
