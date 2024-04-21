@@ -26,7 +26,10 @@ function gitpush {
 
 function ssh-copy-key {
     param(
+        [parameter(Position=0)]
         [string]$user,
+
+        [parameter(Position=1)]
         [string]$ip
     )
 
@@ -34,7 +37,6 @@ function ssh-copy-key {
     $sshCommand = "cat $pubKeyPath | ssh $user@$ip 'cat >> ~/.ssh/authorized_keys'"
     Invoke-Expression $sshCommand
 }
-
 
 
 # Find out if the current user identity is elevated (has admin rights)
