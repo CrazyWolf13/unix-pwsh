@@ -24,6 +24,16 @@ function gitpush {
     git push
 }
 
+function ssh-copy-key {
+    param(
+        [string]$user,
+        [string]$ip
+    )
+
+    $pubKeyPath = "~\.ssh\id_ed25519.pub"
+    $sshCommand = "cat $pubKeyPath | ssh $user@$ip 'cat >> ~/.ssh/authorized_keys'"
+    Invoke-Expression $sshCommand
+}
 
 
 
