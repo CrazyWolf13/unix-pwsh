@@ -213,6 +213,52 @@
                 "hidden": true,
                 "name": "Visual Studio Debug Console",
                 "source": "VSDebugConsole"
+            },
+            {
+                "altGrAliasing": true,
+                "antialiasingMode": "grayscale",
+                "closeOnExit": "automatic",
+                "colorScheme": "Campbell",
+                "commandline": "%SystemRoot%\\System32\\cmd.exe /c ssh root_docker@10.10.20.7",
+                "cursorShape": "bar",
+                "elevate": false,
+                "font": 
+                {
+                    "face": "Cascadia Mono",
+                    "size": 12.0
+                },
+                "guid": "{d5426fbd-0fb2-4e37-a57a-e4863f845b0e}",
+                "hidden": false,
+                "historySize": 9001,
+                "icon": "C:\\Users\\tobia\\Pictures\\Batchs\\docker.png",
+                "name": "root_docker",
+                "padding": "8, 8, 8, 8",
+                "snapOnInput": true,
+                "startingDirectory": "%USERPROFILE%",
+                "useAcrylic": false
+            },
+            {
+                "altGrAliasing": true,
+                "antialiasingMode": "grayscale",
+                "closeOnExit": "automatic",
+                "colorScheme": "Campbell",
+                "commandline": "%SystemRoot%\\System32\\cmd.exe /c ssh root@10.50.20.10",
+                "cursorShape": "bar",
+                "elevate": false,
+                "font": 
+                {
+                    "face": "Cascadia Mono",
+                    "size": 12.0
+                },
+                "guid": "{7cd1fcb7-46a3-498e-98c7-7a93c17f0fdc}",
+                "hidden": false,
+                "historySize": 9001,
+                "icon": "C:\\Users\\tobia\\Pictures\\Batchs\\proxmox_2.png",
+                "name": "lenovo1",
+                "padding": "8, 8, 8, 8",
+                "snapOnInput": true,
+                "startingDirectory": "%USERPROFILE%",
+                "useAcrylic": false
             }
         ]
     },
