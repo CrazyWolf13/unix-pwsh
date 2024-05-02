@@ -79,30 +79,7 @@
                 "antialiasingMode": "grayscale",
                 "closeOnExit": "automatic",
                 "colorScheme": "Campbell",
-                "commandline": "%SystemRoot%\\System32\\cmd.exe",
-                "cursorShape": "bar",
-                "elevate": true,
-                "font": 
-                {
-                    "face": "Cascadia Mono",
-                    "size": 12.0
-                },
-                "guid": "{c17d9dee-b03d-4d0c-9ad7-b3e016922e72}",
-                "hidden": false,
-                "historySize": 9001,
-                "icon": "ms-appx:///ProfileIcons/{0caa0dad-35be-5f56-a8ff-afceeeaa6101}.png",
-                "name": "CMD Admin",
-                "padding": "8, 8, 8, 8",
-                "snapOnInput": true,
-                "startingDirectory": "%USERPROFILE%",
-                "useAcrylic": false
-            },
-            {
-                "altGrAliasing": true,
-                "antialiasingMode": "grayscale",
-                "closeOnExit": "automatic",
-                "colorScheme": "Campbell",
-                "commandline": "%SystemRoot%\\System32\\cmd.exe /c ssh pi@192.168.1.111",
+                "commandline": "C:\\Program Files\\PowerShell\\7\\pwsh.exe -c ssh pi@192.168.1.111",
                 "cursorShape": "bar",
                 "elevate": false,
                 "font": 
@@ -137,7 +114,7 @@
                 "antialiasingMode": "grayscale",
                 "closeOnExit": "automatic",
                 "colorScheme": "Campbell",
-                "commandline": "%SystemRoot%\\System32\\cmd.exe /c ssh -p 28437 tobias@10.50.20.1",
+                "commandline": "C:\\Program Files\\PowerShell\\7\\pwsh.exe -c ssh -p 28437 tobias@10.50.20.1",
                 "cursorShape": "bar",
                 "elevate": false,
                 "font": 
@@ -219,7 +196,7 @@
                 "antialiasingMode": "grayscale",
                 "closeOnExit": "automatic",
                 "colorScheme": "Campbell",
-                "commandline": "%SystemRoot%\\System32\\cmd.exe /c ssh root_docker@10.10.20.7",
+                "commandline": "C:\\Program Files\\PowerShell\\7\\pwsh.exe -c ssh root_docker@10.10.20.7",
                 "cursorShape": "bar",
                 "elevate": false,
                 "font": 
@@ -242,7 +219,7 @@
                 "antialiasingMode": "grayscale",
                 "closeOnExit": "automatic",
                 "colorScheme": "Campbell",
-                "commandline": "%SystemRoot%\\System32\\cmd.exe /c ssh root@10.50.20.10",
+                "commandline": "C:\\Program Files\\PowerShell\\7\\pwsh.exe -c ssh root@10.50.20.10",
                 "cursorShape": "bar",
                 "elevate": false,
                 "font": 
@@ -255,6 +232,29 @@
                 "historySize": 9001,
                 "icon": "C:\\Users\\tobia\\Pictures\\Batchs\\proxmox_2.png",
                 "name": "lenovo1",
+                "padding": "8, 8, 8, 8",
+                "snapOnInput": true,
+                "startingDirectory": "%USERPROFILE%",
+                "useAcrylic": false
+            },
+            {
+                "altGrAliasing": true,
+                "antialiasingMode": "grayscale",
+                "closeOnExit": "automatic",
+                "colorScheme": "Campbell",
+                "commandline": "C:\\Program Files\\PowerShell\\7\\pwsh.exe -c ssh tobias@10.10.20.8",
+                "cursorShape": "bar",
+                "elevate": false,
+                "font": 
+                {
+                    "face": "Cascadia Mono",
+                    "size": 12.0
+                },
+                "guid": "{67b5f425-7689-4048-9219-c4e231d90f20}",
+                "hidden": false,
+                "historySize": 9001,
+                "icon": "C:\\Users\\tobia\\Pictures\\Batchs\\omv.png",
+                "name": "OMV",
                 "padding": "8, 8, 8, 8",
                 "snapOnInput": true,
                 "startingDirectory": "%USERPROFILE%",
