@@ -10,17 +10,55 @@ Write-Host "Welcome Tobias ⚡" -ForegroundColor DarkCyan
 Write-Host ""
 
 
-# Black, Blue, Cyan, DarkBlue, DarkCyan, DarkGray, DarkGreen, DarkMagenta, DarkRed, DarkYellow, Gray, Green, Magenta, Red, White, Yellow.
+#All Colors: Black, Blue, Cyan, DarkBlue, DarkCyan, DarkGray, DarkGreen, DarkMagenta, DarkRed, DarkYellow, Gray, Green, Magenta, Red, White, Yellow.
 
+# Initial GitHub.com connectivity check with 1 second timeout
+$canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
+
+# Import Modules and External Profiles
+# Ensure Terminal-Icons module is installed before importing
+if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
+    Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
+}
+Import-Module -Name Terminal-Icons
+
+
+function Update-PowerShell {
+    if (-not $global:canConnectToGitHub) {
+        Write-Host "Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
+        return
+    }
+    Write-Host "Checking for PowerShell updates..." -ForegroundColor Cyan
+
+    try {
+        Write-Host "Checking for PowerShell updates..." -ForegroundColor Cyan
+        $updateNeeded = $false
+        $currentVersion = $PSVersionTable.PSVersion.ToString()
+        $gitHubApiUrl = "https://api.github.com/repos/PowerShell/PowerShell/releases/latest"
+        $latestReleaseInfo = Invoke-RestMethod -Uri $gitHubApiUrl
+        $latestVersion = $latestReleaseInfo.tag_name.Trim('v')
+        Write-Host "Checking..."
+        if ($currentVersion -lt $latestVersion) {
+            $updateNeeded = $true
+        }
+
+        if ($updateNeeded) {
+            Write-Host "Updating PowerShell..." -ForegroundColor Yellow
+            winget upgrade "Microsoft.PowerShell" --accept-source-agreements --accept-package-agreements
+            Write-Host "PowerShell has been updated. Please restart your shell to reflect changes" -ForegroundColor Magenta
+        } else {
+            Write-Host "Your PowerShell is up to date." -ForegroundColor Green
+        }
+    } catch {
+        Write-Error "Failed to update PowerShell. Error: $_"
+    }
+}
+Update-PowerShell
 
 function gitpush {
-    param(
-        [string]$commitMessage
-    )
-
     git pull
     git add .
-    git commit -m "$commitMessage"
+    git commit -m "$args"
     git push
 }
 
@@ -38,11 +76,82 @@ function ssh-copy-key {
     Invoke-Expression $sshCommand
 }
 
+function grep($regex, $dir) {
+    if ( $dir ) {
+        Get-ChildItem $dir | select-string $regex
+        return
+    }
+    $input | select-string $regex
+}
 
-# Find out if the current user identity is elevated (has admin rights)
-$identity = [Security.Principal.WindowsIdentity]::GetCurrent()
-$principal = New-Object Security.Principal.WindowsPrincipal $identity
-$isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+function df {
+    get-volume
+}
+
+function sed($file, $find, $replace) {
+    (Get-Content $file).replace("$find", $replace) | Set-Content $file
+}
+
+function which($name) {
+    Get-Command $name | Select-Object -ExpandProperty Definition
+}
+
+function export($name, $value) {
+    set-item -force -path "env:$name" -value $value;
+}
+
+function pkill($name) {
+    Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
+}
+
+function pgrep($name) {
+    Get-Process $name
+}
+
+function head {
+  param($Path, $n = 10)
+  Get-Content $Path -Head $n
+}
+
+function tail {
+  param($Path, $n = 10)
+  Get-Content $Path -Tail $n
+}
+
+
+function waste {
+    if ($args.Count -eq 0) {
+        Write-Error "No file path specified."
+        return
+    }
+
+    $FilePath = $args[0]
+
+    if (Test-Path $FilePath) {
+        $Content = Get-Content $FilePath -Raw
+    } else {
+        Write-Error "File path does not exist."
+        return
+    }
+
+    $uri = "http://bin.crazywolf.dev"
+    try {
+        $response = Invoke-RestMethod -Uri $uri -Method Post -Body @{text=$Content} -ErrorAction Stop
+        $url = "http://bin.crazywolf.dev/$($response.key)"
+        Write-Output $url
+    } catch {
+        Write-Error "Failed to upload the document. Error: $_"
+    }
+}
+
+# Admin Check and Prompt Customization
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+function prompt {
+    if ($isAdmin) { "[" + (Get-Location) + "] # " } else { "[" + (Get-Location) + "] $ " }
+}
+$adminSuffix = if ($isAdmin) { " [ADMIN]" } else { "" }
+$Host.UI.RawUI.WindowTitle = "PowerShell {0}$adminSuffix" -f $PSVersionTable.PSVersion.ToString()
+
 
 # If so and the current host is a command line, then change to red color 
 # as warning to user that they are operating in an elevated context
@@ -142,9 +251,18 @@ Set-Alias -Name vim -Value $EDITOR
 
 function ll { Get-ChildItem -Path $pwd -File }
 
-function Get-PubIP {
-    (Invoke-WebRequest http://ifconfig.me/ip ).Content
+# Network Utilities
+function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip).Content }
+
+# System Utilities
+function uptime {
+    if ($PSVersionTable.PSVersion.Major -eq 5) {
+        Get-WmiObject win32_operatingsystem | Select-Object @{Name='LastBootUpTime'; Expression={$_.ConverttoDateTime($_.lastbootuptime)}} | Format-Table -HideTableHeaders
+    } else {
+        net statistics workstation | Select-String "since" | ForEach-Object { $_.ToString().Replace('Statistics since ', '') }
+    }
 }
+
 
 
 function unzip ($file) {
@@ -172,32 +290,6 @@ function sync-profile {
     }
 }
 Set-Alias -Name reload -Value sync-profile
-
-function grep($regex, $dir) {
-    if ( $dir ) {
-        Get-ChildItem $dir | select-string $regex
-        return
-    }
-    $input | select-string $regex
-}
-function touch($file) {
-    "" | Out-File $file -Encoding ASCII
-}
-function lsblk {
-    get-volume
-}
-function sed($file, $find, $replace) {
-    (Get-Content $file).replace("$find", $replace) | Set-Content $file
-}
-function which($name) {
-    Get-Command $name | Select-Object -ExpandProperty Definition
-}
-function pkill($name) {
-    Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
-}
-function pgrep($name) {
-    Get-Process $name
-}
 
 # Function to reboot the system
 function Reboot-System {
