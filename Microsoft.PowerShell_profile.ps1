@@ -28,16 +28,12 @@ function Update-PowerShell {
         Write-Host "Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
         return
     }
-    Write-Host "Checking for PowerShell updates..." -ForegroundColor Cyan
-
     try {
-        Write-Host "Checking for PowerShell updates..." -ForegroundColor Cyan
         $updateNeeded = $false
         $currentVersion = $PSVersionTable.PSVersion.ToString()
         $gitHubApiUrl = "https://api.github.com/repos/PowerShell/PowerShell/releases/latest"
         $latestReleaseInfo = Invoke-RestMethod -Uri $gitHubApiUrl
         $latestVersion = $latestReleaseInfo.tag_name.Trim('v')
-        Write-Host "Checking..."
         if ($currentVersion -lt $latestVersion) {
             $updateNeeded = $true
         }
@@ -220,11 +216,6 @@ function Edit-Profile {
         code $profile
     }
 }
-
-# We don't need these any more; they were just temporary variables to get to $isAdmin. 
-# Delete them to prevent cluttering up the user profile. 
-Remove-Variable identity
-Remove-Variable principal
 
 Function Test-CommandExists {
     Param ($command)
