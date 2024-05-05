@@ -105,38 +105,102 @@ function pgrep($name) {
 }
 
 function head {
-  param($Path, $n = 10)
-  Get-Content $Path -Head $n
+    param($Path, $n = 10)
+    Get-Content $Path -Head $n
 }
 
 function tail {
-  param($Path, $n = 10)
-  Get-Content $Path -Tail $n
+    param($Path, $n = 10)
+    Get-Content $Path -Tail $n
 }
 
 
-function waste {
-    if ($args.Count -eq 0) {
-        Write-Error "No file path specified."
-        return
+$WastebinServerUrl = "https://bin.crazywolf.dev"
+$DefaultExpirationTime = 3600  # Default expiration time: 1 hour (in seconds)
+$DefaultBurnAfterReading = $false  # Default value for burn after reading setting
+
+function ptw {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position=0)]
+        [string]$FilePath,
+        
+        [Parameter(Position=1)]
+        [int]$ExpirationTime = $DefaultExpirationTime,
+        
+        [Parameter(Position=2)]
+        [bool]$BurnAfterReading = $DefaultBurnAfterReading
+    )
+
+    process {
+        if (-not $FilePath) {
+            Write-Host "File path not provided."
+            return
+        }
+        
+        if (-not (Test-Path $FilePath)) {
+            Write-Host "File '$FilePath' not found."
+            return
+        }
+
+        try {
+            $FileContent = Get-Content -Path $FilePath -Raw
+            
+            $Payload = @{
+                text = $FileContent
+                extension = $null
+                expires = $ExpirationTime
+                burn_after_reading = $BurnAfterReading
+            } | ConvertTo-Json
+
+            $Response = Invoke-RestMethod -Uri $WastebinServerUrl -Method Post -Body $Payload -ContentType 'application/json'
+            $Path = $Response.path -replace '\.\w+$'
+
+            Write-Host ""
+            Write-Host "$WastebinServerUrl$Path"
+        }
+        catch {
+            Write-Host "Error occurred: $_"
+        }
+    }
+}
+
+
+function pptw {
+    param (
+        [Parameter(ValueFromPipeline=$true)]
+        [string]$InputContent,
+        [int]$ExpirationTime = $DefaultExpirationTime,
+        [bool]$BurnAfterReading = $DefaultBurnAfterReading
+    )
+    begin {
+        $AllInputContent = @()  # Array to store all lines of input
+    }
+    process {
+        $AllInputContent += $InputContent  # Add each line to the array
     }
 
-    $FilePath = $args[0]
+    end {
+        try {
+            # Concatenate all lines into a single string
+            $CombinedInput = $AllInputContent -join "`r`n"
 
-    if (Test-Path $FilePath) {
-        $Content = Get-Content $FilePath -Raw
-    } else {
-        Write-Error "File path does not exist."
-        return
-    }
+            $Payload = @{
+                text = $CombinedInput
+                extension = $null
+                expires = $ExpirationTime
+                burn_after_reading = $BurnAfterReading
+            } | ConvertTo-Json
 
-    $uri = "http://bin.crazywolf.dev"
-    try {
-        $response = Invoke-RestMethod -Uri $uri -Method Post -Body @{text=$Content} -ErrorAction Stop
-        $url = "http://bin.crazywolf.dev/$($response.key)"
-        Write-Output $url
-    } catch {
-        Write-Error "Failed to upload the document. Error: $_"
+            $Response = Invoke-RestMethod -Uri $WastebinServerUrl -Method Post -Body $Payload -ContentType 'application/json'
+            $Path = $Response.path -replace '\.\w+$'
+
+            Write-Host ""
+            Write-Host "$WastebinServerUrl$Path"
+        }
+        catch {
+            Write-Host "Error occurred: $_"
+        }
     }
 }
 
@@ -233,9 +297,9 @@ Function Test-CommandExists {
 if (Test-CommandExists code) {
     $EDITOR='code'
 }  elseif (Test-CommandExists notepad) {
-    $EDITOR='notepad'
-} elseif (Test-CommandExists notepad++) {
     $EDITOR='notepad++'
+} elseif (Test-CommandExists notepad++) {
+    $EDITOR='notepad'
 } 
 Set-Alias -Name vim -Value $EDITOR
 
@@ -297,16 +361,16 @@ Set-Alias reboot Reboot-System
 Set-Alias poweroff Poweroff-System
 
 function cdtbz {
-    cd 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\TBZ'
+    Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\TBZ'
 }
 function cdbmz {
-    cd 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\BMZ'
+    Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\BMZ'
 }
 function cdhalter {
-    cd 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\Halter'
+    Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\Halter'
 }
 function cdgit {
-    cd 'G:\Informatik\Projekte'
+    Set-Location 'G:\Informatik\Projekte'
 }
 
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
