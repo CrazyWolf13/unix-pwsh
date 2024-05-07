@@ -263,16 +263,6 @@ function admin {
 Set-Alias -Name su -Value admin
 Set-Alias -Name sudo -Value admin
 
-
-# Make it easy to edit this profile once it's installed
-function Edit-Profile {
-    if ($host.Name -match "ise") {
-        $psISE.CurrentPowerShellTab.Files.Add($profile.CurrentUserAllHosts)
-    } else {
-        code $profile
-    }
-}
-
 Function Test-CommandExists {
     Param ($command)
     $oldPreference = $ErrorActionPreference
