@@ -259,6 +259,29 @@
                 "snapOnInput": true,
                 "startingDirectory": "%USERPROFILE%",
                 "useAcrylic": false
+            },
+            {
+                "altGrAliasing": true,
+                "antialiasingMode": "grayscale",
+                "closeOnExit": "automatic",
+                "colorScheme": "Campbell",
+                "commandline": "C:\\Program Files\\PowerShell\\7\\pwsh.exe -c ssh tobias@192.168.1.52",
+                "cursorShape": "bar",
+                "elevate": false,
+                "font": 
+                {
+                    "face": "Cascadia Mono",
+                    "size": 12.0
+                },
+                "guid": "{360353cd-45c7-46ee-8535-80a3041f2b3c}",
+                "hidden": false,
+                "historySize": 9001,
+                "icon": "C:\\Users\\tobia\\Pictures\\Batchs\\opnsense.jpg",
+                "name": "opnsense",
+                "padding": "8, 8, 8, 8",
+                "snapOnInput": true,
+                "startingDirectory": "%USERPROFILE%",
+                "useAcrylic": false
             }
         ]
     },
