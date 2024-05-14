@@ -344,8 +344,9 @@ function cdgit {
 # --------------------------------------
 # School
 
-Set-Alias -Name ssh-m122 -Value 'ssh -i ~\.ssh\06-student.pem -o ServerAliveInterval=30 ubuntu@52.3.134.38'
-
+function ssh-m122 {
+    ssh -i ~\.ssh\06-student.pem -o ServerAliveInterval=30 ubuntu@52.3.134.38
+}
 function cdtbz {
     Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\TBZ'
 }
