@@ -337,6 +337,15 @@ function Poweroff-System {
 Set-Alias reboot Reboot-System
 Set-Alias poweroff Poweroff-System
 
+function cdgit {
+    Set-Location 'G:\Informatik\Projekte'
+}
+
+# --------------------------------------
+# School
+
+Set-Alias -Name ssh-m122 -Value 'ssh -i ~\.ssh\06-student.pem -o ServerAliveInterval=30 ubuntu@52.3.134.38'
+
 function cdtbz {
     Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\TBZ'
 }
@@ -346,8 +355,6 @@ function cdbmz {
 function cdhalter {
     Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\Halter'
 }
-function cdgit {
-    Set-Location 'G:\Informatik\Projekte'
-}
+
 
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
