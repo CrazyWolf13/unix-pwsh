@@ -1,7 +1,10 @@
 
 #34de4b3d-13a8-4540-b76d-b9e8d3851756 PowerToys CommandNotFound module
 
-
+Import-Module "C:\Users\tobia\AppData\Local\PowerToys\WinUI3Apps\..\WinGetCommandNotFound.psd1" > $null 2>&1
+if (-not $?) {
+    Write-Host "Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow
+}
 
 #34de4b3d-13a8-4540-b76d-b9e8d3851756
 Import-Module -Name Terminal-Icons
