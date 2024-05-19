@@ -110,29 +110,6 @@
                 "source": "Windows.Terminal.Wsl"
             },
             {
-                "altGrAliasing": true,
-                "antialiasingMode": "grayscale",
-                "closeOnExit": "automatic",
-                "colorScheme": "Campbell",
-                "commandline": "C:\\Program Files\\PowerShell\\7\\pwsh.exe -c ssh -p 28437 tobias@10.50.20.1",
-                "cursorShape": "bar",
-                "elevate": false,
-                "font": 
-                {
-                    "face": "Cascadia Mono",
-                    "size": 12.0
-                },
-                "guid": "{a3af12ad-d7b4-41b6-a467-72c491ed4d65}",
-                "hidden": false,
-                "historySize": 9001,
-                "icon": "C:\\Users\\tobia\\Pictures\\Batchs\\pfsense.png",
-                "name": "pfsense",
-                "padding": "8, 8, 8, 8",
-                "snapOnInput": true,
-                "startingDirectory": "%USERPROFILE%",
-                "useAcrylic": false
-            },
-            {
                 "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
                 "hidden": false,
                 "name": "PowerShell 7",
