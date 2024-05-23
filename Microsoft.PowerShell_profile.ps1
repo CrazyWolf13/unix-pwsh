@@ -18,10 +18,24 @@ $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds
 
 # Import Modules and External Profiles
 # Ensure Terminal-Icons module is installed before importing
-if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
-    Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
+# if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
+#     Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
+# }
+# Import-Module -Name Terminal-Icons
+
+# Check if script execution is allowed before loading Terminal-Icons module
+$executionPolicy = Get-ExecutionPolicy
+if ($executionPolicy -ne 'Restricted') {
+    # Ensure Terminal-Icons module is installed before importing
+    if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
+        Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
+    }
+    Import-Module -Name Terminal-Icons
+} else {
+    Write-Host "Script execution is restricted. Skipping the loading of Terminal-Icons module." -ForegroundColor Yellow
 }
-Import-Module -Name Terminal-Icons
+
+
 
 
 function Update-PowerShell {
