@@ -16,7 +16,7 @@ function Initialize-Modules {
     }
     # Check for internet access
     if (-not $global:canConnectToGitHub) {
-        Write-Host "Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
+        Write-Host "Skipping Module Initialization check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
         return
     }
     try {
@@ -35,16 +35,32 @@ function Initialize-Modules {
             }
             Import-Module -Name PoshFunctions
 
-            # Fetch and display FiraCode fonts
-            Get-Font *FiraCode*
+            $firaCodeFonts = Get-Font *FiraCode*
+            if ($firaCodeFonts) {
+                Write-Host "FiraCode fonts are installed:" -ForegroundColor Green
+                $firaCodeFonts | ForEach-Object { Write-Host $_.Name }
+            } else {
+                Write-Host "No FiraCode fonts are installed." -ForegroundColor Red
+                $installNerdFonts = Read-Host "Do you want to install NerdFonts? (Y/N)"
+                if ($installNerdFonts -eq 'Y' -or $installNerdFonts -eq 'y') {
+                    Install-NerdFonts
+            } else {
+                Write-Host "NerdFonts installation skipped." -ForegroundColor Yellow
+            }
         } else {
-        Write-Host "Script execution is restricted. Skipping the loading of Terminal-Icons and PoshFunctions modules." -ForegroundColor Yellow
+        Write-Host "Script execution is restricted. Skipping the Initialization of pwsh modules." -ForegroundColor Yellow
         }
     } catch {
         Write-Error "Failed to import Powershell Modules $_"
    }     
 }
 Initialize-Modules
+
+
+function Install-NerdFonts {
+    Write-Host "Installing Nerd-Fonts"
+}
+
 
 function Update-PowerShell {
     if (-not $global:canConnectToGitHub) {
