@@ -11,7 +11,7 @@ $configPath = "$HOME\pwsh_custom_config.yml"
 
 function Initialize-DevEnv {
     if (-not $global:canConnectToGitHub) {
-        Write-Host "Skipping Dev Environment Initialization due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
+        Write-Host "❌ Skipping Dev Environment Initialization due to GitHub.com not responding within 1 second." -ForegroundColor Red
         return
     }
     if ($FiraCode_installed_value -ne "True") { Search-InstallFiraCodeFont }
@@ -24,7 +24,7 @@ function Initialize-DevEnv {
     Test-Applications
     if ($vscode_installed_value -ne "True") { Test-Applications }
     if ($ohmyposh_installed_value -ne "True") { Test-Applications }
-    Write-Host "Successfully initialized Pwsh with all Modules and applications! ✅" -ForegroundColor Green
+    Write-Host "✅Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
 }
 
 # Function to create config file
@@ -34,7 +34,7 @@ function Install-Config {
         Write-Host "Configuration file created at $configPath ❗" -ForegroundColor Yellow
         Initialize-DevEnv
     } else {
-        Write-Host "Successfully loaded Config file ✅" -ForegroundColor Green
+        Write-Host "✅ Successfully loaded Config file" -ForegroundColor Green
         Initialize-DevEnv
     }
 }
@@ -114,7 +114,7 @@ function Install-FiraCode {
         # Find the specific font file
         $fontFile = Get-ChildItem -Path $extractPath -Filter $fontFileName | Select-Object -First 1
         if (-not $fontFile) {
-            throw "Font file '$fontFileName' not found in the extracted files."
+            throw "❌ Font file '$fontFileName' not found in the extracted files."
         }
 
         # Copy the font file to the Windows Fonts directory
@@ -124,7 +124,7 @@ function Install-FiraCode {
         Write-Host "FiraCode Nerd Font installed successfully!" -ForegroundColor Green
         Write-Host "Make sure to set the font as default in your terminal settings." -ForegroundColor Red
     } catch {
-        Write-Host "An error occurred: $_" -ForegroundColor Red
+        Write-Host "❌ An error occurred: $_" -ForegroundColor Red
     } finally {
         # Clean up
         Write-Host "Cleaning up temporary files..." -ForegroundColor Green
@@ -138,12 +138,12 @@ function Search-InstallFiraCodeFont {
     if ($firaCodeFonts) {
         Set-ConfigValue -Key "FiraCode_installed" -Value "True"
     } else {
-        Write-Host "No Nerd-Fonts are installed." -ForegroundColor Red
+        Write-Host "❌ No Nerd-Fonts are installed." -ForegroundColor Red
         $installNerdFonts = Read-Host "Do you want to install FiraCode NerdFont? (Y/N)"
         if ($installNerdFonts -eq 'Y' -or $installNerdFonts -eq 'y') {
             Install-FiraCode
         } else {
-            Write-Host "NerdFonts installation skipped." -ForegroundColor Yellow
+            Write-Host "❌ NerdFonts installation skipped." -ForegroundColor Yellow
             Set-ConfigValue -Key "FiraCode_installed" -Value "False"
         }
     }
@@ -155,7 +155,7 @@ function Initialize-Modules {
         Write-Host "Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow
     }
     if (-not $global:canConnectToGitHub) {
-        Write-Host "Skipping Module Initialization check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
+        Write-Host "❌ Skipping Module Initialization check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
         return
     }
     try {
@@ -169,10 +169,10 @@ function Initialize-Modules {
                 Set-ConfigValue -Key "${module}_installed" -Value "True"
             }
         } else {
-            Write-Host "Script execution is restricted. Skipping the Initialization of pwsh modules." -ForegroundColor Yellow
+            Write-Host "❌ Script execution is restricted. Skipping the Initialization of pwsh modules." -ForegroundColor Yellow
         }
     } catch {
-        Write-Error "Failed to import PowerShell Modules: $_"
+        Write-Error "❌ Failed to import PowerShell Modules: $_"
     }
 }
 
@@ -184,7 +184,7 @@ function Test-Applications {
         if ($installVSCode -eq 'Y' -or $installVSCode -eq 'y') {
             winget install Microsoft.VisualStudioCode --accept-package-agreements --accept-source-agreements
         } else {
-            Write-Host "Visual Studio Code installation skipped." -ForegroundColor Yellow
+            Write-Host "❌ Visual Studio Code installation skipped." -ForegroundColor Yellow
         }
     }    
     if (Test-CommandExists oh-my-posh) {
@@ -194,7 +194,7 @@ function Test-Applications {
         if ($installOhMyPosh -eq 'Y' -or $installOhMyPosh -eq 'y') {
             winget install JanDeDobbeleer.OhMyPosh --accept-package-agreements --accept-source-agreements
         } else {
-            Write-Host "Oh-My-Posh installation skipped." -ForegroundColor Yellow
+            Write-Host "❌ Oh-My-Posh installation skipped." -ForegroundColor Yellow
         }
     } 
 }
@@ -210,7 +210,7 @@ function Initialize-Keys{
 
 function Update-PowerShell {
     if (-not $global:canConnectToGitHub) {
-        Write-Host "Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
+        Write-Host "❌ Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
         return
     }
     try {
@@ -231,7 +231,7 @@ function Update-PowerShell {
             Write-Host "Your PowerShell is up to date." -ForegroundColor Green
         }
     } catch {
-        Write-Error "Failed to update PowerShell. Error: $_"
+        Write-Error "❌ Failed to update PowerShell. Error: $_"
     }
 }
 Update-PowerShell
