@@ -40,10 +40,10 @@ function Initialize-Modules {
                 Write-Host "FiraCode fonts are installed:" -ForegroundColor Green
                 $firaCodeFonts | ForEach-Object { Write-Host $_.Name }
             } else {
-                Write-Host "No FiraCode fonts are installed." -ForegroundColor Red
-                $installNerdFonts = Read-Host "Do you want to install NerdFonts? (Y/N)"
+                Write-Host "No Nerd-Fonts are installed." -ForegroundColor Red
+                $installNerdFonts = Read-Host "Do you want to install FiraCode NerdFont? (Y/N)"
                 if ($installNerdFonts -eq 'Y' -or $installNerdFonts -eq 'y') {
-                    Install-NerdFonts
+                    Install-FiraCode
                 } else {
                     Write-Host "NerdFonts installation skipped." -ForegroundColor Yellow
                 }
@@ -55,11 +55,10 @@ function Initialize-Modules {
         Write-Error "Failed to import PowerShell Modules: $_"
     }
 }
-
 Initialize-Modules
 
 
-function Install-NerdFonts {
+function Install-FiraCode {
     Write-Host "Installing Nerd-Fonts"
 }
 
