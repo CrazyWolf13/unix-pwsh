@@ -10,6 +10,7 @@ $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds
 $configPath = "$HOME\pwsh_custom_config.yml"
 # Function to create config file
 function Install-Config {
+    $configPath = "$HOME\pwsh_custom_config.yml"
     if (-not (Test-Path -Path $configPath)) {
         New-Item -ItemType File -Path $configPath | Out-Null
         Write-Host "Configuration file created at $configPath" -ForegroundColor Yellow
@@ -20,6 +21,7 @@ function Install-Config {
 
 # Function to set a value in the config file
 function Set-ConfigValue {
+    $configPath = "$HOME\pwsh_custom_config.yml"
     param (
         [string]$Key,
         [string]$Value
@@ -39,6 +41,7 @@ function Set-ConfigValue {
 
 # Function to get a value from the config file
 function Get-ConfigValue {
+    $configPath = "$HOME\pwsh_custom_config.yml"
     param (
         [string]$Key
     )
