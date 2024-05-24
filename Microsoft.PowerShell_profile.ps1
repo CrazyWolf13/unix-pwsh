@@ -10,6 +10,10 @@ $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds
 $configPath = "$HOME\pwsh_custom_config.yml"
 
 function Initialize-DevEnv {
+    if (-not $global:canConnectToGitHub) {
+        Write-Host "Skipping Dev Environment Initialization due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
+        return
+    }
     if ($FiraCode_installed_value -ne "True") { Search-InstallFiraCodeFont }
     if ($TerminalIcons_installed_value -ne "True") { Initialize-Modules }
     Import-Module -Name Terminal-Icons
@@ -20,7 +24,7 @@ function Initialize-DevEnv {
     Test-Applications
     if ($VScode_installed_value -ne "True") { Test-Applications }
     if ($OhMyPosh_installed_value -ne "True") { Test-Applications }
-    
+    Write-Host "Successfully initialized Pwsh with all Modules and applications! ✅" -ForegroundColor Green
 }
 
 # Function to create config file
