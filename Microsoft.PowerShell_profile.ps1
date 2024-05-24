@@ -191,7 +191,8 @@ function Test-Applications {
     }
     Set-ConfigValue -Key "VSCode_installed" -Value "True"
     
-        Write-Host "Successfully detected Oh-My-Posh installation. \uf00c " -ForegroundColor Green
+    if (Test-CommandExists oh-my-posh) {
+        Write-Host "Successfully detected Oh-My-Posh installation." -ForegroundColor Green
         Set-ConfigValue -Key "OhMyPosh_installed" -Value "True"
     } else {
         $installOhMyPosh = Read-Host "Do you want to install Oh-My-Posh? (Y/N)"
@@ -201,7 +202,7 @@ function Test-Applications {
             Write-Host "Oh-My-Posh installation skipped." -ForegroundColor Yellow
         }
     } 
-
+}
 
 function Initialize-Keys{
     $keys = "TerminalIcons_installed", "PwshYaml_installed", "PoshFunctions_installed", "FiraCode_installed", "VSCode_installed", "OhMyPosh_installed"
