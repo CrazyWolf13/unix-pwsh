@@ -9,13 +9,28 @@ Write-Host ""
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 $configPath = "$HOME\pwsh_custom_config.yml"
 
+function Initialize-DevEnv {
+    if ($FiraCode_installed_value -ne "True") { Search-InstallFiraCodeFont }
+    if ($TerminalIcons_installed_value -ne "True") { Initialize-Modules }
+    Import-Module -Name Terminal-Icons
+    if ($PwshYaml_installed_value -ne "True") { Initialize-Modules }
+    Import-Module Powershell-Yaml
+    if ($PoshFunctions_installed_value -ne "True") { Initialize-Modules }
+    Import-Module -Name PoshFunctions
+    if ($VScode_installed_value -ne "True") { Test-Applications }
+    if ($OhMyPosh_installed_value -ne "True") { Test-Applications }
+    
+}
+
 # Function to create config file
 function Install-Config {
     if (-not (Test-Path -Path $configPath)) {
         New-Item -ItemType File -Path $configPath | Out-Null
         Write-Host "Configuration file created at $configPath" -ForegroundColor Yellow
+        Initialize-DevEnv
     } else {
         Write-Host "Configuration file already exists at $configPath" -ForegroundColor Green
+        Initialize-DevEnv
     }
 }
 
@@ -43,6 +58,7 @@ function Set-ConfigValue {
     $config[$Key] = $Value
     $config | ConvertTo-Yaml | Set-Content $configPath
     Write-Host "Set '$Key' to '$Value' in configuration file." -ForegroundColor Green
+    Initialize-Keys
 }
 
 # Function to get a value from the config file
@@ -123,6 +139,7 @@ function Search-InstallFiraCodeFont {
             Install-FiraCode
         } else {
             Write-Host "NerdFonts installation skipped." -ForegroundColor Yellow
+            Set-ConfigValue -Key "FiraCode_installed" -Value "False"
         }
     }
 }
@@ -139,21 +156,13 @@ function Initialize-Modules {
     try {
         $executionPolicy = Get-ExecutionPolicy
         if ($executionPolicy -ne 'Restricted') {
-            if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
-                Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
+            $modules = @("Terminal-Icons", "Powershell-Yaml", "PoshFunctions")
+            foreach ($module in $modules) {
+                if (-not (Get-Module -ListAvailable -Name $module)) {
+                    Install-Module -Name $module -Scope CurrentUser -Force -SkipPublisherCheck
+                }
+                Set-ConfigValue -Key "${module}_installed" -Value "True"
             }
-            Import-Module -Name Terminal-Icons
-
-            if (-not (Get-Module -ListAvailable -Name Powershell-Yaml)) {
-                Install-Module -Name Powershell-Yaml -Scope CurrentUser -Force -SkipPublisherCheck
-            }
-            Import-Module Powershell-Yaml
-            
-            if (-not (Get-Module -ListAvailable -Name PoshFunctions)) {
-                Install-Module -Name PoshFunctions -Scope CurrentUser -Force -SkipPublisherCheck
-            }
-            Import-Module -Name PoshFunctions
-
             Search-InstallFiraCodeFont
         } else {
             Write-Host "Script execution is restricted. Skipping the Initialization of pwsh modules." -ForegroundColor Yellow
@@ -162,6 +171,42 @@ function Initialize-Modules {
         Write-Error "Failed to import PowerShell Modules: $_"
     }
 }
+
+function Test-Applications {
+    if (!(Test-CommandExists code)) {
+        $installVSCode = Read-Host "Do you want to install Visual Studio Code? (Y/N)"
+        if ($installVSCode -eq 'Y' -or $installVSCode -eq 'y') {
+            winget install Microsoft.VisualStudioCode --accept-package-agreements --accept-source-agreements
+            Write-Host "Visual Studio Code has been installed." -ForegroundColor Green
+            Set-ConfigValue -Key "VSCode_installed" -Value "True"
+        } else {
+            Write-Host "Visual Studio Code installation skipped." -ForegroundColor Yellow
+        }
+    }
+    
+    if (!(Test-CommandExists oh-my-posh)) {
+        $installOhMyPosh = Read-Host "Do you want to install Oh-My-Posh? (Y/N)"
+        if ($installOhMyPosh -eq 'Y' -or $installOhMyPosh -eq 'y') {
+            winget install JanDeDobbeleer.OhMyPosh --accept-package-agreements --accept-source-agreements
+            Write-Host "Oh-My-Posh has been installed." -ForegroundColor Green
+            Set-ConfigValue -Key "OhMyPosh_installed" -Value "True"
+        } else {
+            Write-Host "Oh-My-Posh installation skipped." -ForegroundColor Yellow
+        }
+    } 
+}
+
+
+function Initialize-Keys{
+    $keys = "TerminalIcons_installed", "PwshYaml_installed", "PoshFunctions_installed", "FiraCode_installed", "VSCode_installed", "OhMyPosh_installed"
+
+    foreach ($key in $keys) {
+        $value = Get-ConfigValue -Key $key
+        Set-Variable -Name "${key}_value" -Value $value
+        Write-Host "${key}: $(Get-Variable -Name "${key}_value" -ValueOnly)" -ForegroundColor Blue
+    }
+}
+
 function Update-PowerShell {
     if (-not $global:canConnectToGitHub) {
         Write-Host "Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
@@ -189,21 +234,6 @@ function Update-PowerShell {
     }
 }
 Update-PowerShell
-
-
-
-
-
-
-
-
-
-Install-Config
-Set-ConfigValue -Key "FiraCode_installed" -Value "True"
-$Value = Get-ConfigValue -Key "FiraCode_installed"
-Write-Host "FiraCode_installed: $Value" -ForegroundColor Blue
-
-
 
 function gitpush {
     git pull
@@ -512,4 +542,8 @@ function cdhalter {
 }
 
 
+
+
+Initialize-Keys
+Install-Config
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
