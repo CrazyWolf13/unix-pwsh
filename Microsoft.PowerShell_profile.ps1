@@ -16,7 +16,7 @@ Write-Host ""
 # Initial GitHub.com connectivity check with 1 second timeout
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 
-function Update-PowerShell {
+function Initialize-Modules {
     if (-not $global:canConnectToGitHub) {
         Write-Host "Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
         return
@@ -32,18 +32,19 @@ function Update-PowerShell {
         Import-Module -Name Terminal-Icons
 
         # Ensure Get-Font module is installed before importing
-        if (-not (Get-Module -ListAvailable -Name Get-Font)) {
-            Install-Module -Name Functions/Get-Font.ps1 -Scope CurrentUser -Force -SkipPublisherCheck
+        if (-not (Get-Module -ListAvailable -Name PoshFunctions)) {
+            Install-Module -Name PoshFunctions -Scope CurrentUser -Force -SkipPublisherCheck
         }
-        Import-Module -Name Get-Font
+        Import-Module -Name PoshFunctions
 
         # Fetch and display FiraCode fonts
         Get-Font *FiraCode*
    } else {
-        Write-Host "Script execution is restricted. Skipping the loading of Terminal-Icons and Get-Font modules." -ForegroundColor Yellow
+        Write-Host "Script execution is restricted. Skipping the loading of Terminal-Icons and PoshFunctions modules." -ForegroundColor Yellow
     }
         
 }
+Initialize-Modules
 
 function Update-PowerShell {
     if (-not $global:canConnectToGitHub) {
