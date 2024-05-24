@@ -111,52 +111,50 @@ function Install-FiraCode {
     }
 }
 
+function Search-InstallFiraCodeFont {
+    $firaCodeFonts = Get-Font *FiraCode*
+    if ($firaCodeFonts) {
+        Write-Host "FiraCode fonts are installed." -ForegroundColor Green
+        Set-ConfigValue -Key "FiraCode_installed" -Value "True"
+    } else {
+        Write-Host "No Nerd-Fonts are installed." -ForegroundColor Red
+        $installNerdFonts = Read-Host "Do you want to install FiraCode NerdFont? (Y/N)"
+        if ($installNerdFonts -eq 'Y' -or $installNerdFonts -eq 'y') {
+            Install-FiraCode
+        } else {
+            Write-Host "NerdFonts installation skipped." -ForegroundColor Yellow
+        }
+    }
+}
+
 function Initialize-Modules {
-    # Make sure WingetCommandNotFound gets imported or display an error.
     Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
     if (-not $?) {
         Write-Host "Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow
     }
-    # Check for internet access
     if (-not $global:canConnectToGitHub) {
         Write-Host "Skipping Module Initialization check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
         return
     }
     try {
-        # Check if script execution is allowed before loading modules
         $executionPolicy = Get-ExecutionPolicy
         if ($executionPolicy -ne 'Restricted') {
-            # Ensure Terminal-Icons module is installed before importing
             if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
                 Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
             }
             Import-Module -Name Terminal-Icons
 
-            # Ensure Powershell-Yaml module is installed before importing
             if (-not (Get-Module -ListAvailable -Name Powershell-Yaml)) {
                 Install-Module -Name Powershell-Yaml -Scope CurrentUser -Force -SkipPublisherCheck
             }
             Import-Module Powershell-Yaml
             
-            # Ensure Get-Font module is installed before importing
             if (-not (Get-Module -ListAvailable -Name PoshFunctions)) {
                 Install-Module -Name PoshFunctions -Scope CurrentUser -Force -SkipPublisherCheck
             }
             Import-Module -Name PoshFunctions
 
-            $firaCodeFonts = Get-Font *FiraCode*
-            if ($firaCodeFonts) {
-                Write-Host "FiraCode fonts are installed:" -ForegroundColor Green
-
-            } else {
-                Write-Host "No Nerd-Fonts are installed." -ForegroundColor Red
-                $installNerdFonts = Read-Host "Do you want to install FiraCode NerdFont? (Y/N)"
-                if ($installNerdFonts -eq 'Y' -or $installNerdFonts -eq 'y') {
-                    Install-FiraCode
-                } else {
-                    Write-Host "NerdFonts installation skipped." -ForegroundColor Yellow
-                }
-            }
+            Search-InstallFiraCodeFont
         } else {
             Write-Host "Script execution is restricted. Skipping the Initialization of pwsh modules." -ForegroundColor Yellow
         }
@@ -164,8 +162,6 @@ function Initialize-Modules {
         Write-Error "Failed to import PowerShell Modules: $_"
     }
 }
-Initialize-Modules
-
 function Update-PowerShell {
     if (-not $global:canConnectToGitHub) {
         Write-Host "Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
