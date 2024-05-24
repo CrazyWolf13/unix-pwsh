@@ -116,11 +116,7 @@ function Initialize-Modules {
             }
             Import-Module -Name Terminal-Icons
 
-            # Ensure Powershell-Yaml module is installed before importing
-            if (-not (Get-Module -ListAvailable -Name Powershell-Yaml)) {
-                Install-Module -Name Powershell-Yaml -Scope CurrentUser -Force -SkipPublisherCheck
-            }
-            Import-Module Powershell-Yaml
+
             
             # Ensure Get-Font module is installed before importing
             if (-not (Get-Module -ListAvailable -Name PoshFunctions)) {
