@@ -1,11 +1,3 @@
-
-#34de4b3d-13a8-4540-b76d-b9e8d3851756 PowerToys CommandNotFound module
-
-Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
-if (-not $?) {
-    Write-Host "Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow
-}
-
 Write-Host ""
 Write-Host "Welcome Tobias ⚡" -ForegroundColor DarkCyan
 Write-Host ""
@@ -17,6 +9,12 @@ Write-Host ""
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 
 function Initialize-Modules {
+    # Make sure WingetCommandNotFound gets imported or display an error.
+    Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
+    if (-not $?) {
+        Write-Host "Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow
+    }
+    # Check for internet access
     if (-not $global:canConnectToGitHub) {
         Write-Host "Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
         return
@@ -42,10 +40,9 @@ function Initialize-Modules {
         } else {
         Write-Host "Script execution is restricted. Skipping the loading of Terminal-Icons and PoshFunctions modules." -ForegroundColor Yellow
         }
-    catch {
+    } catch {
         Write-Error "Failed to import Powershell Modules $_"
-    }
-        
+   }     
 }
 Initialize-Modules
 
