@@ -28,7 +28,16 @@ if ($executionPolicy -ne 'Restricted') {
     Write-Host "Script execution is restricted. Skipping the loading of Terminal-Icons module." -ForegroundColor Yellow
 }
 
-
+if ($executionPolicy -ne 'Restricted') {
+    # Ensure Get-Font module is installed before importing
+    if (-not (Get-Module -ListAvailable -Name Get-Font)) {
+        Install-Module -Name Get-Font -Scope CurrentUser -Force -SkipPublisherCheck
+    }
+    Import-Module -Name Get-Font
+    Get-Font *FiraCode*
+} else {
+    Write-Host "Script execution is restricted. Skipping the loading of Get-Font module." -ForegroundColor Yellow
+}
 
 
 function Update-PowerShell {
