@@ -21,12 +21,8 @@ function Initialize-DevEnv {
     Import-Module Powershell-Yaml
     if ($PoshFunctions_installed_value -ne "True") { Initialize-Modules }
     Import-Module -Name PoshFunctions
-    Test-Applications
-    if ($vscode_installed_value -ne "True") { Test-Applications }
-    if ($ohmyposh_installed_value -ne "True") { 
-        Test-Applications 
-        Write-Host "Tested Applications." -ForegroundColor Green
-    }
+    if ($vscode_installed_value -ne "True") { Test-vscode }
+    if ($ohmyposh_installed_value -ne "True") { Test-ohmyposh }
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
 }
 
@@ -175,7 +171,7 @@ function Initialize-Modules {
     }
 }
 
-function Test-Applications {
+function Test-vscode {
     if (Test-CommandExists code) {
         Set-ConfigValue -Key "vscode_installed" -Value "True"
     } else {
@@ -185,7 +181,10 @@ function Test-Applications {
         } else {
             Write-Host "❌ Visual Studio Code installation skipped." -ForegroundColor Yellow
         }
-    }    
+    }
+}
+
+function Test-ohmyposh {  
     if (Test-CommandExists oh-my-posh) {
         Set-ConfigValue -Key "ohmyposh_installed" -Value "True"
     } else {
