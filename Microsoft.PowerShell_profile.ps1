@@ -163,7 +163,6 @@ function Initialize-Modules {
                 }
                 Set-ConfigValue -Key "${module}_installed" -Value "True"
             }
-            Search-InstallFiraCodeFont
         } else {
             Write-Host "Script execution is restricted. Skipping the Initialization of pwsh modules." -ForegroundColor Yellow
         }
@@ -203,7 +202,6 @@ function Initialize-Keys{
     foreach ($key in $keys) {
         $value = Get-ConfigValue -Key $key
         Set-Variable -Name "${key}_value" -Value $value
-        Write-Host "${key}: $(Get-Variable -Name "${key}_value" -ValueOnly)" -ForegroundColor Blue
     }
 }
 
