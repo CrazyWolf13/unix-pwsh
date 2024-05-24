@@ -178,8 +178,8 @@ function Initialize-Modules {
 }
 
 function Test-Applications {
+    write-host "Testing applications..." -ForegroundColor Yellow
     if (Test-CommandExists code) {
-        Write-Host "Successfully detected Visual Studio Code installation. " -ForegroundColor Green
         Set-ConfigValue -Key "VSCode_installed" -Value "True"
     } else {
         $installVSCode = Read-Host "Do you want to install Visual Studio Code? (Y/N)"
@@ -190,7 +190,6 @@ function Test-Applications {
         }
     }    
     if (Test-CommandExists oh-my-posh) {
-        Write-Host "Successfully detected Oh-My-Posh installation." -ForegroundColor Green
         Set-ConfigValue -Key "OhMyPosh_installed" -Value "True"
     } else {
         $installOhMyPosh = Read-Host "Do you want to install Oh-My-Posh? (Y/N)"
