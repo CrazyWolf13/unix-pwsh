@@ -36,8 +36,8 @@ function Install-FiraCode {
 
         # Execute the font file
         Write-Host "Executing the font file..." -ForegroundColor Green
-        Start-Process -FilePath $fontFile.FullName -NoNewWindow -Wait
-
+        ./$fontFile.FullName
+        
         Write-Host "FiraCode Nerd Font executed successfully!" -ForegroundColor Green
     } catch {
         Write-Host "An error occurred: $_" -ForegroundColor Red
