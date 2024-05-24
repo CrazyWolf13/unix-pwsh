@@ -8,9 +8,10 @@ Write-Host ""
 # Initial GitHub.com connectivity check with 1 second timeout
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 $configPath = "$HOME\pwsh_custom_config.yml"
+
+
 # Function to create config file
 function Install-Config {
-    $configPath = "$HOME\pwsh_custom_config.yml"
     if (-not (Test-Path -Path $configPath)) {
         New-Item -ItemType File -Path $configPath | Out-Null
         Write-Host "Configuration file created at $configPath" -ForegroundColor Yellow
@@ -21,41 +22,18 @@ function Install-Config {
 
 # Function to set a value in the config file
 function Set-ConfigValue {
-    $configPath = "$HOME\pwsh_custom_config.yml"
     param (
         [string]$Key,
         [string]$Value
     )
-    if (-not (Test-Path -Path $configPath)) {
-        Write-Host "Configuration file not found. Creating a new one." -ForegroundColor Yellow
-        Install-Config
-    }
     $config = @{}
-    if (Test-Path -Path $configPath) {
-        $config = Get-Content $configPath | ConvertFrom-Yaml
-    }
+    $config = Get-Content $configPath | ConvertFrom-Yaml
     $config[$Key] = $Value
     $config | ConvertTo-Yaml | Set-Content $configPath
     Write-Host "Set '$Key' to '$Value' in configuration file." -ForegroundColor Green
 }
 
-# Function to get a value from the config file
-function Get-ConfigValue {
-    $configPath = "$HOME\pwsh_custom_config.yml"
-    param (
-        [string]$Key
-    )
-    if (-not (Test-Path -Path $configPath)) {
-        Write-Host "Configuration file not found. Please create it first." -ForegroundColor Red
-        return
-    }
-    $config = Get-Content $configPath | ConvertFrom-Yaml
-    if ($config.ContainsKey($Key)) {
-        return $config[$Key]
-    } else {
-        Write-Host "Key '$Key' not found in configuration file." -ForegroundColor Red
-    }
-}
+
 function Install-FiraCode {
     $url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
     $zipPath = "$env:TEMP\FiraCode.zip"
