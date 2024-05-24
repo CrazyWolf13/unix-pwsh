@@ -42,6 +42,9 @@ function Initialize-Modules {
    } else {
         Write-Host "Script execution is restricted. Skipping the loading of Terminal-Icons and PoshFunctions modules." -ForegroundColor Yellow
     }
+    catch {
+        Write-Error "Failed to import Powershell Modules $_"
+    }
         
 }
 Initialize-Modules
