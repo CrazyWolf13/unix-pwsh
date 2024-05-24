@@ -22,8 +22,8 @@ function Initialize-DevEnv {
     if ($PoshFunctions_installed_value -ne "True") { Initialize-Modules }
     Import-Module -Name PoshFunctions
     Test-Applications
-    if ($VScode_installed_value -ne "True") { Test-Applications }
-    if ($OhMyPosh_installed_value -ne "True") { Test-Applications }
+    if ($vscode_installed_value -ne "True") { Test-Applications }
+    if ($ohmyposh_installed_value -ne "True") { Test-Applications }
     Write-Host "Successfully initialized Pwsh with all Modules and applications! ✅" -ForegroundColor Green
 }
 
@@ -180,7 +180,7 @@ function Initialize-Modules {
 function Test-Applications {
     write-host "Testing applications..." -ForegroundColor Yellow
     if (Test-CommandExists code) {
-        Set-ConfigValue -Key "VSCode_installed" -Value "True"
+        Set-ConfigValue -Key "vscode_installed" -Value "True"
     } else {
         $installVSCode = Read-Host "Do you want to install Visual Studio Code? (Y/N)"
         if ($installVSCode -eq 'Y' -or $installVSCode -eq 'y') {
@@ -190,7 +190,7 @@ function Test-Applications {
         }
     }    
     if (Test-CommandExists oh-my-posh) {
-        Set-ConfigValue -Key "OhMyPosh_installed" -Value "True"
+        Set-ConfigValue -Key "ohmyposh_installed" -Value "True"
     } else {
         $installOhMyPosh = Read-Host "Do you want to install Oh-My-Posh? (Y/N)"
         if ($installOhMyPosh -eq 'Y' -or $installOhMyPosh -eq 'y') {
@@ -202,7 +202,7 @@ function Test-Applications {
 }
 
 function Initialize-Keys{
-    $keys = "TerminalIcons_installed", "PwshYaml_installed", "PoshFunctions_installed", "FiraCode_installed", "VSCode_installed", "OhMyPosh_installed"
+    $keys = "TerminalIcons_installed", "PwshYaml_installed", "PoshFunctions_installed", "FiraCode_installed", "vscode_installed", "ohmyposh_installed"
 
     foreach ($key in $keys) {
         $value = Get-ConfigValue -Key $key
