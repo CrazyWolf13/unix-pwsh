@@ -31,10 +31,10 @@ function Initialize-DevEnv {
 function Install-Config {
     if (-not (Test-Path -Path $configPath)) {
         New-Item -ItemType File -Path $configPath | Out-Null
-        Write-Host "Configuration file created at $configPath" -ForegroundColor Yellow
+        Write-Host "Configuration file created at $configPath ❗" -ForegroundColor Yellow
         Initialize-DevEnv
     } else {
-        Write-Host "Configuration file already exists at $configPath" -ForegroundColor Green
+        Write-Host "Successfully loaded Config file ✅" -ForegroundColor Green
         Initialize-DevEnv
     }
 }
@@ -62,7 +62,7 @@ function Set-ConfigValue {
 
     $config[$Key] = $Value
     $config | ConvertTo-Yaml | Set-Content $configPath
-    Write-Host "Set '$Key' to '$Value' in configuration file." -ForegroundColor Green
+    # Write-Host "Set '$Key' to '$Value' in configuration file." -ForegroundColor Green
     Initialize-Keys
 }
 
@@ -136,7 +136,6 @@ function Install-FiraCode {
 function Search-InstallFiraCodeFont {
     $firaCodeFonts = Get-Font *FiraCode*
     if ($firaCodeFonts) {
-        Write-Host "Successfully detected FiraCode NerdFont installation. \uf00c " -ForegroundColor Green
         Set-ConfigValue -Key "FiraCode_installed" -Value "True"
     } else {
         Write-Host "No Nerd-Fonts are installed." -ForegroundColor Red
@@ -178,7 +177,6 @@ function Initialize-Modules {
 }
 
 function Test-Applications {
-    write-host "Testing applications..." -ForegroundColor Yellow
     if (Test-CommandExists code) {
         Set-ConfigValue -Key "vscode_installed" -Value "True"
     } else {
