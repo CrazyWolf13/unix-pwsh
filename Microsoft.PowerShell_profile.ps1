@@ -44,16 +44,18 @@ function Initialize-Modules {
                 $installNerdFonts = Read-Host "Do you want to install NerdFonts? (Y/N)"
                 if ($installNerdFonts -eq 'Y' -or $installNerdFonts -eq 'y') {
                     Install-NerdFonts
-            } else {
-                Write-Host "NerdFonts installation skipped." -ForegroundColor Yellow
+                } else {
+                    Write-Host "NerdFonts installation skipped." -ForegroundColor Yellow
+                }
             }
         } else {
-        Write-Host "Script execution is restricted. Skipping the Initialization of pwsh modules." -ForegroundColor Yellow
+            Write-Host "Script execution is restricted. Skipping the Initialization of pwsh modules." -ForegroundColor Yellow
         }
     } catch {
-        Write-Error "Failed to import Powershell Modules $_"
-       }
+        Write-Error "Failed to import PowerShell Modules: $_"
+    }
 }
+
 Initialize-Modules
 
 
