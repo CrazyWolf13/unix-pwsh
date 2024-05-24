@@ -161,7 +161,7 @@ function Initialize-Modules {
     try {
         $executionPolicy = Get-ExecutionPolicy
         if ($executionPolicy -ne 'Restricted') {
-            $modules = @("Terminal-Icons", "Powershell-Yaml", "PoshFunctions")
+            $modules = @("Powershell-Yaml", "Terminal-Icons", "PoshFunctions")
             foreach ($module in $modules) {
                 if (-not (Get-Module -ListAvailable -Name $module)) {
                     Install-Module -Name $module -Scope CurrentUser -Force -SkipPublisherCheck
