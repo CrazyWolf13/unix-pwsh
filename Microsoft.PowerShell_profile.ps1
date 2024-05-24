@@ -150,10 +150,6 @@ function Search-InstallFiraCodeFont {
 }
 
 function Initialize-Modules {
-    Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
-    if (-not $?) {
-        Write-Host "Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow
-    }
     if (-not $global:canConnectToGitHub) {
         Write-Host "❌ Skipping Module Initialization check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
         return
@@ -539,6 +535,8 @@ function cdhalter {
     Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\Halter'
 }
 
+Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
+if (-not $?) { Write-Host "Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow }
 Initialize-Modules
 Initialize-Keys
 Install-Config
