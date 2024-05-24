@@ -9,7 +9,6 @@ Write-Host ""
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 $configPath = "$HOME\pwsh_custom_config.yml"
 
-
 # Function to create config file
 function Install-Config {
     if (-not (Test-Path -Path $configPath)) {
@@ -27,10 +26,46 @@ function Set-ConfigValue {
         [string]$Value
     )
     $config = @{}
-    $config = Get-Content $configPath | ConvertFrom-Yaml
+
+    # Try to load the existing config file content
+    if (Test-Path -Path $configPath) {
+        $content = Get-Content $configPath -Raw
+        if (-not [string]::IsNullOrEmpty($content)) {
+            $config = $content | ConvertFrom-Yaml
+        }
+    }
+
+    # Ensure $config is a hashtable
+    if (-not $config) {
+        $config = @{}
+    }
+
     $config[$Key] = $Value
     $config | ConvertTo-Yaml | Set-Content $configPath
     Write-Host "Set '$Key' to '$Value' in configuration file." -ForegroundColor Green
+}
+
+# Function to get a value from the config file
+function Get-ConfigValue {
+    param (
+        [string]$Key
+    )
+    $config = @{}
+
+    # Try to load the existing config file content
+    if (Test-Path -Path $configPath) {
+        $content = Get-Content $configPath -Raw
+        if (-not [string]::IsNullOrEmpty($content)) {
+            $config = $content | ConvertFrom-Yaml
+        }
+    }
+
+    # Ensure $config is a hashtable
+    if (-not $config) {
+        $config = @{}
+    }
+
+    return $config[$Key]
 }
 
 
@@ -167,19 +202,10 @@ Update-PowerShell
 
 
 
-
-
-
-
-
-
-
-
-
 Install-Config
 Set-ConfigValue -Key "FiraCode_installed" -Value "True"
 $Value = Get-ConfigValue -Key "FiraCode_installed"
-Write-Host "Value for 'FiraCode_installed' is: $Value"
+Write-Host "FiraCode_installed: $Value" -ForegroundColor Blue
 
 
 
