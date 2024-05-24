@@ -17,6 +17,7 @@ function Initialize-DevEnv {
     Import-Module Powershell-Yaml
     if ($PoshFunctions_installed_value -ne "True") { Initialize-Modules }
     Import-Module -Name PoshFunctions
+    Test-Applications
     if ($VScode_installed_value -ne "True") { Test-Applications }
     if ($OhMyPosh_installed_value -ne "True") { Test-Applications }
     
@@ -347,7 +348,6 @@ function ptw {
     }
 }
 
-
 function pptw {
     param (
         [Parameter(ValueFromPipeline=$true)]
@@ -462,7 +462,6 @@ if (Test-CommandExists code) {
 } 
 Set-Alias -Name vim -Value $EDITOR
 
-
 function ll { Get-ChildItem -Path $pwd -File }
 
 # Network Utilities
@@ -476,7 +475,6 @@ function uptime {
         net statistics workstation | Select-String "since" | ForEach-Object { $_.ToString().Replace('Statistics since ', '') }
     }
 }
-
 
 
 function unzip ($file) {
@@ -540,9 +538,6 @@ function cdhalter {
 }
 
 
-
-
 Initialize-Keys
 Install-Config
-Test-Applications
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
