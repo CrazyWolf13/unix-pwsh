@@ -8,11 +8,13 @@ Write-Host ""
 # Initial GitHub.com connectivity check with 1 second timeout
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 
-function Install-FiraCode {
+function Install-FiraCodeNerdFont {
     $url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
     $zipPath = "$env:TEMP\FiraCode.zip"
     $extractPath = "$env:TEMP\FiraCode"
     $fontFileName = "FiraCodeNerdFontMono-Regular.ttf"
+    $fontDirSystem = "$env:SystemRoot\Fonts"
+    $fontDirUser = "$env:USERPROFILE\AppData\Local\Microsoft\Windows\Fonts"
     try {
         # Download the FiraCode Nerd Font zip file
         Write-Host "Downloading FiraCode Nerd Font..." -ForegroundColor Green
@@ -33,19 +35,26 @@ function Install-FiraCode {
             throw "Font file '$fontFileName' not found in the extracted files."
         }
 
-        # Install the font
-        $fontDir = "$env:SystemRoot\Fonts"
-        $fontFilePath = Join-Path -Path $fontDir -ChildPath $fontFile.Name
-        Copy-Item -Path $fontFile.FullName -Destination $fontFilePath -Force
+        # Install the font for all users
+        Write-Host "Installing FiraCode Nerd Font for all users..." -ForegroundColor Green
+        $fontFilePathSystem = Join-Path -Path $fontDirSystem -ChildPath $fontFile.Name
+        Copy-Item -Path $fontFile.FullName -Destination $fontFilePathSystem -Force
 
-        # Add font to registry
+        # Add font to registry for all users
         $fontName = $fontFile.Name -replace "\.ttf$", ""
-        $regPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
-        Set-ItemProperty -Path $regPath -Name $fontName -Value $fontFile.Name
+        $regPathSystem = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+        Set-ItemProperty -Path $regPathSystem -Name $fontName -Value $fontFile.Name
 
-        Write-Host "FiraCode Nerd Font installed successfully!" -ForegroundColor Green
+        Write-Host "FiraCode Nerd Font installed successfully for all users!" -ForegroundColor Green
     } catch {
-        Write-Error "An error occurred: $_"
+        Write-Host "Failed to install font for all users due to: $_" -ForegroundColor Yellow
+        Write-Host "Trying to install the font for the current user only..." -ForegroundColor Yellow
+
+        # Install the font for the current user only
+        $fontFilePathUser = Join-Path -Path $fontDirUser -ChildPath $fontFile.Name
+        Copy-Item -Path $fontFile.FullName -Destination $fontFilePathUser -Force
+
+        Write-Host "FiraCode Nerd Font installed successfully for the current user only!" -ForegroundColor Green
     } finally {
         # Clean up
         Remove-Item -Path $zipPath -Force
