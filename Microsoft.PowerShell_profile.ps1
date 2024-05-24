@@ -14,9 +14,8 @@ function Install-FiraCode {
     $zipPath = "$env:TEMP\FiraCode.zip"
     $extractPath = "$env:TEMP\FiraCode"
     $fontFileName = "FiraCodeNerdFontMono-Regular.ttf"
-    $fontDirUser = "$env:USERPROFILE\AppData\Local\Microsoft\Windows\Fonts"
-    $fontRegistryPath = "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
-
+    $shell = New-Object -ComObject Shell.Application
+    $fonts = $shell.Namespace(0x14)
     try {
         # Download the FiraCode Nerd Font zip file
         Write-Host "Downloading FiraCode Nerd Font..." -ForegroundColor Green
@@ -37,17 +36,9 @@ function Install-FiraCode {
             throw "Font file '$fontFileName' not found in the extracted files."
         }
 
-        # Ensure the user font directory exists
-        if (-not (Test-Path -Path $fontDirUser)) {
-            New-Item -ItemType Directory -Path $fontDirUser | Out-Null
-        }
-
-        # Copy the font file to the user's font directory
-        $fontFilePathUser = Join-Path -Path $fontDirUser -ChildPath $fontFile.Name
-        Copy-Item -Path $fontFile.FullName -Destination $fontFilePathUser -Force
-
-        # Register the font
-        Set-ItemProperty -Path $fontRegistryPath -Name "$($fontFile.BaseName) (TrueType)" -Value $fontFile.Name
+        # Copy the font file to the Windows Fonts directory
+        Write-Host "Installing FiraCode Nerd Font..." -ForegroundColor Green
+        $fonts.CopyHere($fontFile.FullName, 0x10)
 
         Write-Host "FiraCode Nerd Font installed successfully!" -ForegroundColor Green
     } catch {
