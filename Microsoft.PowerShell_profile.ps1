@@ -7,8 +7,52 @@ Write-Host ""
 
 # Initial GitHub.com connectivity check with 1 second timeout
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
+$configPath = "$HOME\pwsh_custom_config.yml"
+# Function to create config file
+function Install-Config {
+    if (-not (Test-Path -Path $configPath)) {
+        New-Item -ItemType File -Path $configPath | Out-Null
+        Write-Host "Configuration file created at $configPath" -ForegroundColor Yellow
+    } else {
+        Write-Host "Configuration file already exists at $configPath" -ForegroundColor Green
+    }
+}
 
+# Function to set a value in the config file
+function Set-ConfigValue {
+    param (
+        [string]$Key,
+        [string]$Value
+    )
+    if (-not (Test-Path -Path $configPath)) {
+        Write-Host "Configuration file not found. Creating a new one." -ForegroundColor Yellow
+        Install-Config
+    }
+    $config = @{}
+    if (Test-Path -Path $configPath) {
+        $config = Get-Content $configPath | ConvertFrom-Yaml
+    }
+    $config[$Key] = $Value
+    $config | ConvertTo-Yaml | Set-Content $configPath
+    Write-Host "Set '$Key' to '$Value' in configuration file." -ForegroundColor Green
+}
 
+# Function to get a value from the config file
+function Get-ConfigValue {
+    param (
+        [string]$Key
+    )
+    if (-not (Test-Path -Path $configPath)) {
+        Write-Host "Configuration file not found. Please create it first." -ForegroundColor Red
+        return
+    }
+    $config = Get-Content $configPath | ConvertFrom-Yaml
+    if ($config.ContainsKey($Key)) {
+        return $config[$Key]
+    } else {
+        Write-Host "Key '$Key' not found in configuration file." -ForegroundColor Red
+    }
+}
 function Install-FiraCode {
     $url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
     $zipPath = "$env:TEMP\FiraCode.zip"
@@ -72,6 +116,12 @@ function Initialize-Modules {
             }
             Import-Module -Name Terminal-Icons
 
+            # Ensure Powershell-Yaml module is installed before importing
+            if (-not (Get-Module -ListAvailable -Name Powershell-Yaml)) {
+                Install-Module -Name Powershell-Yaml -Scope CurrentUser -Force -SkipPublisherCheck
+            }
+            Import-Module Powershell-Yaml
+            
             # Ensure Get-Font module is installed before importing
             if (-not (Get-Module -ListAvailable -Name PoshFunctions)) {
                 Install-Module -Name PoshFunctions -Scope CurrentUser -Force -SkipPublisherCheck
@@ -81,7 +131,7 @@ function Initialize-Modules {
             $firaCodeFonts = Get-Font *FiraCode*
             if ($firaCodeFonts) {
                 Write-Host "FiraCode fonts are installed:" -ForegroundColor Green
-                $firaCodeFonts | ForEach-Object { Write-Host $_.Name }
+                Set-ConfigValue -Key "FiraCode_installed" -Value "True"
             } else {
                 Write-Host "No Nerd-Fonts are installed." -ForegroundColor Red
                 $installNerdFonts = Read-Host "Do you want to install FiraCode NerdFont? (Y/N)"
@@ -127,6 +177,29 @@ function Update-PowerShell {
     }
 }
 Update-PowerShell
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Install-Config
+$Value = Get-ConfigValue -Key "FiraCode_installed"
+Write-Host "Value for 'FiraCode_installed' is: $Value"
+
+
 
 function gitpush {
     git pull
