@@ -9,7 +9,48 @@ Write-Host ""
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 
 function Install-FiraCode {
-    Write-Host "Installing Nerd-Fonts"
+    $url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
+    $zipPath = "$env:TEMP\FiraCode.zip"
+    $extractPath = "$env:TEMP\FiraCode"
+    $fontFileName = "FiraCodeNerdFontMono-Regular.ttf"
+    try {
+        # Download the FiraCode Nerd Font zip file
+        Write-Host "Downloading FiraCode Nerd Font..." -ForegroundColor Green
+        Invoke-WebRequest -Uri $url -OutFile $zipPath
+
+        # Create the directory to extract the files
+        if (-Not (Test-Path -Path $extractPath)) {
+            New-Item -ItemType Directory -Path $extractPath | Out-Null
+        }
+
+        # Extract the zip file
+        Write-Host "Extracting FiraCode Nerd Font..." -ForegroundColor Green
+        Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+
+        # Find the specific font file to install
+        $fontFile = Get-ChildItem -Path $extractPath -Filter $fontFileName | Select-Object -First 1
+        if (-not $fontFile) {
+            throw "Font file '$fontFileName' not found in the extracted files."
+        }
+
+        # Install the font
+        $fontDir = "$env:SystemRoot\Fonts"
+        $fontFilePath = Join-Path -Path $fontDir -ChildPath $fontFile.Name
+        Copy-Item -Path $fontFile.FullName -Destination $fontFilePath -Force
+
+        # Add font to registry
+        $fontName = $fontFile.Name -replace "\.ttf$", ""
+        $regPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+        Set-ItemProperty -Path $regPath -Name $fontName -Value $fontFile.Name
+
+        Write-Host "FiraCode Nerd Font installed successfully!" -ForegroundColor Green
+    } catch {
+        Write-Error "An error occurred: $_"
+    } finally {
+        # Clean up
+        Remove-Item -Path $zipPath -Force
+        Remove-Item -Path $extractPath -Recurse -Force
+    }
 }
 
 function Initialize-Modules {
