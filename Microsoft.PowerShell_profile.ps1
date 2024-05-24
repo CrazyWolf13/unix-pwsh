@@ -116,7 +116,11 @@ function Initialize-Modules {
             }
             Import-Module -Name Terminal-Icons
 
-
+            # Ensure Powershell-Yaml module is installed before importing
+            if (-not (Get-Module -ListAvailable -Name Powershell-Yaml)) {
+                Install-Module -Name Powershell-Yaml -Scope CurrentUser -Force -SkipPublisherCheck
+            }
+            Import-Module Powershell-Yaml
             
             # Ensure Get-Font module is installed before importing
             if (-not (Get-Module -ListAvailable -Name PoshFunctions)) {
@@ -127,7 +131,7 @@ function Initialize-Modules {
             $firaCodeFonts = Get-Font *FiraCode*
             if ($firaCodeFonts) {
                 Write-Host "FiraCode fonts are installed:" -ForegroundColor Green
-                Set-ConfigValue -Key "FiraCode_installed" -Value "True"
+
             } else {
                 Write-Host "No Nerd-Fonts are installed." -ForegroundColor Red
                 $installNerdFonts = Read-Host "Do you want to install FiraCode NerdFont? (Y/N)"
@@ -192,6 +196,7 @@ Update-PowerShell
 
 
 Install-Config
+Set-ConfigValue -Key "FiraCode_installed" -Value "True"
 $Value = Get-ConfigValue -Key "FiraCode_installed"
 Write-Host "Value for 'FiraCode_installed' is: $Value"
 
