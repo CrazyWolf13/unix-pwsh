@@ -8,6 +8,7 @@ Write-Host ""
 # Initial GitHub.com connectivity check with 1 second timeout
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 
+
 function Install-FiraCode {
     $url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
     $zipPath = "$env:TEMP\FiraCode.zip"
@@ -38,7 +39,7 @@ function Install-FiraCode {
         # Install the font for all users
         Write-Host "Installing FiraCode Nerd Font for all users..." -ForegroundColor Green
         $fontFilePathSystem = Join-Path -Path $fontDirSystem -ChildPath $fontFile.Name
-        Copy-Item -Path $fontFile.FullName -Destination $fontFilePathSystem -Force
+        Copy-Item -Path $fontFile.FullName -Destination $fontFilePathSystem -Force -ErrorAction SilentlyContinue
 
         # Add font to registry for all users
         $fontName = $fontFile.Name -replace "\.ttf$", ""
@@ -52,6 +53,9 @@ function Install-FiraCode {
 
         # Install the font for the current user only
         $fontFilePathUser = Join-Path -Path $fontDirUser -ChildPath $fontFile.Name
+        if (-not (Test-Path -Path $fontDirUser)) {
+            New-Item -ItemType Directory -Path $fontDirUser | Out-Null
+        }
         Copy-Item -Path $fontFile.FullName -Destination $fontFilePathUser -Force
 
         Write-Host "FiraCode Nerd Font installed successfully for the current user only!" -ForegroundColor Green
@@ -61,6 +65,8 @@ function Install-FiraCode {
         Remove-Item -Path $extractPath -Recurse -Force
     }
 }
+
+
 
 function Initialize-Modules {
     # Make sure WingetCommandNotFound gets imported or display an error.
