@@ -122,6 +122,7 @@ function Install-FiraCode {
         $fonts.CopyHere($fontFile.FullName, 0x10)
 
         Write-Host "FiraCode Nerd Font installed successfully!" -ForegroundColor Green
+        Write-Host "Make sure to set the font as default in your terminal settings." -ForegroundColor Red
     } catch {
         Write-Host "An error occurred: $_" -ForegroundColor Red
     } finally {
@@ -179,7 +180,7 @@ function Initialize-Modules {
 function Test-Applications {
     if (Test-CommandExists code) {
         Set-ConfigValue -Key "VSCode_installed" -Value "True"
-        Write-Host "Successfully detected Visual Studio Code installation. \uf00c " -ForegroundColor Green
+        Write-Host "Successfully detected Visual Studio Code installation. " -ForegroundColor Green
     } else {
         $installVSCode = Read-Host "Do you want to install Visual Studio Code? (Y/N)"
         if ($installVSCode -eq 'Y' -or $installVSCode -eq 'y') {
@@ -190,7 +191,6 @@ function Test-Applications {
     }
     Set-ConfigValue -Key "VSCode_installed" -Value "True"
     
-    if (!(Test-CommandExists oh-my-posh)) {
         Write-Host "Successfully detected Oh-My-Posh installation. \uf00c " -ForegroundColor Green
         Set-ConfigValue -Key "OhMyPosh_installed" -Value "True"
     } else {
@@ -201,7 +201,7 @@ function Test-Applications {
             Write-Host "Oh-My-Posh installation skipped." -ForegroundColor Yellow
         }
     } 
-}
+
 
 function Initialize-Keys{
     $keys = "TerminalIcons_installed", "PwshYaml_installed", "PoshFunctions_installed", "FiraCode_installed", "VSCode_installed", "OhMyPosh_installed"
