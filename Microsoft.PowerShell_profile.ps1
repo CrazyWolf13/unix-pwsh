@@ -24,7 +24,7 @@ function Initialize-DevEnv {
     Test-Applications
     if ($vscode_installed_value -ne "True") { Test-Applications }
     if ($ohmyposh_installed_value -ne "True") { Test-Applications }
-    Write-Host "✅Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
+    Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
 }
 
 # Function to create config file
@@ -224,7 +224,7 @@ function Update-PowerShell {
             winget upgrade "Microsoft.PowerShell" --accept-source-agreements --accept-package-agreements
             Write-Host "PowerShell has been updated. Please restart your shell to reflect changes" -ForegroundColor Magenta
         } else {
-            Write-Host "Your PowerShell is up to date." -ForegroundColor Green
+            Write-Host "✅ PowerShell is up to date." -ForegroundColor Green
         }
     } catch {
         Write-Error "❌ Failed to update PowerShell. Error: $_"
