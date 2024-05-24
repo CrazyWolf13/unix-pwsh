@@ -539,7 +539,7 @@ function cdhalter {
     Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\Halter'
 }
 
-
+Initialize-Modules
 Initialize-Keys
 Install-Config
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
