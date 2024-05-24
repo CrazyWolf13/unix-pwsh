@@ -130,7 +130,7 @@ function Install-FiraCode {
 function Search-InstallFiraCodeFont {
     $firaCodeFonts = Get-Font *FiraCode*
     if ($firaCodeFonts) {
-        Write-Host "FiraCode fonts are installed." -ForegroundColor Green
+        Write-Host "Successfully detected FiraCode NerdFont installation. \uf00c " -ForegroundColor Green
         Set-ConfigValue -Key "FiraCode_installed" -Value "True"
     } else {
         Write-Host "No Nerd-Fonts are installed." -ForegroundColor Red
@@ -176,7 +176,7 @@ function Test-Applications {
         $installVSCode = Read-Host "Do you want to install Visual Studio Code? (Y/N)"
         if ($installVSCode -eq 'Y' -or $installVSCode -eq 'y') {
             winget install Microsoft.VisualStudioCode --accept-package-agreements --accept-source-agreements
-            Write-Host "Visual Studio Code has been installed." -ForegroundColor Green
+            Write-Host "Successfully detected Visual Studio Code installation. \uf00c " -ForegroundColor Green
             Set-ConfigValue -Key "VSCode_installed" -Value "True"
         } else {
             Write-Host "Visual Studio Code installation skipped." -ForegroundColor Yellow
@@ -187,7 +187,7 @@ function Test-Applications {
         $installOhMyPosh = Read-Host "Do you want to install Oh-My-Posh? (Y/N)"
         if ($installOhMyPosh -eq 'Y' -or $installOhMyPosh -eq 'y') {
             winget install JanDeDobbeleer.OhMyPosh --accept-package-agreements --accept-source-agreements
-            Write-Host "Oh-My-Posh has been installed." -ForegroundColor Green
+            Write-Host "Successfully detected Oh-My-Posh installation. \uf00c " -ForegroundColor Green
             Set-ConfigValue -Key "OhMyPosh_installed" -Value "True"
         } else {
             Write-Host "Oh-My-Posh installation skipped." -ForegroundColor Yellow
