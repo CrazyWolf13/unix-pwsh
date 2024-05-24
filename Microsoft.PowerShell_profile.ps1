@@ -23,7 +23,10 @@ function Initialize-DevEnv {
     Import-Module -Name PoshFunctions
     Test-Applications
     if ($vscode_installed_value -ne "True") { Test-Applications }
-    if ($ohmyposh_installed_value -ne "True") { Test-Applications }
+    if ($ohmyposh_installed_value -ne "True") { 
+        Test-Applications 
+        Write-Host "Tested Applications." -ForegroundColor Green
+    }
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
 }
 
