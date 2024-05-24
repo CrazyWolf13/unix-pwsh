@@ -8,12 +8,15 @@ Write-Host ""
 # Initial GitHub.com connectivity check with 1 second timeout
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 
+
 function Install-FiraCode {
     $url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
     $zipPath = "$env:TEMP\FiraCode.zip"
     $extractPath = "$env:TEMP\FiraCode"
     $fontFileName = "FiraCodeNerdFontMono-Regular.ttf"
-    
+    $fontDirUser = "$env:USERPROFILE\AppData\Local\Microsoft\Windows\Fonts"
+    $fontRegistryPath = "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+
     try {
         # Download the FiraCode Nerd Font zip file
         Write-Host "Downloading FiraCode Nerd Font..." -ForegroundColor Green
@@ -34,11 +37,19 @@ function Install-FiraCode {
             throw "Font file '$fontFileName' not found in the extracted files."
         }
 
-        # Execute the font file
-        Write-Host "Executing the font file..." -ForegroundColor Green
-        ./$fontFile.FullName
-        
-        Write-Host "FiraCode Nerd Font executed successfully!" -ForegroundColor Green
+        # Ensure the user font directory exists
+        if (-not (Test-Path -Path $fontDirUser)) {
+            New-Item -ItemType Directory -Path $fontDirUser | Out-Null
+        }
+
+        # Copy the font file to the user's font directory
+        $fontFilePathUser = Join-Path -Path $fontDirUser -ChildPath $fontFile.Name
+        Copy-Item -Path $fontFile.FullName -Destination $fontFilePathUser -Force
+
+        # Register the font
+        Set-ItemProperty -Path $fontRegistryPath -Name "$($fontFile.BaseName) (TrueType)" -Value $fontFile.Name
+
+        Write-Host "FiraCode Nerd Font installed successfully!" -ForegroundColor Green
     } catch {
         Write-Host "An error occurred: $_" -ForegroundColor Red
     } finally {
