@@ -8,6 +8,10 @@ Write-Host ""
 # Initial GitHub.com connectivity check with 1 second timeout
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 
+function Install-FiraCode {
+    Write-Host "Installing Nerd-Fonts"
+}
+
 function Initialize-Modules {
     # Make sure WingetCommandNotFound gets imported or display an error.
     Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
@@ -56,12 +60,6 @@ function Initialize-Modules {
     }
 }
 Initialize-Modules
-
-
-function Install-FiraCode {
-    Write-Host "Installing Nerd-Fonts"
-}
-
 
 function Update-PowerShell {
     if (-not $global:canConnectToGitHub) {
