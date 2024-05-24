@@ -16,29 +16,34 @@ Write-Host ""
 # Initial GitHub.com connectivity check with 1 second timeout
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 
-# Check if script execution is allowed before loading Terminal-Icons module
-$executionPolicy = Get-ExecutionPolicy
-if ($executionPolicy -ne 'Restricted') {
-    # Ensure Terminal-Icons module is installed before importing
-    if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
-        Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
+function Update-PowerShell {
+    if (-not $global:canConnectToGitHub) {
+        Write-Host "Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
+        return
     }
-    Import-Module -Name Terminal-Icons
-} else {
-    Write-Host "Script execution is restricted. Skipping the loading of Terminal-Icons module." -ForegroundColor Yellow
-}
+    try {
+        # Check if script execution is allowed before loading modules
+        $executionPolicy = Get-ExecutionPolicy
+        if ($executionPolicy -ne 'Restricted') {
+        # Ensure Terminal-Icons module is installed before importing
+        if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
+            Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
+        }
+        Import-Module -Name Terminal-Icons
 
-if ($executionPolicy -ne 'Restricted') {
-    # Ensure Get-Font module is installed before importing
-    if (-not (Get-Module -ListAvailable -Name Get-Font)) {
-        Install-Module -Name Get-Font -Scope CurrentUser -Force -SkipPublisherCheck
+        # Ensure Get-Font module is installed before importing
+        if (-not (Get-Module -ListAvailable -Name Get-Font)) {
+            Install-Module -Name Functions/Get-Font.ps1 -Scope CurrentUser -Force -SkipPublisherCheck
+        }
+        Import-Module -Name Get-Font
+
+        # Fetch and display FiraCode fonts
+        Get-Font *FiraCode*
+   } else {
+        Write-Host "Script execution is restricted. Skipping the loading of Terminal-Icons and Get-Font modules." -ForegroundColor Yellow
     }
-    Import-Module -Name Get-Font
-    Get-Font *FiraCode*
-} else {
-    Write-Host "Script execution is restricted. Skipping the loading of Get-Font module." -ForegroundColor Yellow
+        
 }
-
 
 function Update-PowerShell {
     if (-not $global:canConnectToGitHub) {
