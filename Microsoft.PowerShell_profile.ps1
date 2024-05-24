@@ -173,29 +173,31 @@ function Initialize-Modules {
 }
 
 function Test-Applications {
-    if (!(Test-CommandExists code)) {
+    if (Test-CommandExists code) {
+        Set-ConfigValue -Key "VSCode_installed" -Value "True"
+        Write-Host "Successfully detected Visual Studio Code installation. \uf00c " -ForegroundColor Green
+    } else {
         $installVSCode = Read-Host "Do you want to install Visual Studio Code? (Y/N)"
         if ($installVSCode -eq 'Y' -or $installVSCode -eq 'y') {
             winget install Microsoft.VisualStudioCode --accept-package-agreements --accept-source-agreements
-            Write-Host "Successfully detected Visual Studio Code installation. \uf00c " -ForegroundColor Green
-            Set-ConfigValue -Key "VSCode_installed" -Value "True"
         } else {
             Write-Host "Visual Studio Code installation skipped." -ForegroundColor Yellow
         }
     }
+    Set-ConfigValue -Key "VSCode_installed" -Value "True"
     
     if (!(Test-CommandExists oh-my-posh)) {
+        Write-Host "Successfully detected Oh-My-Posh installation. \uf00c " -ForegroundColor Green
+        Set-ConfigValue -Key "OhMyPosh_installed" -Value "True"
+    } else {
         $installOhMyPosh = Read-Host "Do you want to install Oh-My-Posh? (Y/N)"
         if ($installOhMyPosh -eq 'Y' -or $installOhMyPosh -eq 'y') {
             winget install JanDeDobbeleer.OhMyPosh --accept-package-agreements --accept-source-agreements
-            Write-Host "Successfully detected Oh-My-Posh installation. \uf00c " -ForegroundColor Green
-            Set-ConfigValue -Key "OhMyPosh_installed" -Value "True"
         } else {
             Write-Host "Oh-My-Posh installation skipped." -ForegroundColor Yellow
         }
     } 
 }
-
 
 function Initialize-Keys{
     $keys = "TerminalIcons_installed", "PwshYaml_installed", "PoshFunctions_installed", "FiraCode_installed", "VSCode_installed", "OhMyPosh_installed"
