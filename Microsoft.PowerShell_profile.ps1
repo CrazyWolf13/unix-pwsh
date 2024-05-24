@@ -25,23 +25,23 @@ function Initialize-Modules {
         # Check if script execution is allowed before loading modules
         $executionPolicy = Get-ExecutionPolicy
         if ($executionPolicy -ne 'Restricted') {
-        # Ensure Terminal-Icons module is installed before importing
-        if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
-            Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
-        }
-        Import-Module -Name Terminal-Icons
+            # Ensure Terminal-Icons module is installed before importing
+            if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
+                Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
+            }
+            Import-Module -Name Terminal-Icons
 
-        # Ensure Get-Font module is installed before importing
-        if (-not (Get-Module -ListAvailable -Name PoshFunctions)) {
-            Install-Module -Name PoshFunctions -Scope CurrentUser -Force -SkipPublisherCheck
-        }
-        Import-Module -Name PoshFunctions
+            # Ensure Get-Font module is installed before importing
+            if (-not (Get-Module -ListAvailable -Name PoshFunctions)) {
+                Install-Module -Name PoshFunctions -Scope CurrentUser -Force -SkipPublisherCheck
+            }
+            Import-Module -Name PoshFunctions
 
-        # Fetch and display FiraCode fonts
-        Get-Font *FiraCode*
-   } else {
+            # Fetch and display FiraCode fonts
+            Get-Font *FiraCode*
+        } else {
         Write-Host "Script execution is restricted. Skipping the loading of Terminal-Icons and PoshFunctions modules." -ForegroundColor Yellow
-    }
+        }
     catch {
         Write-Error "Failed to import Powershell Modules $_"
     }
