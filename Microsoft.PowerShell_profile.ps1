@@ -52,7 +52,7 @@ function Initialize-Modules {
         }
     } catch {
         Write-Error "Failed to import Powershell Modules $_"
-   }     
+       }
 }
 Initialize-Modules
 
