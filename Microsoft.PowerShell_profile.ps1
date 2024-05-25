@@ -164,7 +164,7 @@ function Initialize-Module {
     )
     if ($global:canConnectToGitHub) {
         try {
-            Install-Module -Name $moduleName -Scope CurrentUser -Force -SkipPublisherCheck
+            Install-Module -Name $moduleName -Scope CurrentUser -SkipPublisherCheck
             Set-ConfigValue -Key "${moduleName}_installed" -Value "True"
         } catch {
             Write-Error "❌ Failed to install module ${moduleName}: $_"
@@ -545,7 +545,7 @@ function cdhalter {
 
 Install-Config
 # Update PowerShell in the background
-Start-Job -ScriptBlock { Update-PowerShell }
+Start-Job -ScriptBlock { Update-PowerShell } > $null 2>&1
 Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
 if (-not $?) { Write-Host "💭 Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow }
 if (-not (Test-Path -Path $PROFILE)) {
@@ -553,7 +553,7 @@ if (-not (Test-Path -Path $PROFILE)) {
     Add-Content -Path $PROFILE -Value 'iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/Microsoft.PowerShell_profile.ps1").Content'
     Write-Host "PowerShell profile created at $PROFILE." -ForegroundColor Yellow
 } else {
-    Write-Host "PowerShell profile exists at $PROFILE." -ForegroundColor Green
+    Write-Host "✅ Config found." -ForegroundColor Green
 }
 # Check and install FiraCode font
 Search-InstallFiraCodeFont
