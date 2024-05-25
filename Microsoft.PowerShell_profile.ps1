@@ -16,8 +16,8 @@ function Initialize-DevEnv {
     }
 
     $modules = @(
-        @{ Name = "Terminal-Icons"; ConfigKey = "TerminalIcons_installed" },
-        @{ Name = "Powershell-Yaml"; ConfigKey = "PwshYaml_installed" },
+        @{ Name = "Terminal-Icons"; ConfigKey = "Terminal-Icons_installed" },
+        @{ Name = "Powershell-Yaml"; ConfigKey = "Powershell-Yaml_installed" },
         @{ Name = "PoshFunctions"; ConfigKey = "PoshFunctions_installed" }
     )
 
@@ -205,7 +205,7 @@ function Test-ohmyposh {
 }
 
 function Initialize-Keys {
-    $keys = "TerminalIcons_installed", "PwshYaml_installed", "PoshFunctions_installed", "FiraCode_installed", "vscode_installed", "ohmyposh_installed"
+    $keys = "Terminal-Icons_installed", "Powershell-Yaml_installed", "PoshFunctions_installed", "FiraCode_installed", "vscode_installed", "ohmyposh_installed"
 
     foreach ($key in $keys) {
         $value = Get-ConfigValue -Key $key
