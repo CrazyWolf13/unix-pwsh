@@ -121,7 +121,7 @@ function Install-FiraCode {
         $fonts.CopyHere($fontFile.FullName, 0x10)
 
         Write-Host "FiraCode Nerd Font installed successfully!" -ForegroundColor Green
-        Write-Host "Make sure to set the font as default in your terminal settings." -ForegroundColor Red
+        Write-Host "📝 Make sure to set the font as default in your terminal settings." -ForegroundColor Red
     } catch {
         Write-Host "❌ An error occurred: $_" -ForegroundColor Red
     } finally {
@@ -191,6 +191,8 @@ function Test-ohmyposh {
         $installOhMyPosh = Read-Host "Do you want to install Oh-My-Posh? (Y/N)"
         if ($installOhMyPosh -eq 'Y' -or $installOhMyPosh -eq 'y') {
             winget install JanDeDobbeleer.OhMyPosh --accept-package-agreements --accept-source-agreements
+            wt.exe
+            exit
         } else {
             Write-Host "❌ Oh-My-Posh installation skipped." -ForegroundColor Yellow
         }
@@ -538,7 +540,7 @@ function cdhalter {
 }
 
 Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
-if (-not $?) { Write-Host "Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow }
+if (-not $?) { Write-Host "💭 Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow }
 Initialize-Modules
 Initialize-Keys
 Install-Config
