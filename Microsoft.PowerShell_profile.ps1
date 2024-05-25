@@ -14,15 +14,25 @@ function Initialize-DevEnv {
         Write-Host "❌ Skipping Dev Environment Initialization due to GitHub.com not responding within 1 second." -ForegroundColor Red
         return
     }
-    if ($FiraCode_installed_value -ne "True") { Search-InstallFiraCodeFont }
-    if ($TerminalIcons_installed_value -ne "True") { Initialize-Modules }
-    Import-Module -Name Terminal-Icons
-    if ($PwshYaml_installed_value -ne "True") { Initialize-Modules }
-    Import-Module Powershell-Yaml
-    if ($PoshFunctions_installed_value -ne "True") { Initialize-Modules }
-    Import-Module -Name PoshFunctions
+
+    $modules = @(
+        @{ Name = "Terminal-Icons"; ConfigKey = "TerminalIcons_installed" },
+        @{ Name = "Powershell-Yaml"; ConfigKey = "PwshYaml_installed" },
+        @{ Name = "PoshFunctions"; ConfigKey = "PoshFunctions_installed" }
+    )
+
+    foreach ($module in $modules) {
+        $isInstalled = Get-ConfigValue -Key $module.ConfigKey
+        if ($isInstalled -ne "True") {
+            Initialize-Module $module.Name
+        } else {
+            Import-Module $module.Name
+        }
+    }
+
     if ($vscode_installed_value -ne "True") { Test-vscode }
     if ($ohmyposh_installed_value -ne "True") { Test-ohmyposh }
+    
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
 }
 
@@ -31,11 +41,11 @@ function Install-Config {
     if (-not (Test-Path -Path $configPath)) {
         New-Item -ItemType File -Path $configPath | Out-Null
         Write-Host "Configuration file created at $configPath ❗" -ForegroundColor Yellow
-        Initialize-DevEnv
     } else {
         Write-Host "✅ Successfully loaded Config file" -ForegroundColor Green
-        Initialize-DevEnv
     }
+    Initialize-Keys
+    Initialize-DevEnv
 }
 
 # Function to set a value in the config file
@@ -148,26 +158,19 @@ function Search-InstallFiraCodeFont {
     }
 }
 
-function Initialize-Modules {
-    if (-not $global:canConnectToGitHub) {
-        Write-Host "❌ Skipping Module Initialization check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
-        return
-    }
-    try {
-        $executionPolicy = Get-ExecutionPolicy
-        if ($executionPolicy -ne 'Restricted') {
-            $modules = @("Powershell-Yaml", "Terminal-Icons", "PoshFunctions")
-            foreach ($module in $modules) {
-                if (-not (Get-Module -ListAvailable -Name $module)) {
-                    Install-Module -Name $module -Scope CurrentUser -Force -SkipPublisherCheck
-                }
-                Set-ConfigValue -Key "${module}_installed" -Value "True"
-            }
-        } else {
-            Write-Host "❌ Script execution is restricted. Skipping the Initialization of pwsh modules." -ForegroundColor Yellow
+function Initialize-Module {
+    param (
+        [string]$moduleName
+    )
+    if ($global:canConnectToGitHub) {
+        try {
+            Install-Module -Name $moduleName -Scope CurrentUser -Force -SkipPublisherCheck
+            Set-ConfigValue -Key "${moduleName}_installed" -Value "True"
+        } catch {
+            Write-Error "❌ Failed to install module ${moduleName}: $_"
         }
-    } catch {
-        Write-Error "❌ Failed to import PowerShell Modules: $_"
+    } else {
+        Write-Host "❌ Skipping Module Initialization check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
     }
 }
 
@@ -234,7 +237,7 @@ function Update-PowerShell {
         Write-Error "❌ Failed to update PowerShell. Error: $_"
     }
 }
-Update-PowerShell
+
 
 function gitpush {
     git pull
@@ -539,9 +542,19 @@ function cdhalter {
     Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\Halter'
 }
 
+
+Install-Config
+# Update PowerShell in the background
+Start-Job -ScriptBlock { Update-PowerShell }
 Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
 if (-not $?) { Write-Host "💭 Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow }
-Initialize-Modules
-Initialize-Keys
-Install-Config
+if (-not (Test-Path -Path $PROFILE)) {
+    New-Item -ItemType File -Path $PROFILE | Out-Null
+    Add-Content -Path $PROFILE -Value 'iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/Microsoft.PowerShell_profile.ps1").Content'
+    Write-Host "PowerShell profile created at $PROFILE." -ForegroundColor Yellow
+} else {
+    Write-Host "PowerShell profile exists at $PROFILE." -ForegroundColor Green
+}
+# Check and install FiraCode font
+Search-InstallFiraCodeFont
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
