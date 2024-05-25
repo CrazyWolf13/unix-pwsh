@@ -24,11 +24,11 @@ function Initialize-DevEnv {
     foreach ($module in $modules) {
         $isInstalled = Get-ConfigValue -Key $module.ConfigKey
         if ($isInstalled -ne "True") {
-            Write-Host "Initializing $module.Name module..."
+            Write-Host "Initializing $($module.Name) module..."
             Initialize-Module $module.Name
         } else {
             Import-Module $module.Name
-            Write-Host "✅ $module.Name module is already installed." -ForegroundColor Green
+            Write-Host "✅ $($module.Name) module is already installed." -ForegroundColor Green
         }
     }
 
