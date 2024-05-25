@@ -204,14 +204,15 @@ function Test-ohmyposh {
     } 
 }
 
-function Initialize-Keys{
+function Initialize-Keys {
     $keys = "TerminalIcons_installed", "PwshYaml_installed", "PoshFunctions_installed", "FiraCode_installed", "vscode_installed", "ohmyposh_installed"
 
     foreach ($key in $keys) {
         $value = Get-ConfigValue -Key $key
-        Set-Variable -Name "${key}_value" -Value $value
+        Set-Variable -Name $key -Value $value -Scope Global
     }
 }
+
 
 function Update-PowerShell {
     if (-not $global:canConnectToGitHub) {
