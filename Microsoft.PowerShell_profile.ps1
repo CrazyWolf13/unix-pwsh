@@ -555,8 +555,6 @@ if (-not (Test-Path -Path $PROFILE)) {
     New-Item -ItemType File -Path $PROFILE | Out-Null
     Add-Content -Path $PROFILE -Value 'iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/Microsoft.PowerShell_profile.ps1").Content'
     Write-Host "PowerShell profile created at $PROFILE." -ForegroundColor Yellow
-} else {
-    Write-Host "✅ Config found." -ForegroundColor Green
 }
 # Check and install FiraCode font
 Search-InstallFiraCodeFont
