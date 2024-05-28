@@ -28,13 +28,9 @@ function Initialize-DevEnv {
             Write-Host "✅ $($module.Name) module is already installed." -ForegroundColor Green
         }
     }
-    if ($vscode_installed_value -ne "True") { 
-        Invoke-Helper 
-        Test-vscode 
-    }
-    if ($ohmyposh_installed_value -ne "True") { Invoke-Helper ; Test-ohmyposh }
-    Write-Host "$PoshFunctions_installed_value : $FiraCode_installed_value Those are the values."
-    if ($FiraCode_installed_value -ne "True") { Invoke-Helper ; Test-firacode }
+    if ($vscode_installed -ne "True") { Invoke-Helper ; Test-vscode }
+    if ($ohmyposh_installed -ne "True") { Invoke-Helper ; Test-ohmyposh }
+    if ($FiraCode_installed -ne "True") { Invoke-Helper ; Test-firacode }
     
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
 }
