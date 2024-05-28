@@ -341,6 +341,7 @@ function ptw {
 }
 
 function pptw {
+    [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline=$true)]
         [string]$InputContent,
