@@ -8,19 +8,6 @@ Write-Host ""
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 $configPath = "$HOME\pwsh_custom_config.yml"
 
-else {
-    Write-Host "❌ No Nerd-Fonts are installed." -ForegroundColor Red
-    $installNerdFonts = Read-Host "Do you want to install FiraCode NerdFont? (Y/N)"
-    if ($installNerdFonts -eq 'Y' -or $installNerdFonts -eq 'y') {
-        Install-FiraCode
-    } else {
-        Write-Host "❌ NerdFonts installation skipped." -ForegroundColor Yellow
-        Set-ConfigValue -Key "FiraCode_installed" -Value "False"
-    }
-}
-
-
-
 function Initialize-DevEnv {
     if (-not $global:canConnectToGitHub) {
         Write-Host "❌ Skipping Dev Environment Initialization due to GitHub.com not responding within 1 second." -ForegroundColor Red
