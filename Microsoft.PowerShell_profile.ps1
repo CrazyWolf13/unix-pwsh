@@ -37,7 +37,8 @@ function Initialize-DevEnv {
 
 function Invoke-Helper {
     Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
-    Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh_helper.ps1" -UseBasicParsing).Content
+    #TODO: Does not currently work.
+    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh_helper.ps1" -UseBasicParsing).Content
 }
 
 # Function to create config file
@@ -178,9 +179,11 @@ function Send-Wastebin {
     )
     begin {
         if ($Help) {
-            Write-Host "Use this to send a message to the Wastebin Server, make sure to replace the encoded url below with your own, just create an issue on the GitHub repository to get help. :)"
+            Write-Host "Use this to send a message to the Wastebin Server."
+            Write-Host "Make sure to replace the encoded url below with your own url." 
+            Write-Host "If you need help, don't hesitate to create an issue on my GitHub repository (CrazyWolf13/home-configs) :)"
             Write-Host "example: ptw This is a test message"
-            Write-Host "example: ptw `"C:\path\to\file.txt"
+            Write-Host "example: ptw 'C:\path\to\file.txt' -ExpirationTime 3600 -BurnAfterReading"
             Write-Host "example: echo 'Hello World!' | ptw"
             return
         }
