@@ -33,7 +33,7 @@ function Initialize-DevEnv {
         Test-vscode 
     }
     if ($ohmyposh_installed_value -ne "True") { Invoke-Helper ; Test-ohmyposh }
-    Write-Host "$ohmyposh_installed_value : $FiraCode_installed_value Those are the values."
+    Write-Host "$PoshFunctions_installed_value : $FiraCode_installed_value Those are the values."
     if ($FiraCode_installed_value -ne "True") { Invoke-Helper ; Test-firacode }
     
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
