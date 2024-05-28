@@ -251,12 +251,18 @@ function ssh-copy-key {
     Invoke-Expression $sshCommand
 }
 
-function grep($regex, $dir) {
-    if ( $dir ) {
-        Get-ChildItem $dir | select-string $regex
-        return
+function grep {
+    param (
+        [string]$regex,
+        [string]$dir
+    )
+    process {
+        if ($dir) {
+            Get-ChildItem -Path $dir -Recurse -File | Select-String -Pattern $regex
+        } else {            # If input is piped, use it as the source for Select-String
+            $input | Select-String -Pattern $regex
+        }
     }
-    $input | select-string $regex
 }
 
 function df {
@@ -294,9 +300,6 @@ function tail {
 }
 
 function ptw {
-    $WastebinServerUrl=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
-    $DefaultExpirationTime = 3600  # Default expiration time: 1 hour (in seconds)
-    $DefaultBurnAfterReading = $false  # Default value for burn after reading setting
     [CmdletBinding()]
     param (
         [Parameter(Position=0)]
@@ -308,8 +311,10 @@ function ptw {
         [Parameter(Position=2)]
         [bool]$BurnAfterReading = $DefaultBurnAfterReading
     )
-
     process {
+        $WastebinServerUrl=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
+        $DefaultExpirationTime = 3600  # Default expiration time: 1 hour (in seconds)
+        $DefaultBurnAfterReading = $false  # Default value for burn after reading setting    
         if (-not $FilePath) {
             Write-Host "File path not provided."
             return
@@ -326,10 +331,8 @@ function ptw {
                 expires = $ExpirationTime
                 burn_after_reading = $BurnAfterReading
             } | ConvertTo-Json
-
             $Response = Invoke-RestMethod -Uri $WastebinServerUrl -Method Post -Body $Payload -ContentType 'application/json'
             $Path = $Response.path -replace '\.\w+$'
-
             Write-Host ""
             Write-Host "$WastebinServerUrl$Path"
         }
@@ -340,9 +343,6 @@ function ptw {
 }
 
 function pptw {
-    $WastebinServerUrl=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
-    $DefaultExpirationTime = 3600  # Default expiration time: 1 hour (in seconds)
-    $DefaultBurnAfterReading = $false  # Default value for burn after reading setting
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline=$true)]
@@ -354,6 +354,9 @@ function pptw {
         $AllInputContent = @()  # Array to store all lines of input
     }
     process {
+        $WastebinServerUrl=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
+        $DefaultExpirationTime = 3600  # Default expiration time: 1 hour (in seconds)
+        $DefaultBurnAfterReading = $false  # Default value for burn after reading setting    
         $AllInputContent += $InputContent  # Add each line to the array
     }
     end {
@@ -366,10 +369,8 @@ function pptw {
                 expires = $ExpirationTime
                 burn_after_reading = $BurnAfterReading
             } | ConvertTo-Json
-
             $Response = Invoke-RestMethod -Uri $WastebinServerUrl -Method Post -Body $Payload -ContentType 'application/json'
             $Path = $Response.path -replace '\.\w+$'
-
             Write-Host ""
             Write-Host "$WastebinServerUrl$Path"
         }
@@ -398,8 +399,9 @@ function admin {
     } else {
         Start-Process "wt.exe" -Verb runAs
     }
+    Set-Alias -Name sudo -Value admin
 }
-Set-Alias -Name sudo -Value admin
+
 
 Function Test-CommandExists {
     Param ($command)
@@ -442,10 +444,10 @@ function Encrypt-String {
         [Parameter(Mandatory=$true, Position=0)]
         [string]$StringToEncrypt,
         [Parameter(Mandatory=$true, Position=1)]
-        [string]$Password
+        [string]$salt1
     )
     # Convert the password to a secure string
-    $securePassword = ConvertTo-SecureString -String $Password -AsPlainText -Force
+    $securePassword = ConvertTo-SecureString -String $salt1 -AsPlainText -Force
     # Encrypt the string
     $encryptedString = ConvertFrom-SecureString -SecureString $securePassword
     return $encryptedString
@@ -462,10 +464,16 @@ Set-Alias vs code
 function expl { explorer . }
 
 # Aliases for reboot and poweroff
-function Reboot-System {Restart-Computer -Force}
-function Poweroff-System {Stop-Computer -Force}
-Set-Alias reboot Reboot-System
-Set-Alias poweroff Poweroff-System
+function Reboot-System {
+    Restart-Computer -Force
+    Set-Alias reboot Reboot-System
+}
+function Poweroff-System {
+    Stop-Computer -Force
+    Set-Alias poweroff Poweroff-System
+}
+
+
 
 # Useful file-management functions
 function cd... { Set-Location ..\.. }
@@ -484,7 +492,6 @@ function ssh-m122 {
 
 # -------------
 # Run section
-
 
 Install-Config
 # Update PowerShell in the background
