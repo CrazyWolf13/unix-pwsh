@@ -13,13 +13,11 @@ function Initialize-DevEnv {
         Write-Host "❌ Skipping Dev Environment Initialization due to GitHub.com not responding within 1 second." -ForegroundColor Red
         return
     }
-
     $modules = @(
         @{ Name = "Terminal-Icons"; ConfigKey = "Terminal-Icons_installed" },
         @{ Name = "Powershell-Yaml"; ConfigKey = "Powershell-Yaml_installed" },
         @{ Name = "PoshFunctions"; ConfigKey = "PoshFunctions_installed" }
     )
-
     foreach ($module in $modules) {
         $isInstalled = Get-ConfigValue -Key $module.ConfigKey
         if ($isInstalled -ne "True") {
@@ -30,7 +28,6 @@ function Initialize-DevEnv {
             Write-Host "✅ $($module.Name) module is already installed." -ForegroundColor Green
         }
     }
-
     if ($vscode_installed_value -ne "True") { Invoke-Helper ; Test-vscode }
     if ($ohmyposh_installed_value -ne "True") { Invoke-Helper ; Test-ohmyposh }
     if ($FiraCode_installed_value -ne "True") { Invoke-Helper ; Test-firacode }
@@ -125,7 +122,6 @@ function Initialize-Keys {
         Set-Variable -Name $key -Value $value -Scope Global
     }
 }
-
 
 function Update-PowerShell {
     if (-not $global:canConnectToGitHub) {
