@@ -8,6 +8,19 @@ Write-Host ""
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 $configPath = "$HOME\pwsh_custom_config.yml"
 
+else {
+    Write-Host "❌ No Nerd-Fonts are installed." -ForegroundColor Red
+    $installNerdFonts = Read-Host "Do you want to install FiraCode NerdFont? (Y/N)"
+    if ($installNerdFonts -eq 'Y' -or $installNerdFonts -eq 'y') {
+        Install-FiraCode
+    } else {
+        Write-Host "❌ NerdFonts installation skipped." -ForegroundColor Yellow
+        Set-ConfigValue -Key "FiraCode_installed" -Value "False"
+    }
+}
+
+
+
 function Initialize-DevEnv {
     if (-not $global:canConnectToGitHub) {
         Write-Host "❌ Skipping Dev Environment Initialization due to GitHub.com not responding within 1 second." -ForegroundColor Red
@@ -31,11 +44,18 @@ function Initialize-DevEnv {
         }
     }
 
-    if ($vscode_installed_value -ne "True") { Test-vscode }
-    if ($ohmyposh_installed_value -ne "True") { Test-ohmyposh }
+    if ($vscode_installed_value -ne "True") { Invoke-Helper ; Test-vscode }
+    if ($ohmyposh_installed_value -ne "True") { Invoke-Helper ; Test-ohmyposh }
+    if ($FiraCode_installed_value -ne "True") { Invoke-Helper ; Test-firacode }
     
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
 }
+
+function Invoke-Helper {
+    Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/username/repo/branch/path/to/script.ps1" -UseBasicParsing).Content
+}
+
+
 # Function to create config file
 function Install-Config {
     if (-not (Test-Path -Path $configPath)) {
@@ -95,60 +115,6 @@ function Get-ConfigValue {
     return $config[$Key]
 }
 
-function Install-FiraCode {
-    $url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
-    $zipPath = "$env:TEMP\FiraCode.zip"
-    $extractPath = "$env:TEMP\FiraCode"
-    $fontFileName = "FiraCodeNerdFontMono-Regular.ttf"
-    $shell = New-Object -ComObject Shell.Application
-    $fonts = $shell.Namespace(0x14)
-    try {
-        # Download the FiraCode Nerd Font zip file
-        Write-Host "Downloading FiraCode Nerd Font..." -ForegroundColor Green
-        Invoke-WebRequest -Uri $url -OutFile $zipPath
-        # Create the directory to extract the files
-        if (-Not (Test-Path -Path $extractPath)) {
-            New-Item -ItemType Directory -Path $extractPath | Out-Null
-        }
-        # Extract the zip file
-        Write-Host "Extracting FiraCode Nerd Font..." -ForegroundColor Green
-        Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
-        # Find the specific font file
-        $fontFile = Get-ChildItem -Path $extractPath -Filter $fontFileName | Select-Object -First 1
-        if (-not $fontFile) {
-            throw "❌ Font file '$fontFileName' not found in the extracted files."
-        }
-        # Copy the font file to the Windows Fonts directory
-        Write-Host "Installing FiraCode Nerd Font..." -ForegroundColor Green
-        $fonts.CopyHere($fontFile.FullName, 0x10)
-        Write-Host "FiraCode Nerd Font installed successfully!" -ForegroundColor Green
-        Write-Host "📝 Make sure to set the font as default in your terminal settings." -ForegroundColor Red
-    } catch {
-        Write-Host "❌ An error occurred: $_" -ForegroundColor Red
-    } finally {
-        # Clean up
-        Write-Host "Cleaning up temporary files..." -ForegroundColor Green
-        Remove-Item -Path $zipPath -Force
-        Remove-Item -Path $extractPath -Recurse -Force
-    }
-}
-
-function Search-InstallFiraCodeFont {
-    $firaCodeFonts = Get-Font *FiraCode*
-    if ($firaCodeFonts) {
-        Set-ConfigValue -Key "FiraCode_installed" -Value "True"
-    } else {
-        Write-Host "❌ No Nerd-Fonts are installed." -ForegroundColor Red
-        $installNerdFonts = Read-Host "Do you want to install FiraCode NerdFont? (Y/N)"
-        if ($installNerdFonts -eq 'Y' -or $installNerdFonts -eq 'y') {
-            Install-FiraCode
-        } else {
-            Write-Host "❌ NerdFonts installation skipped." -ForegroundColor Yellow
-            Set-ConfigValue -Key "FiraCode_installed" -Value "False"
-        }
-    }
-}
-
 function Initialize-Module {
     param (
         [string]$moduleName
@@ -163,34 +129,6 @@ function Initialize-Module {
     } else {
         Write-Host "❌ Skipping Module Initialization check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
     }
-}
-
-function Test-vscode {
-    if (Test-CommandExists code) {
-        Set-ConfigValue -Key "vscode_installed" -Value "True"
-    } else {
-        $installVSCode = Read-Host "Do you want to install Visual Studio Code? (Y/N)"
-        if ($installVSCode -eq 'Y' -or $installVSCode -eq 'y') {
-            winget install Microsoft.VisualStudioCode --accept-package-agreements --accept-source-agreements
-        } else {
-            Write-Host "❌ Visual Studio Code installation skipped." -ForegroundColor Yellow
-        }
-    }
-}
-
-function Test-ohmyposh {  
-    if (Test-CommandExists oh-my-posh) {
-        Set-ConfigValue -Key "ohmyposh_installed" -Value "True"
-    } else {
-        $installOhMyPosh = Read-Host "Do you want to install Oh-My-Posh? (Y/N)"
-        if ($installOhMyPosh -eq 'Y' -or $installOhMyPosh -eq 'y') {
-            winget install JanDeDobbeleer.OhMyPosh --accept-package-agreements --accept-source-agreements
-            wt.exe
-            exit
-        } else {
-            Write-Host "❌ Oh-My-Posh installation skipped." -ForegroundColor Yellow
-        }
-    } 
 }
 
 function Initialize-Keys {
@@ -259,14 +197,10 @@ function grep {
     process {
         if ($dir) {
             Get-ChildItem -Path $dir -Recurse -File | Select-String -Pattern $regex
-        } else {            # If input is piped, use it as the source for Select-String
+        } else {     # Use if piped input is provided
             $input | Select-String -Pattern $regex
         }
     }
-}
-
-function df {
-    get-volume
 }
 
 function sed($file, $find, $replace) {
@@ -299,72 +233,50 @@ function tail {
     Get-Content $Path -Tail $n
 }
 
-function ptw {
-    [CmdletBinding()]
+#Use this function to process input and then pipe to Send-Wastebin, this allows input via pipeline or file.
+function Initialize-Wastebin {
     param (
         [Parameter(Position=0)]
         [string]$FilePath,
-        
-        [Parameter(Position=1)]
-        [int]$ExpirationTime = $DefaultExpirationTime,
-        
-        [Parameter(Position=2)]
-        [bool]$BurnAfterReading = $DefaultBurnAfterReading
+        [Parameter(ValueFromPipeline=$true)]
+        [string]$InputContent
     )
+    begin {
+        $contentList = @()
+    }
     process {
-        $WastebinServerUrl=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
-        $DefaultExpirationTime = 3600  # Default expiration time: 1 hour (in seconds)
-        $DefaultBurnAfterReading = $false  # Default value for burn after reading setting    
-        if (-not $FilePath) {
-            Write-Host "File path not provided."
+        if ($FilePath) {
+            if (-not (Test-Path $FilePath)) {
+                Write-Host "File '$FilePath' not found."
+                return
+            }
+            $contentList += Get-Content -Path $FilePath -Raw
+        } elseif ($InputContent) {
+            $contentList += $InputContent
+        } else {
+            Write-Host "No input provided."
             return
         }
-        if (-not (Test-Path $FilePath)) {
-            Write-Host "File '$FilePath' not found."
-            return
-        }
-        try {
-            $FileContent = Get-Content -Path $FilePath -Raw
-            $Payload = @{
-                text = $FileContent
-                extension = $null
-                expires = $ExpirationTime
-                burn_after_reading = $BurnAfterReading
-            } | ConvertTo-Json
-            $Response = Invoke-RestMethod -Uri $WastebinServerUrl -Method Post -Body $Payload -ContentType 'application/json'
-            $Path = $Response.path -replace '\.\w+$'
-            Write-Host ""
-            Write-Host "$WastebinServerUrl$Path"
-        }
-        catch {
-            Write-Host "Error occurred: $_"
-        }
+    }
+    end {
+        return $contentList -join "`n"
     }
 }
 
-function pptw {
-    [CmdletBinding()]
+function Send-Wastebin {
     param (
-        [Parameter(ValueFromPipeline=$true)]
-        [string]$InputContent,
-        [int]$ExpirationTime = $DefaultExpirationTime,
-        [bool]$BurnAfterReading = $DefaultBurnAfterReading
+        [Parameter(Position=0, ValueFromPipeline=$true)]
+        [string]$Content,
+        [Parameter(Position=1)]
+        [int]$ExpirationTime = 3600,
+        [Parameter(Position=2)]
+        [bool]$BurnAfterReading = $false
     )
-    begin {
-        $AllInputContent = @()  # Array to store all lines of input
-    }
     process {
         $WastebinServerUrl=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
-        $DefaultExpirationTime = 3600  # Default expiration time: 1 hour (in seconds)
-        $DefaultBurnAfterReading = $false  # Default value for burn after reading setting    
-        $AllInputContent += $InputContent  # Add each line to the array
-    }
-    end {
         try {
-            # Concatenate all lines into a single string
-            $CombinedInput = $AllInputContent -join "`r`n"
             $Payload = @{
-                text = $CombinedInput
+                text = $Content
                 extension = $null
                 expires = $ExpirationTime
                 burn_after_reading = $BurnAfterReading
@@ -379,6 +291,7 @@ function pptw {
         }
     }
 }
+Set-Alias -Name ptw -Value Initialize-Wastebin | Send-Wastebin
 
 # Does the the rough equivalent of dir /s /b. For example, dirs *.png is dir /s /b *.png
 function dirs {
@@ -389,9 +302,7 @@ function dirs {
     }
 }
 
-# Simple function to start a new elevated process. If arguments are supplied then 
-# a single command is started with admin rights; if not then a new admin instance
-# of PowerShell is started.
+# Function to run a command or shell as admin.
 function admin {
     if ($args.Count -gt 0) {   
         $argList = "& '" + $args + "'"
@@ -399,9 +310,8 @@ function admin {
     } else {
         Start-Process "wt.exe" -Verb runAs
     }
-    Set-Alias -Name sudo -Value admin
 }
-
+Set-Alias -Name sudo -Value admin
 
 Function Test-CommandExists {
     Param ($command)
@@ -412,12 +322,6 @@ Function Test-CommandExists {
     Finally { $ErrorActionPreference = $oldPreference }
 } 
 
-function ll { Get-ChildItem -Path $pwd -File }
-
-# Network Utilities
-function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip).Content }
-
-# System Utilities
 function uptime {
     if ($PSVersionTable.PSVersion.Major -eq 5) {
         Get-WmiObject win32_operatingsystem | Select-Object @{Name='LastBootUpTime'; Expression={$_.ConverttoDateTime($_.lastbootuptime)}} | Format-Table -HideTableHeaders
@@ -425,7 +329,6 @@ function uptime {
         net statistics workstation | Select-String "since" | ForEach-Object { $_.ToString().Replace('Statistics since ', '') }
     }
 }
-
 
 function unzip ($file) {
     $fullPath = Join-Path -Path $pwd -ChildPath $file
@@ -437,31 +340,18 @@ function unzip ($file) {
     }
 }
 
-# Encrypt a string with a password.
-function Encrypt-String {
-# Usage example Encrypt-String "String" "Password"
-    param(
-        [Parameter(Mandatory=$true, Position=0)]
-        [string]$StringToEncrypt,
-        [Parameter(Mandatory=$true, Position=1)]
-        [string]$salt1
-    )
-    # Convert the password to a secure string
-    $securePassword = ConvertTo-SecureString -String $salt1 -AsPlainText -Force
-    # Encrypt the string
-    $encryptedString = ConvertFrom-SecureString -SecureString $securePassword
-    return $encryptedString
-}
-
-# Compute file hashes - useful for checking successful downloads 
+# Short ulities
+function ll { Get-ChildItem -Path $pwd -File }
+function df {get-volume}
+function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip).Content }
 function md5 { Get-FileHash -Algorithm MD5 $args }
 function sha1 { Get-FileHash -Algorithm SHA1 $args }
 function sha256 { Get-FileHash -Algorithm SHA256 $args }
+function expl { explorer . }
 
 # Quick shortcuts
 Set-Alias n notepad
 Set-Alias vs code
-function expl { explorer . }
 
 # Aliases for reboot and poweroff
 function Reboot-System {
@@ -472,8 +362,6 @@ function Poweroff-System {
     Stop-Computer -Force
     Set-Alias poweroff Poweroff-System
 }
-
-
 
 # Useful file-management functions
 function cd... { Set-Location ..\.. }
@@ -503,6 +391,4 @@ if (-not (Test-Path -Path $PROFILE)) {
     Add-Content -Path $PROFILE -Value 'iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/Microsoft.PowerShell_profile.ps1").Content'
     Write-Host "PowerShell profile created at $PROFILE." -ForegroundColor Yellow
 }
-# Check and install FiraCode font
-Search-InstallFiraCodeFont
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
