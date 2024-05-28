@@ -369,12 +369,10 @@ function pptw {
     process {
         $AllInputContent += $InputContent  # Add each line to the array
     }
-
     end {
         try {
             # Concatenate all lines into a single string
             $CombinedInput = $AllInputContent -join "`r`n"
-
             $Payload = @{
                 text = $CombinedInput
                 extension = $null
@@ -393,23 +391,6 @@ function pptw {
         }
     }
 }
-
-
-# If so and the current host is a command line, then change to red color 
-# as warning to user that they are operating in an elevated context
-# Useful shortcuts for traversing directories
-function cd... { Set-Location ..\.. }
-function cd.... { Set-Location ..\..\.. }
-
-# Compute file hashes - useful for checking successful downloads 
-function md5 { Get-FileHash -Algorithm MD5 $args }
-function sha1 { Get-FileHash -Algorithm SHA1 $args }
-function sha256 { Get-FileHash -Algorithm SHA256 $args }
-
-# Quick shortcut to start notepad
-function n { notepad $args }
-function vs { code $args }
-function expl { explorer . }
 
 # Set up command prompt and window title. Use UNIX-style convention for identifying 
 # whether user is elevated (root) or not. Window title shows current version of PowerShell
@@ -445,7 +426,6 @@ function admin {
 
 # Set UNIX-like aliases for the admin command, so sudo <command> will run the command
 # with elevated rights. 
-Set-Alias -Name su -Value admin
 Set-Alias -Name sudo -Value admin
 
 Function Test-CommandExists {
@@ -456,19 +436,6 @@ Function Test-CommandExists {
     Catch { Write-Host "$command does not exist"; RETURN $false }
     Finally { $ErrorActionPreference = $oldPreference }
 } 
-#
-# Aliases
-#
-# If your favorite editor is not here, add an elseif and ensure that the directory it is installed in exists in your $env:Path
-#
-if (Test-CommandExists code) {
-    $EDITOR='code'
-}  elseif (Test-CommandExists notepad) {
-    $EDITOR='notepad++'
-} elseif (Test-CommandExists notepad++) {
-    $EDITOR='notepad'
-} 
-Set-Alias -Name vim -Value $EDITOR
 
 function ll { Get-ChildItem -Path $pwd -File }
 
@@ -495,55 +462,38 @@ function unzip ($file) {
     }
 }
 
-function sync-profile {
-    clear-host
-    @(
-        $Profile.AllUsersAllHosts,
-        $Profile.AllUsersCurrentHost,
-        $Profile.CurrentUserAllHosts,
-        $Profile.CurrentUserCurrentHost
-    ) | ForEach-Object {
-        if(Test-Path $_){
-            Write-Verbose "Running $_"
-            . $_
-        }
-    }
-}
-Set-Alias -Name reload -Value sync-profile
+function ssh-m122 {
+    param ([string]$ip)
+    ssh -i ~\.ssh\06-student.pem -o ServerAliveInterval=30 "ubuntu@$ip"}
 
-# Function to reboot the system
-function Reboot-System {
-    Restart-Computer -Force
-}
+# Compute file hashes - useful for checking successful downloads 
+function md5 { Get-FileHash -Algorithm MD5 $args }
+function sha1 { Get-FileHash -Algorithm SHA1 $args }
+function sha256 { Get-FileHash -Algorithm SHA256 $args }
 
-# Function to power off the system
-function Poweroff-System {
-    Stop-Computer -Force
-}
+# Quick shortcuts
+Set-Alias n notepad
+Set-Alias vs code
+function expl { explorer . }
 
 # Aliases for reboot and poweroff
+function Reboot-System {Restart-Computer -Force}
+function Poweroff-System {Stop-Computer -Force}
 Set-Alias reboot Reboot-System
 Set-Alias poweroff Poweroff-System
 
-function cdgit {
-    Set-Location 'G:\Informatik\Projekte'
-}
+# Useful file-management functions
+function cd... { Set-Location ..\.. }
+function cd.... { Set-Location ..\..\.. }
 
-# --------------------------------------
-# School
+# Folder shortcuts
+function cdgit {Set-Location "G:\Informatik\Projekte"}
+function cdtbz {Set-Location "$env:OneDriveCommercial\Dokumente\Daten\TBZ"}
+function cdbmz {Set-Location "$env:OneDriveCommercial\Dokumente\Daten\BMZ"}
+function cdhalter {Set-Location "$env:OneDriveCommercial\Dokumente\Daten\Halter"}
 
-function ssh-m122 {
-    ssh -i ~\.ssh\06-student.pem -o ServerAliveInterval=30 ubuntu@52.3.134.38
-}
-function cdtbz {
-    Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\TBZ'
-}
-function cdbmz {
-    Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\BMZ'
-}
-function cdhalter {
-    Set-Location 'C:\Users\tobia\OneDrive - Halter AG\Dokumente\Daten\Halter'
-}
+# -------------
+# Run section
 
 
 Install-Config
