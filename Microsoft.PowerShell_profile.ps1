@@ -123,6 +123,15 @@ function Initialize-Keys {
     }
 }
 
+Function Test-CommandExists {
+    Param ($command)
+    $oldPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    try { if (Get-Command $command) { RETURN $true } }
+    Catch { Write-Host "$command does not exist"; RETURN $false }
+    Finally { $ErrorActionPreference = $oldPreference }
+} 
+
 # ------
 # Custom function and alias section
 
@@ -131,6 +140,11 @@ function gitpush {
     git add .
     git commit -m "$args"
     git push
+}
+
+function ssh-m122 {
+    param ([string]$ip)
+    ssh -i ~\.ssh\06-student.pem -o ServerAliveInterval=30 "ubuntu@$ip"
 }
 
 function ssh-copy-key {
@@ -146,6 +160,68 @@ function ssh-copy-key {
     Invoke-Expression $sshCommand
 }
 
+#Use this function to send content to my wastebin instance
+function Send-Wastebin {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position=0, ValueFromPipeline=$true, Mandatory=$false)]
+        [string[]]$Content,
+
+        [Parameter(Position=1)]
+        [int]$ExpirationTime = 3600,
+
+        [Parameter(Position=2)]
+        [bool]$BurnAfterReading = $false,
+
+        [Parameter(Position=3)]
+        [switch]$Help
+    )
+    begin {
+        if ($Help) {
+            Write-Host "Use this to send a message to the Wastebin Server, make sure to replace the encoded url below with your own, just create an issue on the GitHub repository to get help. :)"
+            Write-Host "example: ptw This is a test message"
+            Write-Host "example: ptw `"C:\path\to\file.txt"
+            Write-Host "example: echo 'Hello World!' | ptw"
+            return
+        }
+        $WastebinServerUrl = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
+        $Payload = @{
+            text = ""
+            extension = $null
+            expires = $ExpirationTime
+            burn_after_reading = $BurnAfterReading
+        }
+    }
+    process {
+        if (-not $Help) {
+            foreach ($line in $Content) {
+                if (Test-Path $line -PathType Leaf) {
+                    $Payload.text += (Get-Content $line -Raw) + "`n"
+                } else {
+                    $Payload.text += $line + "`n"
+                }
+            }
+        }
+    }
+    end {
+        if (-not $Help) {
+            $Payload.text = $Payload.text.TrimEnd("`n")
+            $jsonPayload = $Payload | ConvertTo-Json
+            
+            try {
+                $Response = Invoke-RestMethod -Uri $WastebinServerUrl -Method Post -Body $jsonPayload -ContentType 'application/json'
+                $Path = $Response.path -replace '\.\w+$', ''
+                Write-Host ""
+                Write-Host "$WastebinServerUrl$Path"
+            }
+            catch {
+                Write-Host "Error occurred: $_"
+            }
+        }
+    }
+}
+Set-Alias -Name ptw -Value Send-Wastebin
+
 function grep {
     param (
         [string]$regex,
@@ -158,6 +234,18 @@ function grep {
             $input | Select-String -Pattern $regex
         }
     }
+}
+
+function uptime {
+    if ($PSVersionTable.PSVersion.Major -eq 5) {
+        $lastBootUpTime = Get-WmiObject win32_operatingsystem | Select-Object @{Name='LastBootUpTime'; Expression={$_.ConverttoDateTime($_.lastbootuptime)}}
+        $uptime = (Get-Date) - $lastBootUpTime.LastBootUpTime
+    } else {
+        $since = net statistics workstation | Select-String "since" | ForEach-Object { $_.ToString().Replace('Statistics since ', '') }
+        $lastBootUpTime = [DateTime]::ParseExact($since, "M/d/yyyy h:mm:ss AM/PM", [Globalization.CultureInfo]::InvariantCulture)
+        $uptime = (Get-Date) - $lastBootUpTime
+    }
+    return "Online since $($uptime.Days) days, $($uptime.Hours) hours, $($uptime.Minutes) minutes"
 }
 
 function sed($file, $find, $replace) {
@@ -190,66 +278,6 @@ function tail {
     Get-Content $Path -Tail $n
 }
 
-#Use this function to process input and then pipe to Send-Wastebin, this allows input via pipeline or file.
-function Initialize-Wastebin {
-    param (
-        [Parameter(Position=0)]
-        [string]$FilePath,
-        [Parameter(ValueFromPipeline=$true)]
-        [string]$InputContent
-    )
-    begin {
-        $contentList = @()
-    }
-    process {
-        if ($FilePath) {
-            if (-not (Test-Path $FilePath)) {
-                Write-Host "File '$FilePath' not found."
-                return
-            }
-            $contentList += Get-Content -Path $FilePath -Raw
-        } elseif ($InputContent) {
-            $contentList += $InputContent
-        } else {
-            Write-Host "No input provided."
-            return
-        }
-    }
-    end {
-        return $contentList -join "`n"
-    }
-}
-
-function Send-Wastebin {
-    param (
-        [Parameter(Position=0, ValueFromPipeline=$true)]
-        [string]$Content,
-        [Parameter(Position=1)]
-        [int]$ExpirationTime = 3600,
-        [Parameter(Position=2)]
-        [bool]$BurnAfterReading = $false
-    )
-    process {
-        $WastebinServerUrl=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
-        try {
-            $Payload = @{
-                text = $Content
-                extension = $null
-                expires = $ExpirationTime
-                burn_after_reading = $BurnAfterReading
-            } | ConvertTo-Json
-            $Response = Invoke-RestMethod -Uri $WastebinServerUrl -Method Post -Body $Payload -ContentType 'application/json'
-            $Path = $Response.path -replace '\.\w+$'
-            Write-Host ""
-            Write-Host "$WastebinServerUrl$Path"
-        }
-        catch {
-            Write-Host "Error occurred: $_"
-        }
-    }
-}
-Set-Alias -Name ptw -Value Initialize-Wastebin | Send-Wastebin
-
 # Does the the rough equivalent of dir /s /b. For example, dirs *.png is dir /s /b *.png
 function dirs {
     if ($args.Count -gt 0) {
@@ -269,23 +297,6 @@ function admin {
     }
 }
 Set-Alias -Name sudo -Value admin
-
-Function Test-CommandExists {
-    Param ($command)
-    $oldPreference = $ErrorActionPreference
-    $ErrorActionPreference = 'SilentlyContinue'
-    try { if (Get-Command $command) { RETURN $true } }
-    Catch { Write-Host "$command does not exist"; RETURN $false }
-    Finally { $ErrorActionPreference = $oldPreference }
-} 
-
-function uptime {
-    if ($PSVersionTable.PSVersion.Major -eq 5) {
-        Get-WmiObject win32_operatingsystem | Select-Object @{Name='LastBootUpTime'; Expression={$_.ConverttoDateTime($_.lastbootuptime)}} | Format-Table -HideTableHeaders
-    } else {
-        net statistics workstation | Select-String "since" | ForEach-Object { $_.ToString().Replace('Statistics since ', '') }
-    }
-}
 
 function unzip ($file) {
     $fullPath = Join-Path -Path $pwd -ChildPath $file
@@ -311,14 +322,10 @@ Set-Alias n notepad
 Set-Alias vs code
 
 # Aliases for reboot and poweroff
-function Reboot-System {
-    Restart-Computer -Force
-    Set-Alias reboot Reboot-System
-}
-function Poweroff-System {
-    Stop-Computer -Force
-    Set-Alias poweroff Poweroff-System
-}
+function Reboot-System {Restart-Computer -Force}
+Set-Alias reboot Reboot-System
+function Poweroff-System {Stop-Computer -Force}
+Set-Alias poweroff Poweroff-System
 
 # Useful file-management functions
 function cd... { Set-Location ..\.. }
@@ -329,11 +336,6 @@ function cdgit {Set-Location "G:\Informatik\Projekte"}
 function cdtbz {Set-Location "$env:OneDriveCommercial\Dokumente\Daten\TBZ"}
 function cdbmz {Set-Location "$env:OneDriveCommercial\Dokumente\Daten\BMZ"}
 function cdhalter {Set-Location "$env:OneDriveCommercial\Dokumente\Daten\Halter"}
-
-function ssh-m122 {
-    param ([string]$ip)
-    ssh -i ~\.ssh\06-student.pem -o ServerAliveInterval=30 "ubuntu@$ip"
-}
 
 # -------------
 # Run section
