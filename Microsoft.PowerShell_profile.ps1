@@ -36,7 +36,8 @@ function Initialize-DevEnv {
 }
 
 function Invoke-Helper {
-    Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh_helper" -UseBasicParsing).Content
+    Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
+    Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh_helper.ps1" -UseBasicParsing).Content
 }
 
 # Function to create config file
