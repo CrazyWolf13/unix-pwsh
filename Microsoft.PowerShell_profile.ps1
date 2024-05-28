@@ -337,8 +337,8 @@ function ptw {
         }
     }
 }
-$wastebinURL = [System.Text.Encoding]::UTF8.GetString(
-[Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
+# $wastebinURI = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
+$wastebinURL = "https://bin.crazywolf.dev"
 function pptw {
     param (
         [Parameter(ValueFromPipeline=$true)]
