@@ -2,10 +2,9 @@ Write-Host ""
 Write-Host "Welcome Tobias ⚡" -ForegroundColor DarkCyan
 Write-Host ""
 
-
 #All Colors: Black, Blue, Cyan, DarkBlue, DarkCyan, DarkGray, DarkGreen, DarkMagenta, DarkRed, DarkYellow, Gray, Green, Magenta, Red, White, Yellow.
 
-# Initial GitHub.com connectivity check with 1 second timeout
+# Check Internet and exit if it takes longer than 1 second
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
 $configPath = "$HOME\pwsh_custom_config.yml"
 
@@ -37,7 +36,6 @@ function Initialize-DevEnv {
     
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
 }
-
 # Function to create config file
 function Install-Config {
     if (-not (Test-Path -Path $configPath)) {
@@ -83,7 +81,6 @@ function Get-ConfigValue {
         [string]$Key
     )
     $config = @{}
-
     # Try to load the existing config file content
     if (Test-Path -Path $configPath) {
         $content = Get-Content $configPath -Raw
@@ -91,15 +88,12 @@ function Get-ConfigValue {
             $config = $content | ConvertFrom-Yaml
         }
     }
-
     # Ensure $config is a hashtable
     if (-not $config) {
         $config = @{}
     }
-
     return $config[$Key]
 }
-
 
 function Install-FiraCode {
     $url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
@@ -112,26 +106,21 @@ function Install-FiraCode {
         # Download the FiraCode Nerd Font zip file
         Write-Host "Downloading FiraCode Nerd Font..." -ForegroundColor Green
         Invoke-WebRequest -Uri $url -OutFile $zipPath
-
         # Create the directory to extract the files
         if (-Not (Test-Path -Path $extractPath)) {
             New-Item -ItemType Directory -Path $extractPath | Out-Null
         }
-
         # Extract the zip file
         Write-Host "Extracting FiraCode Nerd Font..." -ForegroundColor Green
         Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
-
         # Find the specific font file
         $fontFile = Get-ChildItem -Path $extractPath -Filter $fontFileName | Select-Object -First 1
         if (-not $fontFile) {
             throw "❌ Font file '$fontFileName' not found in the extracted files."
         }
-
         # Copy the font file to the Windows Fonts directory
         Write-Host "Installing FiraCode Nerd Font..." -ForegroundColor Green
         $fonts.CopyHere($fontFile.FullName, 0x10)
-
         Write-Host "FiraCode Nerd Font installed successfully!" -ForegroundColor Green
         Write-Host "📝 Make sure to set the font as default in your terminal settings." -ForegroundColor Red
     } catch {
@@ -206,7 +195,6 @@ function Test-ohmyposh {
 
 function Initialize-Keys {
     $keys = "Terminal-Icons_installed", "Powershell-Yaml_installed", "PoshFunctions_installed", "FiraCode_installed", "vscode_installed", "ohmyposh_installed"
-
     foreach ($key in $keys) {
         $value = Get-ConfigValue -Key $key
         Set-Variable -Name $key -Value $value -Scope Global
@@ -228,7 +216,6 @@ function Update-PowerShell {
         if ($currentVersion -lt $latestVersion) {
             $updateNeeded = $true
         }
-
         if ($updateNeeded) {
             Write-Host "Updating PowerShell..." -ForegroundColor Yellow
             winget upgrade "Microsoft.PowerShell" --accept-source-agreements --accept-package-agreements
@@ -241,6 +228,8 @@ function Update-PowerShell {
     }
 }
 
+# ------
+# Custom function and alias section
 
 function gitpush {
     git pull
@@ -257,7 +246,6 @@ function ssh-copy-key {
         [parameter(Position=1)]
         [string]$ip
     )
-
     $pubKeyPath = "~\.ssh\id_ed25519.pub"
     $sshCommand = "cat $pubKeyPath | ssh $user@$ip 'cat >> ~/.ssh/authorized_keys'"
     Invoke-Expression $sshCommand
@@ -328,15 +316,12 @@ function ptw {
             Write-Host "File path not provided."
             return
         }
-        
         if (-not (Test-Path $FilePath)) {
             Write-Host "File '$FilePath' not found."
             return
         }
-
         try {
             $FileContent = Get-Content -Path $FilePath -Raw
-            
             $Payload = @{
                 text = $FileContent
                 extension = $null
@@ -392,17 +377,6 @@ function pptw {
     }
 }
 
-# Set up command prompt and window title. Use UNIX-style convention for identifying 
-# whether user is elevated (root) or not. Window title shows current version of PowerShell
-# and appends [ADMIN] if appropriate for easy taskbar identification
-function prompt { 
-    if ($isAdmin) {
-        "[" + (Get-Location) + "] # " 
-    } else {
-        "[" + (Get-Location) + "] $ "
-    }
-}
-
 # Does the the rough equivalent of dir /s /b. For example, dirs *.png is dir /s /b *.png
 function dirs {
     if ($args.Count -gt 0) {
@@ -423,9 +397,6 @@ function admin {
         Start-Process "wt.exe" -Verb runAs
     }
 }
-
-# Set UNIX-like aliases for the admin command, so sudo <command> will run the command
-# with elevated rights. 
 Set-Alias -Name sudo -Value admin
 
 Function Test-CommandExists {
@@ -462,9 +433,21 @@ function unzip ($file) {
     }
 }
 
-function ssh-m122 {
-    param ([string]$ip)
-    ssh -i ~\.ssh\06-student.pem -o ServerAliveInterval=30 "ubuntu@$ip"}
+# Encrypt a string with a password.
+function Encrypt-String {
+# Usage example Encrypt-String "String" "Password"
+    param(
+        [Parameter(Mandatory=$true, Position=0)]
+        [string]$StringToEncrypt,
+        [Parameter(Mandatory=$true, Position=1)]
+        [string]$Password
+    )
+    # Convert the password to a secure string
+    $securePassword = ConvertTo-SecureString -String $Password -AsPlainText -Force
+    # Encrypt the string
+    $encryptedString = ConvertFrom-SecureString -SecureString $securePassword
+    return $encryptedString
+}
 
 # Compute file hashes - useful for checking successful downloads 
 function md5 { Get-FileHash -Algorithm MD5 $args }
@@ -491,6 +474,11 @@ function cdgit {Set-Location "G:\Informatik\Projekte"}
 function cdtbz {Set-Location "$env:OneDriveCommercial\Dokumente\Daten\TBZ"}
 function cdbmz {Set-Location "$env:OneDriveCommercial\Dokumente\Daten\BMZ"}
 function cdhalter {Set-Location "$env:OneDriveCommercial\Dokumente\Daten\Halter"}
+
+function ssh-m122 {
+    param ([string]$ip)
+    ssh -i ~\.ssh\06-student.pem -o ServerAliveInterval=30 "ubuntu@$ip"
+}
 
 # -------------
 # Run section
