@@ -293,10 +293,11 @@ function tail {
     Get-Content $Path -Tail $n
 }
 
+
+$WastebinServerUrl=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
+$DefaultExpirationTime = 3600  # Default expiration time: 1 hour (in seconds)
+$DefaultBurnAfterReading = $false  # Default value for burn after reading setting
 function ptw {
-    $WastebinServerUrl=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
-    $DefaultExpirationTime = 3600  # Default expiration time: 1 hour (in seconds)
-    $DefaultBurnAfterReading = $false  # Default value for burn after reading setting
     [CmdletBinding()]
     param (
         [Parameter(Position=0)]
@@ -340,9 +341,6 @@ function ptw {
 }
 
 function pptw {
-    $WastebinServerUrl=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("aHR0cHM6Ly9iaW4uY3Jhenl3b2xmLmRldg=="))
-    $DefaultExpirationTime = 3600  # Default expiration time: 1 hour (in seconds)
-    $DefaultBurnAfterReading = $false  # Default value for burn after reading setting
     param (
         [Parameter(ValueFromPipeline=$true)]
         [string]$InputContent,
