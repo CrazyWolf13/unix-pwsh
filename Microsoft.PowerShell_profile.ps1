@@ -28,7 +28,10 @@ function Initialize-DevEnv {
             Write-Host "✅ $($module.Name) module is already installed." -ForegroundColor Green
         }
     }
-    if ($vscode_installed_value -ne "True") { Invoke-Helper ; Test-vscode }
+    if ($vscode_installed_value -ne "True") { 
+        Invoke-Helper 
+        Test-vscode 
+    }
     if ($ohmyposh_installed_value -ne "True") { Invoke-Helper ; Test-ohmyposh }
     if ($FiraCode_installed_value -ne "True") { Invoke-Helper ; Test-firacode }
     
@@ -36,7 +39,7 @@ function Initialize-DevEnv {
 }
 
 function Invoke-Helper {
-    Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/username/repo/branch/path/to/script.ps1" -UseBasicParsing).Content
+    Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh_helper" -UseBasicParsing).Content
 }
 
 
