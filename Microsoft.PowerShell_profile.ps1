@@ -28,9 +28,21 @@ function Initialize-DevEnv {
             Write-Host "✅ $($module.Name) module is already installed." -ForegroundColor Green
         }
     }
-    if ($vscode_installed -ne "True") { Invoke-Helper ; Test-vscode }
-    if ($ohmyposh_installed -ne "True") { Invoke-Helper ; Test-ohmyposh }
-    if ($FiraCode_installed -ne "True") { Invoke-Helper ; Test-firacode }
+    if ($vscode_installed -ne "True") { 
+         Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh_helper.ps1" -UseBasicParsing).Content
+        Test-vscode 
+    }
+    if ($ohmyposh_installed -ne "True") { 
+        Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh_helper.ps1" -UseBasicParsing).Content
+        Test-ohmyposh 
+        }
+    if ($FiraCode_installed -ne "True") {
+        Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh_helper.ps1" -UseBasicParsing).Content
+        Test-firacode 
+        }
     
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
 }
@@ -345,12 +357,20 @@ function cdhalter {Set-Location "$env:OneDriveCommercial\Dokumente\Daten\Halter"
 
 Install-Config
 # Update PowerShell in the background
-Start-Job -ScriptBlock {Invoke-Helper ; Update-PowerShell } > $null 2>&1
+Start-Job -ScriptBlock {
+    Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
+    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh_helper.ps1" -UseBasicParsing).Content
+    Update-PowerShell 
+} > $null 2>&1
+# Try to import MS PowerToys WinGetCommandNotFound
 Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
 if (-not $?) { Write-Host "💭 Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow }
+
+# Create profile if not exists
 if (-not (Test-Path -Path $PROFILE)) {
     New-Item -ItemType File -Path $PROFILE | Out-Null
     Add-Content -Path $PROFILE -Value 'iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/Microsoft.PowerShell_profile.ps1").Content'
     Write-Host "PowerShell profile created at $PROFILE." -ForegroundColor Yellow
 }
+# Inject OhMyPosh
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/montys.omp.json' | Invoke-Expression
