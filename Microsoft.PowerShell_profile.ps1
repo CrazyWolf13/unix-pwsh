@@ -47,12 +47,6 @@ function Initialize-DevEnv {
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
 }
 
-function Invoke-Helper {
-    Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
-    #TODO: Does not currently work.
-    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh_helper.ps1" -UseBasicParsing).Content
-}
-
 # Function to create config file
 function Install-Config {
     if (-not (Test-Path -Path $configPath)) {
