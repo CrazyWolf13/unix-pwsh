@@ -16,6 +16,12 @@ Developed for personal use, feel free to use, fork, and customize this as you li
 Note: Loading this profile may take 2-4 seconds, in the future, support for local cache will be implemented.
 This repo also contains some other personal assets, like my windows-terminal config, some linux scripts, for my personal use only.
 
+## TL:DR
+- Paste this into your Powershell and afterwards into your $PROFILE, with the command `notepad $PROFILE`:
+```bash
+iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/Microsoft.PowerShell_profile.ps1").Content
+```
+
 ## Features 🌟
 - **Bash-like Shell Experience**: Mimics Unix shell functionality, bringing familiarity to Windows PowerShell. 🐧
 - **Oh My Posh Integration**: Enhances the user interface with stylish prompts and Git status indicators. ⚡
