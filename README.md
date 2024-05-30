@@ -51,15 +51,13 @@ Here is an image, how the finished config looks like, but this can be easily cha
 
 - All configurable options, including module installation preferences and feature toggles, are centralized within this YAML file. This centralized approach streamlines the initialization process, ensuring a quicker and more efficient startup experience. 🚀
 
-- Two important variables are predefined: `$name`, which is set to "Tobias", and `$OhMyPoshConfig`, which points to the Oh-My-Posh configuration file on your GitHub repository. These variables can be customized as needed to tailor the environment to your preferences.
-
 ## Usage 🚀
 - To activate this configuration:
-  1. Paste in this command: `iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/Microsoft.PowerShell_profile.ps1").Content`.
-  2. The PowerShell profile is automatically created and the profile injected into, if it does not exist. If it exists, manually place the snippet provided above at the top of the PowerShell profile.
-  3. Edit the profile easily by typing `notepad $PROFILE` into PowerShell. 🛠️
-- Make sure to point Windows Terminal to `pwsh` instead of `powershell`, as `pwsh` is the open-sourced 7.x.x version of PowerShell (PowerShell Core). 🔄
-- Enjoy the enhanced PowerShell experience! 🎉
+1. Paste in this command: `iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/Microsoft.PowerShell_profile.ps1").Content`.
+2. The PowerShell profile is automatically created and the profile injected into, if it does not exist. If it exists, manually place the snippet provided above at the top of the PowerShell profile.
+3. Edit the profile easily by typing `notepad $PROFILE` into PowerShell. 🛠️
+4. Make sure to point Windows Terminal to `pwsh` instead of `powershell`, as `pwsh` is the open-sourced 7.x.x version of PowerShell (PowerShell Core). 🔄
+5. Enjoy the enhanced PowerShell experience! 🎉
 
 ## Supported Linux Commands 🐧
 The PowerShell profile includes aliases and functions that mimic common Linux commands, providing a familiar environment for users accustomed to Linux shell environments. Here are some of the supported Linux commands:
@@ -103,6 +101,8 @@ The PowerShell profile includes aliases and functions that mimic common Linux co
 ## Personalization 🎨
 - Customize the scripts according to personal preferences or specific system requirements.
 - To use a forked version, update the `githubUser` variable to point to your own forked repository.
+- To make your own name appear on the Welcome Screen, just fork this repo and edit the main file located in the pwsh folder and edit the variable `$name` to your own name.
+- To insert your own OhMyPosh config, just fork the repo and change the URL in the main file to your own.
 
 ## License 📜
 This project is licensed under the [MIT License](LICENSE).
