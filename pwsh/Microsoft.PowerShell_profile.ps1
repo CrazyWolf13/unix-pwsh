@@ -153,7 +153,7 @@ oh-my-posh init pwsh --config $OhMyPoshConfig | Invoke-Expression
 
 $Deferred = {
     # Source my custom functions
-    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/custom_functions.ps1" -UseBasicParsing).Content
+    if ($name -eq "Tobias") {Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/custom_functions.ps1" -UseBasicParsing).Content}
     . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/functions.ps1" -UseBasicParsing).Content
     # Create profile if not exists
     if (-not (Test-Path -Path $PROFILE)) {
