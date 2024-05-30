@@ -34,6 +34,8 @@ This repo also contains some other personal assets, like my windows-terminal con
 
 - All configurable options, including module installation preferences and feature toggles, are centralized within this YAML file. This centralized approach streamlines the initialization process, ensuring a quicker and more efficient startup experience. 🚀
 
+- Two important variables are predefined: `$name`, which is set to "Tobias", and `$OhMyPoshConfig`, which points to the Oh-My-Posh configuration file on your GitHub repository. These variables can be customized as needed to tailor the environment to your preferences.
+
 ## Usage 🚀
 - To activate this configuration:
   1. Paste in this command: `iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/Microsoft.PowerShell_profile.ps1").Content`.
