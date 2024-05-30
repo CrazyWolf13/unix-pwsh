@@ -44,8 +44,6 @@ iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/M
 
 - All configurable options, including module installation preferences and feature toggles, are centralized within this YAML file. This centralized approach streamlines the initialization process, ensuring a quicker and more efficient startup experience. 🚀
 
-- Two important variables are predefined: `$name`, which is set to "Tobias", and `$OhMyPoshConfig`, which points to the Oh-My-Posh configuration file on your GitHub repository. These variables can be customized as needed to tailor the environment to your preferences.
-
 ## Usage 🚀
 - To activate this configuration:
 1. Paste in this command: `iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/Microsoft.PowerShell_profile.ps1").Content`.
@@ -61,6 +59,8 @@ iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/M
 ## Personalization 🎨
 - Customize the scripts according to personal preferences or specific system requirements.
 - To use a forked version, update the `githubUser` variable to point to your own forked repository.
+- To make your own name appear on the Welcome Screen, just fork this repo and edit the main file located in the pwsh folder and edit the variable `$name` to your own name.
+- To insert your own OhMyPosh config, just fork the repo and change the URL in the main file to your own.
 
 ## License 📜
 This project is licensed under the [MIT License](LICENSE).
