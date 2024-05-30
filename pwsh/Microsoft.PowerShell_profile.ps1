@@ -18,6 +18,7 @@ function Initialize-DevEnv {
         @{ Name = "Powershell-Yaml"; ConfigKey = "Powershell-Yaml_installed" },
         @{ Name = "PoshFunctions"; ConfigKey = "PoshFunctions_installed" }
     )
+    $importedModuleCount = 0
     foreach ($module in $modules) {
         $isInstalled = Get-ConfigValue -Key $module.ConfigKey
         if ($isInstalled -ne "True") {
@@ -25,9 +26,10 @@ function Initialize-DevEnv {
             Initialize-Module $module.Name
         } else {
             Import-Module $module.Name
-            Write-Host "✅ $($module.Name) module is already installed." -ForegroundColor Green
+            $importedModuleCount++
         }
     }
+    Write-Host "✅ Imported $importedModuleCount modules successfully." -ForegroundColor Green
     if ($vscode_installed -ne "True") { 
         Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
         . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
@@ -44,7 +46,7 @@ function Initialize-DevEnv {
         Test-firacode 
         }
     
-    Write-Host "✅ Successfully initialized Pwsh with all Modules and applications" -ForegroundColor Green
+    Write-Host "✅ Successfully initialized Pwsh with all Modules and applications`n" -ForegroundColor Green
 }
 
 # Function to create config file
