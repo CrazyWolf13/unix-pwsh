@@ -269,22 +269,49 @@ function export($name, $value) {
     set-item -force -path "env:$name" -value $value;
 }
 
-function pkill($name) {
-    Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
-}
-
 function pgrep($name) {
     Get-Process $name
 }
 
+function pkill {
+    param (
+        [string]$name
+    )
+    process {
+        if ($name) {
+            Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
+        } else {
+            $input | ForEach-Object { Get-Process $_ -ErrorAction SilentlyContinue | Stop-Process }
+        }
+    }
+}
+
 function head {
-    param($Path, $n = 10)
-    Get-Content $Path -Head $n
+    param (
+        [string]$Path,
+        [int]$n = 10
+    )
+    process {
+        if ($Path) {
+            Get-Content $Path -Head $n
+        } else {
+            $input | Select-Object -First $n
+        }
+    }
 }
 
 function tail {
-    param($Path, $n = 10)
-    Get-Content $Path -Tail $n
+    param (
+        [string]$Path,
+        [int]$n = 10
+    )
+    process {
+        if ($Path) {
+            Get-Content $Path -Tail $n
+        } else {
+            $input | Select-Object -Last $n
+        }
+    }
 }
 
 # Does the the rough equivalent of dir /s /b. For example, dirs *.png is dir /s /b *.png
@@ -307,13 +334,69 @@ function admin {
 }
 Set-Alias -Name sudo -Value admin
 
-function unzip ($file) {
-    $fullPath = Join-Path -Path $pwd -ChildPath $file
-    if (Test-Path $fullPath) {
-        Write-Output "Extracting $file to $pwd"
-        Expand-Archive -Path $fullPath -DestinationPath $pwd
-    } else {
-        Write-Output "File $file does not exist in the current directory"
+function unzip {
+    param (
+        [string]$file
+    )
+    process {
+        if ($file) {
+            $fullPath = Join-Path -Path $pwd -ChildPath $file
+            if (Test-Path $fullPath) {
+                Write-Output "Extracting $file to $pwd"
+                Expand-Archive -Path $fullPath -DestinationPath $pwd
+            } else {
+                Write-Output "File $file does not exist in the current directory"
+            }
+        } else {
+            $input | ForEach-Object {
+                $fullPath = Join-Path -Path $pwd -ChildPath $_
+                if (Test-Path $fullPath) {
+                    Write-Output "Extracting $_ to $pwd"
+                    Expand-Archive -Path $fullPath -DestinationPath $pwd
+                } else {
+                    Write-Output "File $_ does not exist in the current directory"
+                }
+            }
+        }
+    }
+}
+
+function md5 {
+    param (
+        [string]$Path
+    )
+    process {
+        if ($Path) {
+            Get-FileHash -Algorithm MD5 $Path
+        } else {
+            $input | ForEach-Object { Get-FileHash -Algorithm MD5 $_ }
+        }
+    }
+}
+
+function sha1 {
+    param (
+        [string]$Path
+    )
+    process {
+        if ($Path) {
+            Get-FileHash -Algorithm SHA1 $Path
+        } else {
+            $input | ForEach-Object { Get-FileHash -Algorithm SHA1 $_ }
+        }
+    }
+}
+
+function sha256 {
+    param (
+        [string]$Path
+    )
+    process {
+        if ($Path) {
+            Get-FileHash -Algorithm SHA256 $Path
+        } else {
+            $input | ForEach-Object { Get-FileHash -Algorithm SHA256 $_ }
+        }
     }
 }
 
@@ -321,9 +404,6 @@ function unzip ($file) {
 function ll { Get-ChildItem -Path $pwd -File }
 function df {get-volume}
 function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip).Content }
-function md5 { Get-FileHash -Algorithm MD5 $args }
-function sha1 { Get-FileHash -Algorithm SHA1 $args }
-function sha256 { Get-FileHash -Algorithm SHA256 $args }
 function expl { explorer . }
 
 # Quick shortcuts
