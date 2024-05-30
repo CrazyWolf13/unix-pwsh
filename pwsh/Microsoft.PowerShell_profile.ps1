@@ -66,7 +66,6 @@ function Set-ConfigValue {
         [string]$Value
     )
     $config = @{}
-
     # Try to load the existing config file content
     if (Test-Path -Path $configPath) {
         $content = Get-Content $configPath -Raw
@@ -79,7 +78,6 @@ function Set-ConfigValue {
     if (-not $config) {
         $config = @{}
     }
-
     $config[$Key] = $Value
     $config | ConvertTo-Yaml | Set-Content $configPath
     # Write-Host "Set '$Key' to '$Value' in configuration file." -ForegroundColor Green
@@ -130,22 +128,12 @@ function Initialize-Keys {
     }
 }
 
-Function Test-CommandExists {
-    Param ($command)
-    $oldPreference = $ErrorActionPreference
-    $ErrorActionPreference = 'SilentlyContinue'
-    try { if (Get-Command $command) { RETURN $true } }
-    Catch { Write-Host "$command does not exist"; RETURN $false }
-    Finally { $ErrorActionPreference = $oldPreference }
-} 
-
 # Source my custom functions
 . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/custom_functions.ps1" -UseBasicParsing).Content
 . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/functions.ps1" -UseBasicParsing).Content
 
 # -------------
 # Run section
-
 Install-Config
 # Update PowerShell in the background
 Start-Job -ScriptBlock {
@@ -153,6 +141,7 @@ Start-Job -ScriptBlock {
     . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
     Update-PowerShell 
 } > $null 2>&1
+
 # Try to import MS PowerToys WinGetCommandNotFound
 Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
 if (-not $?) { Write-Host "💭 Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow }

@@ -1,4 +1,14 @@
 Write-Host "✅ Helper script invoked successfully" -ForegroundColor Green
+
+Function Test-CommandExists {
+    Param ($command)
+    $oldPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    try { if (Get-Command $command) { RETURN $true } }
+    Catch { Write-Host "$command does not exist"; RETURN $false }
+    Finally { $ErrorActionPreference = $oldPreference }
+} 
+
 function Install-FiraCode {
     $url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
     $zipPath = "$env:TEMP\FiraCode.zip"
