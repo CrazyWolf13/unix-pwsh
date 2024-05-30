@@ -48,11 +48,11 @@ iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/M
 
 ## Usage 🚀
 - To activate this configuration:
-  1. Paste in this command: `iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/Microsoft.PowerShell_profile.ps1").Content`.
-  2. The PowerShell profile is automatically created and the profile injected into, if it does not exist. If it exists, manually place the snippet provided above at the top of the PowerShell profile.
-  3. Edit the profile easily by typing `notepad $PROFILE` into PowerShell. 🛠️
-- Make sure to point Windows Terminal to `pwsh` instead of `powershell`, as `pwsh` is the open-sourced 7.x.x version of PowerShell (PowerShell Core). 🔄
-- Enjoy the enhanced PowerShell experience! 🎉
+1. Paste in this command: `iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/Microsoft.PowerShell_profile.ps1").Content`.
+2. The PowerShell profile is automatically created and the profile injected into, if it does not exist. If it exists, manually place the snippet provided above at the top of the PowerShell profile.
+3. Edit the profile easily by typing `notepad $PROFILE` into PowerShell. 🛠️
+4. Make sure to point Windows Terminal to `pwsh` instead of `powershell`, as `pwsh` is the open-sourced 7.x.x version of PowerShell (PowerShell Core). 🔄
+5. Enjoy the enhanced PowerShell experience! 🎉
 
 ## Contributing 🤝
 - Feel free to fork, modify, and contribute improvements or additional features.
