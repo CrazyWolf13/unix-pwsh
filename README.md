@@ -1,13 +1,17 @@
 # Contents
 - [Contents](#contents)
 - [Personal PowerShell Configuration 🖥️](#personal-powershell-configuration-️)
+  - [TL:DR](#tldr)
   - [Features 🌟](#features-)
   - [Components Installed 🛠️](#components-installed-️)
   - [Configuration 📁](#configuration-)
   - [Usage 🚀](#usage-)
   - [Contributing 🤝](#contributing-)
   - [Personalization 🎨](#personalization-)
+  - [License 📜](#license-)
 
+
+----
 
 # Personal PowerShell Configuration 🖥️
 
@@ -57,6 +61,10 @@ iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/pwsh/main/M
 ## Personalization 🎨
 - Customize the scripts according to personal preferences or specific system requirements.
 - To use a forked version, update the `githubUser` variable to point to your own forked repository.
+
+## License 📜
+This project is licensed under the [MIT License](LICENSE).
+
 
 ---
 
