@@ -2,6 +2,10 @@ Write-Host ""
 Write-Host "Welcome Tobias ⚡" -ForegroundColor DarkCyan
 Write-Host ""
 
+# TEMP:
+#Update all my Configs to the new subfolder:
+Set-Content -Path $PROFILE -Value 'iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/Microsoft.PowerShell_profile.ps1").Content'
+
 #All Colors: Black, Blue, Cyan, DarkBlue, DarkCyan, DarkGray, DarkGreen, DarkMagenta, DarkRed, DarkYellow, Gray, Green, Magenta, Red, White, Yellow.
 
 # Check Internet and exit if it takes longer than 1 second
