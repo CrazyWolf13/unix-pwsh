@@ -73,7 +73,6 @@ function Set-ConfigValue {
             $config = $content | ConvertFrom-Yaml
         }
     }
-
     # Ensure $config is a hashtable
     if (-not $config) {
         $config = @{}
@@ -128,29 +127,95 @@ function Initialize-Keys {
     }
 }
 
-# Source my custom functions
-. Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/custom_functions.ps1" -UseBasicParsing).Content
-. Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/functions.ps1" -UseBasicParsing).Content
 
 # -------------
 # Run section
 Install-Config
-# Update PowerShell in the background
-Start-Job -ScriptBlock {
-    Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
-    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
-    Update-PowerShell 
-} > $null 2>&1
 
 # Try to import MS PowerToys WinGetCommandNotFound
 Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
 if (-not $?) { Write-Host "💭 Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow }
 
-# Create profile if not exists
-if (-not (Test-Path -Path $PROFILE)) {
-    New-Item -ItemType File -Path $PROFILE | Out-Null
-    Add-Content -Path $PROFILE -Value 'iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/Microsoft.PowerShell_profile.ps1").Content'
-    Write-Host "PowerShell profile created at $PROFILE." -ForegroundColor Yellow
-}
 # Inject OhMyPosh
 oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/montys.omp.json' | Invoke-Expression
+
+
+
+# ----------------------------------------------------------
+#Deferred loading
+# ----------------------------------------------------------
+
+
+$Deferred = {
+    # Source my custom functions
+    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/custom_functions.ps1" -UseBasicParsing).Content
+    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/functions.ps1" -UseBasicParsing).Content
+    # Create profile if not exists
+    if (-not (Test-Path -Path $PROFILE)) {
+        New-Item -ItemType File -Path $PROFILE | Out-Null
+        Add-Content -Path $PROFILE -Value 'iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/Microsoft.PowerShell_profile.ps1").Content'
+        Write-Host "PowerShell profile created at $PROFILE." -ForegroundColor Yellow
+    }
+    # Update PowerShell in the background
+    Start-Job -ScriptBlock {
+        Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/CrazyWolf13/home-configs/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
+        Update-PowerShell 
+    } > $null 2>&1
+}
+
+
+$GlobalState = [psmoduleinfo]::new($false)
+$GlobalState.SessionState = $ExecutionContext.SessionState
+
+# to run our code asynchronously
+$Runspace = [runspacefactory]::CreateRunspace($Host)
+$Powershell = [powershell]::Create($Runspace)
+$Runspace.Open()
+$Runspace.SessionStateProxy.PSVariable.Set('GlobalState', $GlobalState)
+
+# ArgumentCompleters are set on the ExecutionContext, not the SessionState
+# Note that $ExecutionContext is not an ExecutionContext, it's an EngineIntrinsics 😡
+$Private = [Reflection.BindingFlags]'Instance, NonPublic'
+$ContextField = [Management.Automation.EngineIntrinsics].GetField('_context', $Private)
+$Context = $ContextField.GetValue($ExecutionContext)
+
+# Get the ArgumentCompleters. If null, initialise them.
+$ContextCACProperty = $Context.GetType().GetProperty('CustomArgumentCompleters', $Private)
+$ContextNACProperty = $Context.GetType().GetProperty('NativeArgumentCompleters', $Private)
+$CAC = $ContextCACProperty.GetValue($Context)
+$NAC = $ContextNACProperty.GetValue($Context)
+if ($null -eq $CAC)
+{
+    $CAC = [Collections.Generic.Dictionary[string, scriptblock]]::new()
+    $ContextCACProperty.SetValue($Context, $CAC)
+}
+if ($null -eq $NAC)
+{
+    $NAC = [Collections.Generic.Dictionary[string, scriptblock]]::new()
+    $ContextNACProperty.SetValue($Context, $NAC)
+}
+
+# Get the AutomationEngine and ExecutionContext of the runspace
+$RSEngineField = $Runspace.GetType().GetField('_engine', $Private)
+$RSEngine = $RSEngineField.GetValue($Runspace)
+$EngineContextField = $RSEngine.GetType().GetFields($Private) | Where-Object {$_.FieldType.Name -eq 'ExecutionContext'}
+$RSContext = $EngineContextField.GetValue($RSEngine)
+
+# Set the runspace to use the global ArgumentCompleters
+$ContextCACProperty.SetValue($RSContext, $CAC)
+$ContextNACProperty.SetValue($RSContext, $NAC)
+
+$Wrapper = {
+    # Without a sleep, you get issues:
+    #   - occasional crashes
+    #   - prompt not rendered
+    #   - no highlighting
+    # Assumption: this is related to PSReadLine.
+    # 20ms seems to be enough on my machine, but let's be generous - this is non-blocking
+    Start-Sleep -Milliseconds 100
+
+    . $GlobalState {. $Deferred; Remove-Variable Deferred}
+}
+
+$null = $Powershell.AddScript($Wrapper.ToString()).BeginInvoke()
