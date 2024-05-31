@@ -11,7 +11,7 @@ $font_folder = "FiraCode" # Put here the name of the zip folder, but without the
 
 function Initialize-DevEnv {
     if (-not $global:canConnectToGitHub) {
-        Write-Host "❌ Skipping Dev Environment Initialization due to GitHub.com not responding within 1 second." -ForegroundColor Red
+        Write-Host "❌ Skipping dev-environment initialization due to GitHub.com not responding within 1 second." -ForegroundColor Red
         return
     }
     $modules = @(
@@ -43,7 +43,7 @@ function Initialize-DevEnv {
         Test-$font
         }
     
-    Write-Host "✅ Successfully initialized Pwsh with all Modules and applications`n" -ForegroundColor Green
+    Write-Host "✅ Successfully initialized Pwsh with all modules and applications`n" -ForegroundColor Green
 }
 
 # Function to create config file
@@ -52,7 +52,7 @@ function Install-Config {
         New-Item -ItemType File -Path $configPath | Out-Null
         Write-Host "Configuration file created at $configPath ❗" -ForegroundColor Yellow
     } else {
-        Write-Host "✅ Successfully loaded Config file" -ForegroundColor Green
+        Write-Host "✅ Successfully loaded config file" -ForegroundColor Green
     }
     Initialize-Keys
     Initialize-DevEnv
@@ -114,7 +114,7 @@ function Initialize-Module {
             Write-Error "❌ Failed to install module ${moduleName}: $_"
         }
     } else {
-        Write-Host "❌ Skipping Module Initialization check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
+        Write-Host "❌ Skipping Module initialization check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
     }
 }
 
@@ -139,7 +139,7 @@ Install-Config
 
 # Try to import MS PowerToys WinGetCommandNotFound
 Import-Module -Name Microsoft.WinGet.CommandNotFound > $null 2>&1
-if (-not $?) { Write-Host "💭 Make sure to install WingetCommandNotFound by MS Powertoys" -ForegroundColor Yellow }
+if (-not $?) { Write-Host "💭 Make sure to install WingetCommandNotFound by MS PowerToys" -ForegroundColor Yellow }
 
 # Inject OhMyPosh
 oh-my-posh init pwsh --config $OhMyPoshConfig | Invoke-Expression
