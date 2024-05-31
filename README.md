@@ -17,8 +17,11 @@
 
 # Personal PowerShell Configuration 🖥️
 
-This repository contains a collection of PowerShell scripts tailored to enhance the command-line experience on Windows systems. 
-Developed for personal use, feel free to use, fork, and customize this as you like. 🚀
+Welcome to my personal PowerShell profile repository! 🎉 This collection of PowerShell scripts is designed to bring a touch of the Linux command-line experience to Windows systems. 🐧By implementing popular Linux commands like cat, grep, and more, you can enjoy a more familiar and powerful command-line environment. 🛠️
+
+Feel free to use, fork, and customize these scripts to enhance your own command-line experience. 🔧
+Developed for personal use, but feel free to use, fork, and customize this as you like. 🚀
+
 Note: Loading this profile may take 2-4 seconds, in the future, support for local cache will be implemented.
 
 ## Disclaimer: ⚠️
