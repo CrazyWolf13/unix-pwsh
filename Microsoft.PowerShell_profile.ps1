@@ -147,7 +147,7 @@ oh-my-posh init pwsh --config $OhMyPoshConfig | Invoke-Expression
 
 
 # ----------------------------------------------------------
-#Deferred loading
+# Deferred loading
 # ----------------------------------------------------------
 
 
