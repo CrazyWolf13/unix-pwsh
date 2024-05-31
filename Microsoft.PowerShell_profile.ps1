@@ -4,6 +4,10 @@ $configPath = "$HOME\pwsh_custom_config.yml"
 $githubUser = "CrazyWolf13"
 $name= ""
 $OhMyPoshConfig = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/multiverse-neon.omp.json"
+$font="FiraCode" # Font-Display Name
+$font_url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
+$fontFileName = "FiraCodeNerdFontMono-Regular.ttf"
+$font_folder = FiraCode
 
 function Initialize-DevEnv {
     if (-not $global:canConnectToGitHub) {
@@ -37,10 +41,10 @@ function Initialize-DevEnv {
         . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-ohmyposh 
         }
-    if ($FiraCode_installed -ne "True") {
+    if ($($font + "_installed") -ne "True") {
         Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
         . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
-        Test-firacode 
+        Test-NerdFont 
         }
     
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications`n" -ForegroundColor Green
@@ -119,7 +123,7 @@ function Initialize-Module {
 }
 
 function Initialize-Keys {
-    $keys = "Terminal-Icons_installed", "Powershell-Yaml_installed", "PoshFunctions_installed", "FiraCode_installed", "vscode_installed", "ohmyposh_installed"
+    $keys = "Terminal-Icons_installed", "Powershell-Yaml_installed", "PoshFunctions_installed", "${font}_installed", "vscode_installed", "ohmyposh_installed"
     foreach ($key in $keys) {
         $value = Get-ConfigValue -Key $key
         Set-Variable -Name $key -Value $value -Scope Global
