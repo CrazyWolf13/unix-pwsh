@@ -39,7 +39,7 @@ function Initialize-DevEnv {
     if ($($font + "_installed") -ne "True") {
         Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
         . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
-        Test-NerdFont 
+        Test-$font
         }
     
     Write-Host "✅ Successfully initialized Pwsh with all Modules and applications`n" -ForegroundColor Green
@@ -118,7 +118,7 @@ function Initialize-Module {
 }
 
 function Initialize-Keys {
-    $keys = "Terminal-Icons_installed", "Powershell-Yaml_installed", "PoshFunctions_installed", "${font}_installed", "vscode_installed", "ohmyposh_installed"
+    $keys = "Terminal-Icons_installed", "Powershell-Yaml_installed", "PoshFunctions_installed", "${font}_installed", "ohmyposh_installed"
     foreach ($key in $keys) {
         $value = Get-ConfigValue -Key $key
         Set-Variable -Name $key -Value $value -Scope Global
