@@ -27,7 +27,7 @@ Never directly inject any code from the World-Wide-Web into your devices, that y
 ## TL:DR
 - Paste this into your Powershell and afterwards into your $PROFILE, with the command `notepad $PROFILE`:
 ```bash
-iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/dotfiles/main/Microsoft.PowerShell_profile.ps1").Content
+iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/unix-pwsh/main/Microsoft.PowerShell_profile.ps1").Content
 ```
 
 ## Features 🌟
@@ -38,7 +38,7 @@ iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/dotfiles/main/Microsoft.
 
 ## Showcase 🌟
 Here is an image, how the finished config looks like, but this can be easily changed, via OhMyPosh.
-![Showcase](./imgs/showcase.png)
+![Showcase](./assets/showcase.png)
 
 
 ## Components Installed 🛠️
@@ -55,7 +55,7 @@ Here is an image, how the finished config looks like, but this can be easily cha
 
 ## Usage 🚀
 - To activate this configuration:
-1. Paste in this command: `iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/dotfiles/main/Microsoft.PowerShell_profile.ps1").Content`.
+1. Paste in this command: `iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/unix-pwsh/main/Microsoft.PowerShell_profile.ps1").Content`.
 2. The PowerShell profile is automatically created and the profile injected into, if it does not exist. If it exists, manually place the snippet provided above at the top of the PowerShell profile.
 3. Edit the profile easily by typing `notepad $PROFILE` into PowerShell. 🛠️
 4. Make sure to point Windows Terminal to `pwsh` instead of `powershell`, as `pwsh` is the open-sourced 7.x.x version of PowerShell (PowerShell Core). 🔄
