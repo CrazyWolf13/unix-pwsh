@@ -37,8 +37,8 @@ function Initialize-DevEnv {
         Test-ohmyposh 
         }
     if ($($font + "_installed") -ne "True") {
-        Write-Host "Trying to to check if Nerd-Fonts are installed" -ForegroundColor Yellow
         Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
+        Write-Host "Trying to to check if Nerd-Fonts are installed" -ForegroundColor Yellow
         . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-$font
         }
