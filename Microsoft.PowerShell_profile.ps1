@@ -31,11 +31,6 @@ function Initialize-DevEnv {
         }
     }
     Write-Host "✅ Imported $importedModuleCount modules successfully." -ForegroundColor Green
-    if ($vscode_installed -ne "True") { 
-        Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
-        Test-vscode 
-    }
     if ($ohmyposh_installed -ne "True") { 
         Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
         . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
@@ -156,8 +151,6 @@ oh-my-posh init pwsh --config $OhMyPoshConfig | Invoke-Expression
 
 
 $Deferred = {
-    # Source my custom functions
-    if ($name -eq "Tobias") {Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/custom_functions.ps1" -UseBasicParsing).Content}
     . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/functions.ps1" -UseBasicParsing).Content
     # Create profile if not exists
     if (-not (Test-Path -Path $PROFILE)) {

@@ -60,7 +60,7 @@ function Test-ohmyposh {
     } 
 }
 
-function Test-NerdFont {
+function Test-$font {
     $nerdfonts = Get-Font *$font*
     if ($nerdfonts) {
         Set-ConfigValue -Key "$font_installed" -Value "True"
