@@ -7,7 +7,7 @@ $OhMyPoshConfig = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/m
 $font="FiraCode" # Font-Display Name
 $font_url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
 $fontFileName = "FiraCodeNerdFontMono-Regular.ttf"
-$font_folder = FiraCode
+$font_folder = "FiraCode"
 
 function Initialize-DevEnv {
     if (-not $global:canConnectToGitHub) {
