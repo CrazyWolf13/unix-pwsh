@@ -38,6 +38,7 @@ iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/unix-pwsh/main/Microsoft
 
 ## Showcase 🌟
 Here is an image, how the finished config looks like, but this can be easily changed, via OhMyPosh.
+However, this preview is not so meaningful, as most of the visual configuration is done by OhMyPosh.
 ![Showcase](./assets/showcase.png)
 
 
