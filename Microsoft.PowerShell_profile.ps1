@@ -121,6 +121,7 @@ function Initialize-Module {
 
 function Initialize-Keys {
     $keys = "Terminal-Icons_installed", "Powershell-Yaml_installed", "PoshFunctions_installed", "${font}_installed", "ohmyposh_installed"
+    Write-Host "'${font}_installed' is the variable"
     foreach ($key in $keys) {
         $value = Get-ConfigValue -Key $key
         Set-Variable -Name $key -Value $value -Scope Global
