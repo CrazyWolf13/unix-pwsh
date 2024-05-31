@@ -3,7 +3,7 @@ $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds
 $configPath = "$HOME\pwsh_custom_config.yml"
 $githubUser = "CrazyWolf13"
 $name= "Tobias"
-$OhMyPoshConfig = "https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/montys.omp.json"
+$OhMyPoshConfig = "https://raw.githubusercontent.com/$githubUser/dotfiles/main/montys.omp.json"
 
 function Initialize-DevEnv {
     if (-not $global:canConnectToGitHub) {
@@ -29,17 +29,17 @@ function Initialize-DevEnv {
     Write-Host "✅ Imported $importedModuleCount modules successfully." -ForegroundColor Green
     if ($vscode_installed -ne "True") { 
         Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-vscode 
     }
     if ($ohmyposh_installed -ne "True") { 
         Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-ohmyposh 
         }
     if ($FiraCode_installed -ne "True") {
         Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-firacode 
         }
     
@@ -153,19 +153,19 @@ oh-my-posh init pwsh --config $OhMyPoshConfig | Invoke-Expression
 
 $Deferred = {
     # Source my custom functions
-    if ($name -eq "Tobias") {Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/custom_functions.ps1" -UseBasicParsing).Content}
-    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/functions.ps1" -UseBasicParsing).Content
+    if ($name -eq "Tobias") {Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/custom_functions.ps1" -UseBasicParsing).Content}
+    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/functions.ps1" -UseBasicParsing).Content
     # Create profile if not exists
     if (-not (Test-Path -Path $PROFILE)) {
         New-Item -ItemType File -Path $PROFILE | Out-Null
-        Add-Content -Path $PROFILE -Value "iex (iwr `https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/Microsoft.PowerShell_profile.ps1`).Content"
+        Add-Content -Path $PROFILE -Value "iex (iwr `https://raw.githubusercontent.com/$githubUser/dotfiless/main/Microsoft.PowerShell_profile.ps1`).Content"
         Write-Host "PowerShell profile created at $PROFILE." -ForegroundColor Yellow
     }
     
     # Update PowerShell in the background
     Start-Job -ScriptBlock {
         Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/home-configs/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh_helper.ps1" -UseBasicParsing).Content
         Update-PowerShell 
     } > $null 2>&1
 }

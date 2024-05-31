@@ -44,7 +44,7 @@ function Send-Wastebin {
         if ($Help) {
             Write-Host "Use this to send a message to the Wastebin Server."
             Write-Host "Make sure to replace the encoded url below with your own url." 
-            Write-Host "If you need help, don't hesitate to create an issue on my GitHub repository (CrazyWolf13/home-configs) :)"
+            Write-Host "If you need help, don't hesitate to create an issue on my GitHub repository (CrazyWolf13/dotfiles) :)"
             Write-Host "example: ptw This is a test message"
             Write-Host "example: ptw 'C:\path\to\file.txt' -ExpirationTime 3600 -BurnAfterReading"
             Write-Host "example: echo 'Hello World!' | ptw"
