@@ -4,10 +4,10 @@ $configPath = "$HOME\pwsh_custom_config.yml"
 $githubUser = "CrazyWolf13"
 $name= ""
 $OhMyPoshConfig = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/montys.omp.json"
-$font="FiraCode" # Font-Display Name
-$font_url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
-$fontFileName = "FiraCodeNerdFontMono-Regular.ttf"
-$font_folder = "FiraCode"
+$font="FiraCode" # Font-Display and variable Name, name the same as font_folder
+$font_url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip" # Put here the URL of the font file that should be installed
+$fontFileName = "FiraCodeNerdFontMono-Regular.ttf" # Put here the font file that should be installed
+$font_folder = "FiraCode" # Put here the name of the zip folder, but without the .zip extension.
 
 function Initialize-DevEnv {
     if (-not $global:canConnectToGitHub) {
@@ -38,8 +38,7 @@ function Initialize-DevEnv {
         }
         $font_installed_var = "${font}_installed"
     if (((Get-Variable -Name $font_installed_var).Value) -ne "True") {
-        Write-Host "⚡ Invoking Helper-Script $font_installed " -ForegroundColor Yellow
-        Write-Host "Trying to to check if Nerd-Fonts are installed" -ForegroundColor Yellow
+        Write-Host "⚡ Invoking Helper-Script" -ForegroundColor Yellow
         . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-$font
         }
