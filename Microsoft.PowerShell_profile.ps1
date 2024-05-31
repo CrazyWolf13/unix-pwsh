@@ -36,8 +36,8 @@ function Initialize-DevEnv {
         . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-ohmyposh 
         }
-    $font_installed = "$($font)_installed"
-    if ($font_installed -ne "True") {
+        $font_installed_var = "${font}_installed"
+    if (((Get-Variable -Name $font_installed_var).Value) -ne "True") {
         Write-Host "⚡ Invoking Helper-Script $font_installed " -ForegroundColor Yellow
         Write-Host "Trying to to check if Nerd-Fonts are installed" -ForegroundColor Yellow
         . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
@@ -121,7 +121,6 @@ function Initialize-Module {
 
 function Initialize-Keys {
     $keys = "Terminal-Icons_installed", "Powershell-Yaml_installed", "PoshFunctions_installed", "${font}_installed", "ohmyposh_installed"
-    Write-Host "'${font}_installed' is the variable"
     foreach ($key in $keys) {
         $value = Get-ConfigValue -Key $key
         Set-Variable -Name $key -Value $value -Scope Global
