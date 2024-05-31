@@ -20,7 +20,6 @@
 This repository contains a collection of PowerShell scripts tailored to enhance the command-line experience on Windows systems. 
 Developed for personal use, feel free to use, fork, and customize this as you like. 🚀
 Note: Loading this profile may take 2-4 seconds, in the future, support for local cache will be implemented.
-This repo also contains some other personal assets, like my windows-terminal config, some linux scripts, for my personal use only.
 
 ## Disclaimer: ⚠️
 Never directly inject any code from the World-Wide-Web into your devices, that you have not read through and verified it's safe!
