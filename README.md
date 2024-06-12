@@ -57,6 +57,8 @@ However, this preview is not so meaningful, as most of the visual configuration 
 
 - All configurable options, including module installation preferences and feature toggles, are centralized within this YAML file. This centralized approach streamlines the initialization process, ensuring a quicker and more efficient startup experience. 🚀
 
+- Experienced users can manually add an entry to the Windows hosts file located in `C:\Windows\System32\drivers\etc\hosts` for `raw.githubusercontent.com` followed by the ip. This greatly improves overall loading time.
+
 ## Usage 🚀
 - To activate this configuration:
 1. Paste in this command: `iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/unix-pwsh/main/Microsoft.PowerShell_profile.ps1").Content`.
