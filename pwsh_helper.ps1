@@ -34,7 +34,7 @@ function Install-NerdFont {
         Write-Host "Installing $font Nerd Font..." -ForegroundColor Green
         $fonts.CopyHere($fontFile.FullName, 0x10)
         Write-Host "$font Nerd Font installed successfully!" -ForegroundColor Green
-        Write-Host "📝 Make sure to set the font as default in your terminal settings." -ForegroundColor Red
+        Write-Host "📝 Make sure to set the font as default in your terminal settings." -ForegroundColor Blue
     } catch {
         Write-Host "❌ An error occurred: $_" -ForegroundColor Red
     } finally {
@@ -49,11 +49,10 @@ function Test-ohmyposh {
     if (Test-CommandExists oh-my-posh) {
         Set-ConfigValue -Key "ohmyposh_installed" -Value "True"
     } else {
+        Write-Host "❌ OhMyPosh is not installed." -ForegroundColor Red
         $installOhMyPosh = Read-Host "Do you want to install Oh-My-Posh? (Y/N)"
         if ($installOhMyPosh -eq 'Y' -or $installOhMyPosh -eq 'y') {
             winget install JanDeDobbeleer.OhMyPosh --accept-package-agreements --accept-source-agreements
-            wt.exe
-            exit
         } else {
             Write-Host "❌ Oh-My-Posh installation skipped." -ForegroundColor Yellow
         }
@@ -78,26 +77,84 @@ function Test-$font {
 
 function Update-PowerShell {
     if (-not $global:canConnectToGitHub) {
-        Write-Host "❌ Skipping PowerShell update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
+        Write-Host "❌ Skipping PowerShell update or installation check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
         return
     }
     try {
+        $isInstalled = $null -ne (Get-Command pwsh -ErrorAction SilentlyContinue)
         $updateNeeded = $false
-        $currentVersion = $PSVersionTable.PSVersion.ToString()
+        if ($isInstalled) {
+            $currentVersion = $PSVersionTable.PSVersion.ToString()
+        } else {
+            $currentVersion = "0.0"
+        }
         $gitHubApiUrl = "https://api.github.com/repos/PowerShell/PowerShell/releases/latest"
         $latestReleaseInfo = Invoke-RestMethod -Uri $gitHubApiUrl
         $latestVersion = $latestReleaseInfo.tag_name.Trim('v')
         if ($currentVersion -lt $latestVersion) {
             $updateNeeded = $true
         }
-        if ($updateNeeded) {
+        if ($updateNeeded -and $isInstalled) {
             Write-Host "Updating PowerShell..." -ForegroundColor Yellow
             winget upgrade "Microsoft.PowerShell" --accept-source-agreements --accept-package-agreements
-            Write-Host "PowerShell has been updated. Please restart your shell to reflect changes" -ForegroundColor Magenta
+        } elseif ($updateNeeded -and -not $isInstalled) {
+            Write-Host "Installing PowerShell..." -ForegroundColor Yellow
+            winget install "Microsoft.PowerShell" --accept-source-agreements --accept-package-agreements
         } else {
             Write-Host "✅ PowerShell is up to date." -ForegroundColor Green
         }
     } catch {
-        Write-Error "❌ Failed to update PowerShell. Error: $_"
+        Write-Error "❌ Failed to update or install PowerShell. Error: $_"
     }
+}
+
+# Function to show a GUI Message Box
+# Source: https://stackoverflow.com/questions/58718191/is-there-a-way-to-display-a-pop-up-message-box-in-powershell-that-is-compatible
+function Show-MessageBox {
+    [CmdletBinding(PositionalBinding=$false)]
+    param(
+        [Parameter(Mandatory, Position=0)]
+        [string] $Message,
+        [Parameter(Position=1)]
+        [string] $Title,
+        [Parameter(Position=2)]
+        [ValidateSet('OK', 'OKCancel', 'AbortRetryIgnore', 'YesNoCancel', 'YesNo', 'RetryCancel')]
+        [string] $Buttons = 'OK',
+        [ValidateSet('Information', 'Warning', 'Stop')]
+        [string] $Icon = 'Information',
+        [ValidateSet(0, 1, 2)]
+        [int] $DefaultButtonIndex
+    )
+
+    $buttonMap = @{ 
+        'OK'               = @{ buttonList = 'OK'; defaultButtonIndex = 0 }
+        'OKCancel'         = @{ buttonList = 'OK', 'Cancel'; defaultButtonIndex = 0; cancelButtonIndex = 1 }
+        'AbortRetryIgnore' = @{ buttonList = 'Abort', 'Retry', 'Ignore'; defaultButtonIndex = 2; cancelButtonIndex = 0 }
+        'YesNoCancel'      = @{ buttonList = 'Yes', 'No', 'Cancel'; defaultButtonIndex = 2; cancelButtonIndex = 2 }
+        'YesNo'            = @{ buttonList = 'Yes', 'No'; defaultButtonIndex = 0; cancelButtonIndex = 1 }
+        'RetryCancel'      = @{ buttonList = 'Retry', 'Cancel'; defaultButtonIndex = 0; cancelButtonIndex = 1 }
+    }
+
+    $numButtons = $buttonMap[$Buttons].buttonList.Count
+    $defaultIndex = [math]::Min($numButtons - 1, ($buttonMap[$Buttons].defaultButtonIndex, $DefaultButtonIndex)[$PSBoundParameters.ContainsKey('DefaultButtonIndex')])
+    $cancelIndex = $buttonMap[$Buttons].cancelButtonIndex
+    Add-Type -AssemblyName System.Windows.Forms
+
+    # Create a hidden form and set it as TopMost
+    $form = New-Object System.Windows.Forms.Form
+    $form.TopMost = $true
+    $form.ShowInTaskbar = $false
+    $form.WindowState = 'Minimized'
+    $form.Show()
+    $form.Hide()
+
+    # Show the message box with the hidden form as the owner
+    $result = [System.Windows.Forms.MessageBox]::Show($form, $Message, $Title, $Buttons, $Icon, $defaultIndex * 256).ToString()
+
+    # Close the hidden form
+    $form.Close()
+    $form.Dispose()
+
+    # Output the result
+    return $result
 }
