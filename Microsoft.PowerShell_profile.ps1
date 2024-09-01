@@ -43,7 +43,7 @@ If you have further questions, on how to set the above, don't hesitate to ask me
 
 $scriptBlock = {
     param($githubUser, $files, $baseDir, $canConnectToGitHub)
-    Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
+    Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
     BackgroundTasks
 }
 
@@ -54,7 +54,7 @@ $scriptBlock = {
 
 # Function for calling the update Powershell Script
 function Run-UpdatePowershell {
-    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
+    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
     Update-Powershell
 }
 # ----------------------------------------------------------------------------
@@ -117,9 +117,9 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
         } else {
         if ($global:canConnectToGitHub) {
             #Load Custom Functions
-            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/custom_functions.ps1" -UseBasicParsing).Content
+            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/custom_functions.ps1" -UseBasicParsing).Content
             #Load Functions
-            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/functions.ps1" -UseBasicParsing).Content
+            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/functions.ps1" -UseBasicParsing).Content
             # Update PowerShell in the background
             Start-Job -ScriptBlock $scriptBlock -ArgumentList $githubUser, $files, $baseDir, $canConnectToGitHub
                 } else {
@@ -139,9 +139,9 @@ $Deferred = {
         } else {
         if ($global:canConnectToGitHub) {
             #Load Custom Functions
-            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/custom_functions.ps1" -UseBasicParsing).Content
+            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/custom_functions.ps1" -UseBasicParsing).Content
             #Load Functions
-            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/functions.ps1" -UseBasicParsing).Content
+            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/functions.ps1" -UseBasicParsing).Content
             # Update PowerShell in the background
             Start-Job -ScriptBlock $scriptBlock -ArgumentList $githubUser, $files, $baseDir, $canConnectToGitHub
             } else {

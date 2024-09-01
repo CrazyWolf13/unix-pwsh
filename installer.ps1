@@ -30,7 +30,7 @@ function Test-Pwsh {
         Run-UpdatePowershell
         Start-Sleep -Seconds 8 # Wait for the update to finish
         Write-Host "Restarting the installation script with Powershell Core" -ForegroundColor Green
-        Start-Process pwsh -ArgumentList "-NoExit", "-Command Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/Microsoft.PowerShell_profile.ps1'-UseBasicParsing).Content ; Install-Config"
+        Start-Process pwsh -ArgumentList "-NoExit", "-Command Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/Microsoft.PowerShell_profile.ps1'-UseBasicParsing).Content ; Install-Config"
         exit
     } else {
         Write-Host "✅ PowerShell Core (pwsh) is installed." -ForegroundColor Green
