@@ -26,6 +26,8 @@ Note: Loading this profile may take 2-4 seconds, in the future, support for loca
 
 ## Disclaimer: ⚠️
 Never directly inject any code from the World-Wide-Web into your devices, that you have not read through and verified it's safe!
+To make sure this can never happen to you, fork this repository and edit the file: `Microsoft.PowerShell_profile.ps1` and change the Variable `$GithubUser` and `$Name` to your GithubUsername and your real name for the Welcoming Message.
+
 
 ## TL:DR
 - Paste this into your Powershell and afterwards into your $PROFILE, with the command `notepad $PROFILE`:
@@ -38,6 +40,8 @@ iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/unix-pwsh/main/Microsoft
 - **Oh My Posh Integration**: Enhances the user interface with stylish prompts and Git status indicators. ⚡
 - **Deferred Loading**: Improves function loading time for a smoother experience. 🕒
 - **Automatic Installation**: The scripts automatically install necessary modules and components on first execution. 🛠️
+- **Automatic Updates**: This projects updates itself in the background, just make sure to merge changes if you forked my repository.
+- **Local Cache**: Improved speed by using a local cache of all the files which is frequently pulled from the internet, allowing full offline access.
 
 ## Showcase 🌟
 Here is an image, how the finished config looks like, but this can be easily changed, via OhMyPosh.

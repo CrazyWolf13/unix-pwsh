@@ -1,5 +1,39 @@
 Write-Host "✅ Helper script invoked successfully" -ForegroundColor Green
 
+# Tasks to be executed in the background.
+function BackgroundTasks {
+    Update-PowerShell
+    # Update the local cache of files
+    CheckScriptFilesForUpdates
+    Write-Host "🔄 Updated the local cache of files." -ForegroundColor Green
+}
+
+# Function for downloading a file
+function DownloadFile($filename) {
+    $url = "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/$filename"
+    Invoke-WebRequest -Uri $url -OutFile "$baseDir\$filename"
+}
+
+# Function for checking and updating script files
+function CheckAndUpdateFile($filename) {
+    $localFileContent = Get-Content "$baseDir\$filename" -Raw
+    $url = "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/$filename"
+    $remoteFileContent = Invoke-WebRequest -Uri $url | Select-Object -ExpandProperty Content
+    if ($localFileContent -ne $remoteFileContent) {
+        DownloadFile "$filename"
+    }
+}
+
+function CheckScriptFilesForUpdates {
+    foreach ($file in $files) {
+        if (Test-Path "$baseDir\$file") {
+            CheckAndUpdateFile $file
+        } else {
+            DownloadFile $file
+        }
+    }
+}
+
 Function Test-CommandExists {
     Param ($command)
     $oldPreference = $ErrorActionPreference
@@ -23,7 +57,6 @@ function Install-NerdFont {
             New-Item -ItemType Directory -Path $extractPath | Out-Null
         }
         # Extract the zip file
-        Write-Host "Extracting $font Nerd Font..." -ForegroundColor Green
         Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
         # Find the specific font file
         $fontFile = Get-ChildItem -Path $extractPath -Filter $fontFileName | Select-Object -First 1

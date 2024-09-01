@@ -11,10 +11,19 @@ function Test-ExecPolicy {
 
 function Install-NuGet {
     # Install NuGet to ensure the other packages can be installed.
-    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
+    $nugetProvider = Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue
+    if (-not $nugetProvider) {
+        Write-Host "NuGet provider not found. Installing..."
+        Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+        Import-PackageProvider -Name NuGet -Force
+        Write-Host "NuGet provider installed."
+    } else {
+        Write-Host "NuGet provider is already installed."
+    }
     # Trust the PSGallery repository for while installing this powershell profile.
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
 }
+
 function Test-Pwsh {
     if (-not (Get-Command pwsh -ErrorAction SilentlyContinue)) {
         Write-Host "PowerShell Core (pwsh) is not installed. Starting the update..." -ForegroundColor Yellow
@@ -36,7 +45,7 @@ function Test-CreateProfile {
     # Create profile if not exists
     if (-not (Test-Path -Path $PROFILE)) {
         New-Item -ItemType File -Path $PROFILE | Out-Null
-        Add-Content -Path $PROFILE -Value "iex (iwr `https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/Microsoft.PowerShell_profile.ps1`).Content"
+        Add-Content -Path $PROFILE -Value "if (Test-Path (Join-Path -Path `$env:USERPROFILE -ChildPath `"unix-pwsh\Microsoft.PowerShell_profile.ps1`")) { . (Join-Path -Path `$env:USERPROFILE -ChildPath `"unix-pwsh\Microsoft.PowerShell_profile.ps1`") } else { iex (iwr `"https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/Microsoft.PowerShell_profile.ps1`").Content }"
         Write-Host "PowerShell profile created at $PROFILE." -ForegroundColor Yellow
     }
 }
@@ -48,16 +57,6 @@ function Initialize-DevEnv {
         if ($isInstalled -ne "True") {
             Write-Host "Initializing $($module.Name) module..."
             Initialize-Module $module.Name
-            if ($($module.Name) -eq "Powershell-Yaml") {
-                # Invoke the Helper Script to get Test-CommandExists function.
-                . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
-                # Check if we can already use ConvertTo-Yaml
-                if (-not (Test-CommandExists ConvertTo-Yaml)) {
-                    Write-Host "Restarting installer to make Powershell-Yaml available." -ForegroundColor Yellow
-                    Start-Process pwsh -ArgumentList "-NoExit", "-Command Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/Microsoft.PowerShell_profile.ps1'-UseBasicParsing).Content ; Install-Config"
-                    exit
-                }
-            }
         } else {
             Import-Module $module.Name
             $importedModuleCount++
@@ -68,24 +67,23 @@ function Initialize-DevEnv {
     }
     Write-Host "✅ Imported $importedModuleCount modules successfully." -ForegroundColor Green
     if ($ohmyposh_installed -ne "True") { 
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-ohmyposh 
     }
     $font_installed_var = "${font}_installed"
-    Write-Host "$font_installed, $font_installed_var, $font checking for the font_var"
     if (((Get-Variable -Name $font_installed_var).Value) -ne "True") {
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
-        Write-Host "Testing for the font now, as var said false."
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-$font
     }
     if ($vscode_installed -ne "True") { 
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/custom_functions.ps1" -UseBasicParsing).Content
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
+        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/custom_functions.ps1" -UseBasicParsing).Content
         Test-vscode 
         }
     Write-Host "✅ Successfully initialized Pwsh with all modules and applications`n" -ForegroundColor Green
     wt.exe -p "PowerShell"
-    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/dotfiles/main/pwsh/pwsh_helper.ps1" -UseBasicParsing).Content
+    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
+    $null = Show-MessageBox $infoMessage 'Important Notice' -Buttons OK -Icon Information
     $null = Show-MessageBox $infoMessage 'Important Notice' -Buttons OK -Icon Information
     # Remove the trust from PSGallery Repository
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Untrusted
@@ -153,6 +151,9 @@ function Get-ConfigValue {
     }
     return $config[$Key]
 }
+
+
+
 
 function Initialize-Module {
     param (
