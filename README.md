@@ -72,7 +72,6 @@ However, this preview is not so meaningful, as most of the visual configuration 
 ## Supported Linux Commands 🐧
 The PowerShell profile includes aliases and functions that mimic common Linux commands, providing a familiar environment for users accustomed to Linux shell environments. Here are some of the supported Linux commands:
 
-- `sudo`: Runs a command with elevated privileges, similar to the sudo command in Linux.
 - `cd`: Changes the current directory. PowerShell equivalent: `Set-Location`.
 - `ls`: Lists the contents of a directory. PowerShell equivalent: `Get-ChildItem`.
 - `dirs`: Lists directories recursively.
