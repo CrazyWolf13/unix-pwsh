@@ -174,3 +174,11 @@ function Initialize-Module {
         Write-Host "✅ Module $moduleName is already installed. Importing..."
     }
 }
+
+function Initialize-Keys {
+    $keys = "Terminal-Icons_installed", "Powershell-Yaml_installed", "PoshFunctions_installed", "${font}_installed", "vscode_installed", "ohmyposh_installed"
+    foreach ($key in $keys) {
+        $value = Get-ConfigValue -Key $key
+        Set-Variable -Name $key -Value $value -Scope Global
+    }
+}
