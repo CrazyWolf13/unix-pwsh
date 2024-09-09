@@ -9,6 +9,7 @@ function Test-ExecPolicy {
     }
 }
 
+
 function Install-NuGet {
     # Install NuGet to ensure the other packages can be installed.
     $nugetProvider = Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue
@@ -24,31 +25,71 @@ function Install-NuGet {
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
 }
 
+
 function Test-Pwsh {
     if (-not (Get-Command pwsh -ErrorAction SilentlyContinue)) {
         Write-Host "PowerShell Core (pwsh) is not installed. Starting the update..." -ForegroundColor Yellow
         Run-UpdatePowershell
         Start-Sleep -Seconds 8 # Wait for the update to finish
         Write-Host "Restarting the installation script with Powershell Core" -ForegroundColor Green
-        Start-Process pwsh -ArgumentList "-NoExit", "-Command Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/Microsoft.PowerShell_profile.ps1'-UseBasicParsing).Content ; Install-Config"
+        Start-Process pwsh -ArgumentList "-NoExit", "-Command Invoke-Expression (Invoke-WebRequest -Uri '$githubBaseURL/Microsoft.PowerShell_profile.ps1'-UseBasicParsing).Content ; Install-Config"
         exit
     } else {
         Write-Host "✅ PowerShell Core (pwsh) is installed." -ForegroundColor Green
     }
 }
 
+
 function Test-CreateProfile {
-    # Create $PATH folder if not exists.
-    if (-not (Test-Path -Path (Split-Path -Path $PROFILE -Parent))) {
-        New-Item -ItemType Directory -Path (Split-Path -Path $PROFILE -Parent) -Force | Out-Null
+    $profilePath = $PROFILE
+    $profileDir = Split-Path -Path $profilePath -Parent
+    $githubProfileUrl = "$githubBaseURL/Microsoft.PowerShell_profile.ps1"
+    $blockVersion = "1.0.0" # Change this to the current version of the block
+
+    # Create $PATH folder if not exists
+    if (-not (Test-Path -Path $profileDir)) {
+        New-Item -ItemType Directory -Path $profileDir -Force | Out-Null
     }
+    
     # Create profile if not exists
-    if (-not (Test-Path -Path $PROFILE)) {
-        New-Item -ItemType File -Path $PROFILE | Out-Null
-        Add-Content -Path $PROFILE -Value "if (Test-Path (Join-Path -Path `$env:USERPROFILE -ChildPath `"unix-pwsh\Microsoft.PowerShell_profile.ps1`")) { . (Join-Path -Path `$env:USERPROFILE -ChildPath `"unix-pwsh\Microsoft.PowerShell_profile.ps1`") } else { iex (iwr `"https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/Microsoft.PowerShell_profile.ps1`").Content }"
-        Write-Host "PowerShell profile created at $PROFILE." -ForegroundColor Yellow
+    if (-not (Test-Path -Path $profilePath)) {
+        New-Item -ItemType File -Path $profilePath | Out-Null
     }
+
+    # Define the profile block with versioning
+    $profileBlock = @"
+# BEGIN unix-pwsh v$blockVersion
+if (Test-Path (Join-Path -Path `$env:USERPROFILE -ChildPath "unix-pwsh\Microsoft.PowerShell_profile.ps1")) {
+    . (Join-Path -Path `$env:USERPROFILE -ChildPath "unix-pwsh\Microsoft.PowerShell_profile.ps1")
+} else {
+    iex (iwr "$githubProfileUrl").Content
 }
+# END unix-pwsh v$blockVersion
+"@
+
+    # Read current profile content
+    $currentContent = Get-Content -Path $profilePath -Raw
+
+    # Remove any standalone occurrences of the block content
+$currentContent = $currentContent -replace 'if\s*\(\s*Test-Path\s*\(\s*Join-Path\s*-Path\s*`?\$env:USERPROFILE\s*-ChildPath\s*"unix-pwsh\\Microsoft.PowerShell_profile\.ps1"\s*\)\s*\)\s*\{\s*\.?\s*\(\s*Join-Path\s*-Path\s*`?\$env:USERPROFILE\s*-ChildPath\s*"unix-pwsh\\Microsoft.PowerShell_profile\.ps1"\s*\)\s*\}\s*else\s*\{\s*iex\s*\(\s*iwr\s*".*?/Microsoft\.PowerShell_profile\.ps1"\s*\)\.Content\s*\}', ''
+    # Check for existing block and its version
+    if ($currentContent -match "# BEGIN unix-pwsh v(\d+\.\d+\.\d+)") {
+        $existingVersion = $matches[1]
+        if ($existingVersion -eq $blockVersion) {
+            Write-Host "'unix-pwsh' block version $blockVersion is already up-to-date at $profilePath." -ForegroundColor Green
+            return
+        } else {
+            # Remove the old block
+            $currentContent = $currentContent -replace "# BEGIN unix-pwsh v$existingVersion.*?# END unix-pwsh v$existingVersion", ""
+        }
+    }
+
+    # Append the updated profile block with start and end tags and version
+    $currentContent | Set-Content -Path $profilePath
+    Add-Content -Path $profilePath -Value $profileBlock
+    Write-Host "PowerShell profile updated with 'unix-pwsh' block version $blockVersion at $profilePath." -ForegroundColor Yellow
+}
+
 
 function Initialize-DevEnv {
     $importedModuleCount = 0
@@ -67,23 +108,29 @@ function Initialize-DevEnv {
     }
     Write-Host "✅ Imported $importedModuleCount modules successfully." -ForegroundColor Green
     if ($ohmyposh_installed -ne "True") { 
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
+        . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-ohmyposh 
     }
     $font_installed_var = "${font}_installed"
     if (((Get-Variable -Name $font_installed_var).Value) -ne "True") {
-        . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
+        . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-$font
+    }
+    if (Test-Path Variable:vscode_installed -and $vscode_installed -ne "True") { 
+        . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/pwsh_helper.ps1" -UseBasicParsing).Content
+        . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/custom_functions.ps1" -UseBasicParsing).Content
+        Test-vscode
     }
     Write-Host "✅ Successfully initialized Pwsh with all modules and applications`n" -ForegroundColor Green
     wt.exe -p "PowerShell"
-    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
+    . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/pwsh_helper.ps1" -UseBasicParsing).Content
     $null = Show-MessageBox $infoMessage 'Important Notice' -Buttons OK -Icon Information
     $null = Show-MessageBox $infoMessage 'Important Notice' -Buttons OK -Icon Information
     # Remove the trust from PSGallery Repository
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Untrusted
     exit
 }
+
 
 # Function to create config file
 function Install-Config {
@@ -102,6 +149,7 @@ function Install-Config {
     Initialize-Keys
     Initialize-DevEnv
 }
+
 
 # Function to set a value in the config file
 function Set-ConfigValue {
@@ -126,6 +174,7 @@ function Set-ConfigValue {
     # Write-Host "Set '$Key' to '$Value' in configuration file." -ForegroundColor Green
     Initialize-Keys
 }
+
 
 # Function to get a value from the config file
 function Get-ConfigValue {
@@ -174,6 +223,7 @@ function Initialize-Module {
         Write-Host "✅ Module $moduleName is already installed. Importing..."
     }
 }
+
 
 function Initialize-Keys {
     $keys = "Terminal-Icons_installed", "Powershell-Yaml_installed", "PoshFunctions_installed", "${font}_installed", "vscode_installed", "ohmyposh_installed"

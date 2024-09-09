@@ -1,5 +1,7 @@
 $githubUser = "CrazyWolf13" # Change this here if you forked the repository.
 $name= "User" # Change this to your name.
+$githubRepo = "unix-pwsh" # Change this here if you forked the repository and changed the name.
+$githubBaseURL= "https://raw.githubusercontent.com/$githubUser/$githubRepo/main"
 $OhMyPoshConfigFileName = "montys.omp.json" # Filename of the OhMyPosh config file
 $OhMyPoshConfig = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/$OhMyPoshConfigFileName" # URL of the OhMyPosh config file, make sure to use the last part of the raw lik, (stands for the filename) in the variable on the line below
 
@@ -43,10 +45,9 @@ If you have further questions, on how to set the above, don't hesitate to ask me
 
 $scriptBlock = {
     param($githubUser, $files, $baseDir, $canConnectToGitHub)
-    Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
+    Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/pwsh_helper.ps1" -UseBasicParsing).Content
     BackgroundTasks
 }
-
 
 # -----------------------------------------------------------------------------
 # Functions
@@ -54,9 +55,10 @@ $scriptBlock = {
 
 # Function for calling the update Powershell Script
 function Run-UpdatePowershell {
-    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/pwsh_helper.ps1" -UseBasicParsing).Content
+    . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/pwsh_helper.ps1" -UseBasicParsing).Content
     Update-Powershell
 }
+
 # ----------------------------------------------------------------------------
 
 Write-Host ""
@@ -87,7 +89,7 @@ if (Test-Path -Path $xConfigPath) {
         Write-Host "❌ Skipping initialization due to GitHub not responding within 4 second." -ForegroundColor Red
         exit
     }
-    . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/installer.ps1" -UseBasicParsing).Content
+    . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/installer.ps1" -UseBasicParsing).Content
     Install-NuGet
     Test-Pwsh 
     Test-CreateProfile
@@ -117,9 +119,9 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
         } else {
         if ($global:canConnectToGitHub) {
             #Load Custom Functions
-            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/custom_functions.ps1" -UseBasicParsing).Content
+            . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/custom_functions.ps1" -UseBasicParsing).Content
             #Load Functions
-            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/functions.ps1" -UseBasicParsing).Content
+            . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/functions.ps1" -UseBasicParsing).Content
             # Update PowerShell in the background
             Start-Job -ScriptBlock $scriptBlock -ArgumentList $githubUser, $files, $baseDir, $canConnectToGitHub
                 } else {
@@ -139,9 +141,9 @@ $Deferred = {
         } else {
         if ($global:canConnectToGitHub) {
             #Load Custom Functions
-            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/custom_functions.ps1" -UseBasicParsing).Content
+            . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/custom_functions.ps1" -UseBasicParsing).Content
             #Load Functions
-            . Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/$githubUser/unix-pwsh/main/functions.ps1" -UseBasicParsing).Content
+            . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/functions.ps1" -UseBasicParsing).Content
             # Update PowerShell in the background
             Start-Job -ScriptBlock $scriptBlock -ArgumentList $githubUser, $files, $baseDir, $canConnectToGitHub
             } else {
