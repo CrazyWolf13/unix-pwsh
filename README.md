@@ -30,7 +30,7 @@ To make sure this can never happen to you, fork this repository and edit the fil
 
 
 ## TL:DR
-- Paste this into your Powershell and afterwards into your $PROFILE, with the command `notepad $PROFILE`:
+- Paste this into your Powershell, make sure to change the username if you forked the repository:
 ```bash
 iex (iwr "https://raw.githubusercontent.com/CrazyWolf13/unix-pwsh/main/Microsoft.PowerShell_profile.ps1").Content
 ```
