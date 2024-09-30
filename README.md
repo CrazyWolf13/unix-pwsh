@@ -22,7 +22,6 @@ Welcome to my personal PowerShell profile repository! 🎉 This collection of Po
 Feel free to use, fork, and customize these scripts to enhance your own command-line experience. 🔧
 Developed for personal use, but feel free to use, fork, and customize this as you like. 🚀
 
-Note: Loading this profile may take 2-4 seconds, in the future, support for local cache will be implemented.
 
 ## Disclaimer: ⚠️
 Never directly inject any code from the World-Wide-Web into your devices, that you have not read through and verified it's safe!
