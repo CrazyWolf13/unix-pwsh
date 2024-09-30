@@ -116,11 +116,6 @@ function Initialize-DevEnv {
         . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/pwsh_helper.ps1" -UseBasicParsing).Content
         Test-$font
     }
-    if ((Test-Path Variable:vscode_installed) -and ($vscode_installed -ne "True")) {
-        . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/pwsh_helper.ps1" -UseBasicParsing).Content
-        . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/custom_functions.ps1" -UseBasicParsing).Content
-        Test-vscode
-    }    
     Test-sudo
     Write-Host "✅ Successfully initialized Pwsh with all modules and applications`n" -ForegroundColor Green
     wt.exe -p "PowerShell"

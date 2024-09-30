@@ -115,14 +115,11 @@ oh-my-posh init pwsh --config $OhMyPoshConfig | Invoke-Expression
 # Check if psVersion is lower than 7.x, then load the functions **without** deferred loading
 if ($PSVersionTable.PSVersion.Major -lt 7) {
     if ($injectionMethod -eq "local") {
-        . "$baseDir\custom_functions.ps1"
         . "$baseDir\functions.ps1"
         # Execute the background tasks
         Start-Job -ScriptBlock $scriptBlock -ArgumentList $githubUser, $files, $baseDir, $canConnectToGitHub, $githubBaseURL
         } else {
         if ($global:canConnectToGitHub) {
-            #Load Custom Functions
-            . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/custom_functions.ps1" -UseBasicParsing).Content
             #Load Functions
             . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/functions.ps1" -UseBasicParsing).Content
             # Update PowerShell in the background
@@ -137,14 +134,11 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
 
 $Deferred = {
     if ($injectionMethod -eq "local") {
-        . "$baseDir\custom_functions.ps1"
         . "$baseDir\functions.ps1"
         # Execute the background tasks
         Start-Job -ScriptBlock $scriptBlock -ArgumentList $githubUser, $files, $baseDir, $canConnectToGitHub, $githubBaseURL
         } else {
         if ($global:canConnectToGitHub) {
-            #Load Custom Functions
-            . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/custom_functions.ps1" -UseBasicParsing).Content
             #Load Functions
             . Invoke-Expression (Invoke-WebRequest -Uri "$githubBaseURL/functions.ps1" -UseBasicParsing).Content
             # Update PowerShell in the background
