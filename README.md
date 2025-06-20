@@ -104,6 +104,7 @@ The PowerShell profile includes aliases and functions that mimic common Linux co
 - `Get-PrivIP`: Retrieves the private IP address.
 - `gitpush`: Also known as lazy-git, pulls, adds all, commits the message after gitpush and then pushes.
 - `ptw`: Send text/files pipe output to a wastebin server, important: contact me via issue for this.
+- `touch`: Updates timestamp or creates file if missing.
 
 ## Contributing 🤝
 - Feel free to fork, modify, and contribute improvements or additional features.
